@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "spring.influx.retentionPolicy",
+      "type": "java.lang.String",
+      "description": "Description for spring.influx.retentionPolicy."
+    }
+  ] }
