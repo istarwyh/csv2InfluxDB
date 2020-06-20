@@ -32,7 +32,6 @@ public class InfluxClient {
     public void csvToInfluxDB(String filePath) {
 //        String database = "metis";
 //        String retentionPolicy = "autogen";
-
         InfluxDBClient client = InfluxDBClientFactory.createV1(host,
                 username,
                 password.toCharArray(),
@@ -51,7 +50,6 @@ public class InfluxClient {
         for (int i = 0; i < list.size(); i++) {
             String data = String.valueOf(list.get(i));
             try {
-                System.out.println(data);
                 writeApi.writeRecord(WritePrecision.NS, data);
             } catch (Exception e) {
                 e.printStackTrace();
