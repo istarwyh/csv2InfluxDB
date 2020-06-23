@@ -1,8 +1,8 @@
-package com.example.metis.metis.Controller;
+package com.example.metis.controller;
 
-import com.example.metis.metis.Model.Model_KY;
-import com.example.metis.metis.Service.InfluxClient;
-import com.example.metis.metis.Service.Utils;
+import com.example.metis.service.InfluxClient;
+import com.example.metis.model.Model_KY;
+import com.example.metis.service.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,12 +18,12 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * @Author: zhaxinchi
+ * @author : zhaxinchi
  *
  */
 
 @Controller
-public class Start {
+class Start {
     @Autowired
     private InfluxClient influxClient;
 
@@ -48,6 +47,7 @@ public class Start {
             String fileName = file.getOriginalFilename();
 
             List<List<String>> CsvLists = Utils.readCSV(folderPath + fileName);
+            assert CsvLists != null;
             List<Model_KY> modelList = Utils .transfer(CsvLists);
 
             influxClient.csvToInfluxDB(folderPath + fileName);

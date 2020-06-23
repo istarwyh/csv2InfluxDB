@@ -1,11 +1,10 @@
-package com.example.metis.metis.Service;
+package com.example.metis.service;
 
-import com.example.metis.metis.Model.InfluxModel;
-import com.example.metis.metis.Model.Model_KY;
+import com.example.metis.model.InfluxModel;
+import com.example.metis.model.Model_KY;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.text.ParseException;
@@ -15,8 +14,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @Author: zhaxinchi
- * @Date: 2020/6/2
+ * @author : zhaxinchi
+ * @date : 2020/6/2
  */
 
 
@@ -161,7 +160,7 @@ public class Utils {
            // System.out.println(values);
             return values;
         } catch (IOException e) {
-
+            e.printStackTrace();
         }finally {
             //关闭流
             if (bufferedReader != null) {
@@ -194,7 +193,7 @@ public class Utils {
 
 
     //文件转换成数组
-    public static List<InfluxModel> CSVToList(String filePath,String measurementName,String fieldKeyValue) {
+    public static List<InfluxModel> CSVToList(String filePath, String measurementName, String fieldKeyValue) {
         BufferedReader bufferedReader = null;
         InputStreamReader inputStreamReader = null;
         FileInputStream fileInputStream = null;
@@ -210,8 +209,7 @@ public class Utils {
 
             List<CSVRecord> records = parser.getRecords();
 
-            for(int i =0 ; i <records.size() ; i++){
-                CSVRecord record = records.get(i);
+            for (CSVRecord record : records) {
                 List<String> value = new ArrayList<>();
                 for (int j = 0; j < record.size(); j++) {
 
@@ -228,22 +226,20 @@ public class Utils {
                 influxModel.setTimeStamp(String.valueOf(transferDate(list_cur.get(0)).getTime()));
 
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append(measurementName+" ");
+                stringBuilder.append(measurementName).append(" ");
                 for(int j = 1 ; j<list_cur.size() ; j++) {
                     if(j==list_cur.size()-1){
-                        stringBuilder.append("p"+j+"="+list_cur.get(j));
+                        stringBuilder.append("p").append(j).append("=").append(list_cur.get(j));
                         break;
                     }
-                    stringBuilder.append("p"+j+"="+list_cur.get(j)+",");
+                    stringBuilder.append("p").append(j).append("=").append(list_cur.get(j)).append(",");
                 }
 
                 influxModel.setP(stringBuilder.toString().trim());
                 influxModelList.add(influxModel);
             }
 
-        } catch (IOException e) {
-
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         } finally {
             //关闭流
@@ -277,8 +273,7 @@ public class Utils {
 
     public static Date transferDate(String Date) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date =  format.parse(Date);
-          return date;
+        return format.parse(Date);
 
     }
 

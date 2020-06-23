@@ -1,6 +1,6 @@
-package com.example.metis.metis.Service;
+package com.example.metis.service;
 
-import com.example.metis.metis.Model.InfluxModel;
+import com.example.metis.model.InfluxModel;
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
 import com.influxdb.client.WriteApi;
@@ -11,10 +11,11 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.util.List;
 
-import static com.example.metis.metis.Service.Utils.CSVToList;
+import static com.example.metis.service.Utils.CSVToList;
 
 /**
  *TODO:把CSVList重写并剥离出来
+ * @author MBin_王艺辉istarwyh
  */
 @Service
 public class InfluxClient {
@@ -32,7 +33,8 @@ public class InfluxClient {
     public void csvToInfluxDB(String filePath) {
 //        String database = "metis";
 //        String retentionPolicy = "autogen";
-        InfluxDBClient client = InfluxDBClientFactory.createV1(host,
+        InfluxDBClient client = InfluxDBClientFactory.createV1(
+                host,
                 username,
                 password.toCharArray(),
                 database,
@@ -47,8 +49,8 @@ public class InfluxClient {
 
         WriteApi writeApi = client.getWriteApi();
 
-        for (int i = 0; i < list.size(); i++) {
-            String data = String.valueOf(list.get(i));
+        for (InfluxModel influxModel : list) {
+            String data = String.valueOf(influxModel);
             try {
                 writeApi.writeRecord(WritePrecision.NS, data);
             } catch (Exception e) {

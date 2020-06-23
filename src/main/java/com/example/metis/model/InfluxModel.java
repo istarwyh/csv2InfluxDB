@@ -1,13 +1,10 @@
-package com.example.metis.metis.Model;
-
-import lombok.Data;
+package com.example.metis.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
- * @Author: zhaxinchi
- * @Date: 2020/6/9
+ * @author : zhaxinchi
+ * @date : 2020/6/9
  */
 
 //@Data
