@@ -1,41 +1,21 @@
 package com.example.metis.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
-/**
- * @author : zhaxinchi
- * @date : 2020/6/9
- */
-
-//@Data
+@Getter
+@Setter
 public class InfluxModel implements Serializable {
-
-    String timeStamp;
-    String p;
-
-    public String getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
-    public String getP() {
-        return p;
-    }
-
-    public void setP(String p) {
-        this.p = p;
-    }
-
+    String MeasurementName;
+    String TagSet;
+    String TimeStamp;
+    String FiledSet;
 
     @Override
-//    public String toString() {
-//        return p+" ";
-//    }
     public String toString() {
-        return p+" "+timeStamp;
+        return MeasurementName+","+TagSet+" "+FiledSet+" "+TimeStamp;
     }
 
 }

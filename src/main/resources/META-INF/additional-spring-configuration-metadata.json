@@ -4,5 +4,30 @@
       "name": "spring.influx.retentionPolicy",
       "type": "java.lang.String",
       "description": "Description for spring.influx.retentionPolicy."
+    },
+    {
+      "name": "spring.influx.cloudurl",
+      "type": "java.lang.String",
+      "description": "Description for spring.influx.cloudurl."
+    },
+    {
+      "name": "spring.influx.token",
+      "type": "java.lang.String",
+      "description": "Description for spring.influx.token."
+    },
+    {
+      "name": "spring.influx.bucket",
+      "type": "java.lang.String",
+      "description": "Description for spring.influx.bucket."
+    },
+    {
+      "name": "spring.influx.org",
+      "type": "java.lang.String",
+      "description": "Description for spring.influx.org."
+    },
+    {
+      "name": "filePath",
+      "type": "java.lang.String",
+      "description": "Description for filePath."
     }
   ] }

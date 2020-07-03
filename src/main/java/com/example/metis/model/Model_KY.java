@@ -1,5 +1,9 @@
 package com.example.metis.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 
@@ -8,7 +12,9 @@ import java.io.Serializable;
  * @date : 2020/6/2
  */
 
-//@Data
+@Getter
+@Setter
+@AllArgsConstructor
 public class Model_KY implements Serializable {
     String key;
     String value;
@@ -20,28 +26,5 @@ public class Model_KY implements Serializable {
                 ", value='" + value + '\'' +
                 '}';
     }
-
-    public Model_KY() {
-    }
-
-    public Model_KY(String key, String value) {
-        this.key = key;
-        this.value = value;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
+    
 }

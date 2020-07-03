@@ -17,21 +17,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-/**
- * @author : zhaxinchi
- *
- */
-
 @Controller
 class Start {
-    @Autowired
-    private InfluxClient influxClient;
+    private final InfluxClient influxClient;
+
+    public Start(InfluxClient influxClient) {
+        this.influxClient = influxClient;
+    }
 
     @RequestMapping("/")
-            public String Root(){
-            return "upload";
-
-            }
+    public String Root(){
+        return "upload";
+    }
     @PostMapping("/upload")
     public String upload(@RequestParam("file") MultipartFile file, Model model){
         if(file.isEmpty()){
@@ -62,20 +59,5 @@ class Start {
         model.addAttribute("up","上传失败");
         return "upload";
     }
-
-//    public static void main(String[] args) throws IOException {
-//       String filePath = "D:\\Metis_File\\";
-//        File dest = new File(filePath+"new_data.csv");
-//
-//      //  List<List<String>> userRoleLists = CSVUtils.readCSV(dest.getPath(), 2);
-//
-//        List<List<String>> userRoleLists = Utils.readCSV(dest.getPath());
-//
-//        List<Model_KY> modelList = Utils .transfer(userRoleLists);
-//
-//        System.out.println(modelList);
-//
-//
-//    }
 
 }

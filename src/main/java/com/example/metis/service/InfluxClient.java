@@ -31,8 +31,7 @@ public class InfluxClient {
     private String password;
 
     public void csvToInfluxDB(String filePath) {
-//        String database = "metis";
-//        String retentionPolicy = "autogen";
+        System.out.println(host);
         InfluxDBClient client = InfluxDBClientFactory.createV1(
                 host,
                 username,
@@ -42,8 +41,7 @@ public class InfluxClient {
 
         File dest = new File(filePath);
         String measurementName = "measurementName";
-        String fieldKeyValue = "fieldKey=\"fieldValue\"";
-        List<InfluxModel> list = CSVToList(dest.getPath(), measurementName, fieldKeyValue);
+        List<InfluxModel> list = CSVToList(dest.getPath(), measurementName);
 
         System.out.println("*** Write Points ***");
 

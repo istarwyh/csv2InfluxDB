@@ -13,12 +13,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * @author : zhaxinchi
- * @date : 2020/6/2
- */
-
-
 public class Utils {
 
 
@@ -128,9 +122,6 @@ public class Utils {
 
     }
 
-
-
-
     public static List<List<String>> readCSV(String filePath) {
         BufferedReader bufferedReader = null;
         InputStreamReader inputStreamReader = null;
@@ -190,10 +181,13 @@ public class Utils {
 
     }
 
-
-
-    //文件转换成数组
-    public static List<InfluxModel> CSVToList(String filePath, String measurementName, String fieldKeyValue) {
+    /**
+     * csv文件构造成符合line protocol的字符串形式
+     * @param filePath 目前没有采用流式处理,需要给出csv文件持久化后的路径
+     * @param measurementName 指定时序数据所属表名
+     * @return List<InfluxModel>
+     */
+    public static List<InfluxModel> CSVToList(String filePath, String measurementName) {
         BufferedReader bufferedReader = null;
         InputStreamReader inputStreamReader = null;
         FileInputStream fileInputStream = null;
@@ -212,30 +206,27 @@ public class Utils {
             for (CSVRecord record : records) {
                 List<String> value = new ArrayList<>();
                 for (int j = 0; j < record.size(); j++) {
-
                     value.add(record.get(j));
-                    // System.out.println(record.get(j));
                 }
                 values.add(value);
             }
 
 
             for(int i =1 ; i<values.size() ; i++) {
-                List<String> list_cur = values.get(i);
+//                其实读的正是csv文件中的一行,但是为了解析这一行将其变为了List<String>
+                List<String> line = values.get(i);
+
                 InfluxModel influxModel = new InfluxModel();
-                influxModel.setTimeStamp(String.valueOf(transferDate(list_cur.get(0)).getTime()));
+//                给定表名
+                influxModel.setMeasurementName(measurementName);
+//                设计TagSet,这里置为空
+                influxModel.setTagSet("");
 
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append(measurementName).append(" ");
-                for(int j = 1 ; j<list_cur.size() ; j++) {
-                    if(j==list_cur.size()-1){
-                        stringBuilder.append("p").append(j).append("=").append(list_cur.get(j));
-                        break;
-                    }
-                    stringBuilder.append("p").append(j).append("=").append(list_cur.get(j)).append(",");
-                }
+                influxModel.setFiledSet(designFiledSet(line));
 
-                influxModel.setP(stringBuilder.toString().trim());
+//                加上时间戳
+                influxModel.setTimeStamp(String.valueOf(transferDate(line.get(0)).getTime()));
+
                 influxModelList.add(influxModel);
             }
 
@@ -270,6 +261,23 @@ public class Utils {
 
     }
 
+    /**
+     * 设计FiledSet,这里采用简单的p1=value1,p2=value2,...p38=value38
+     * @param line csv文件的每一行
+     * @return String
+     */
+    public static String designFiledSet(List<String> line){
+        StringBuilder sb = new StringBuilder();
+        for(int j = 1 ; j<line.size() ; j++) {
+//                    对于最后一位filedValue后面不应该有","
+            if(j== line.size()-1){
+                sb.append("p").append(j).append("=").append(line.get(j));
+                break;
+            }
+            sb.append("p").append(j).append("=").append(line.get(j)).append(",");
+        }
+        return sb.toString().trim();
+    }
 
     public static Date transferDate(String Date) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
