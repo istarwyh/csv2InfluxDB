@@ -2,7 +2,7 @@ package com.example.metis.service;
 import java.io.File;
 import java.util.List;
 
-import com.example.metis.model.InfluxModel;
+import com.example.metis.model.LineProtocolModel;
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
 import com.influxdb.client.WriteApi;
@@ -31,15 +31,15 @@ public class InfluxClient2 {
 
         File dest = new File(filePath);
         String measurementName = "measurementName";
-        List<InfluxModel> list = CSVToList(dest.getPath(), measurementName);
+        List<LineProtocolModel> list = CSVToList(dest.getPath(), measurementName);
 
         System.out.println("*** Write Points ***");
 
         WriteApi writeApi = client.getWriteApi();
 
-        for (InfluxModel influxModel : list) {
-            String data = String.valueOf(influxModel);
-            System.out.println(influxModel);
+        for (LineProtocolModel lineprotocolModel : list) {
+            String data = String.valueOf(lineprotocolModel);
+            System.out.println(lineprotocolModel);
             try {
                 writeApi.writeRecord(bucket, org, WritePrecision.NS, data);
             } catch (Exception e) {

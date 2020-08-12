@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Metis</title>
-    <style>
-        .t-100{ margin:0 auto; width:100%}
-        .t-center{ margin:0 auto; width:450px}
-        /* 要是网页中间内容宽度1000px */
-    </style>
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <head>
+        <meta charset="UTF-8">
+        <title>CSV2InfluxDB</title>
+        <style>
+            .t-100{ margin:0 auto; width:100%}
+            .t-center{ margin:0 auto; width:450px}
+            /* 要是网页中间内容宽度1000px */
+        </style>
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 
-</head>
-<body>
-<div >
-  <h1>Metis上传</h1>
+    </head>
+    <body>
+    <div >
+      <h1>CSV2InfluxDB</h1>
 
-<h4>请上传csv文件</h4>
+    <h4>请上传csv文件</h4>
 
-<form action="/upload" method="post" enctype="multipart/form-data" >
-    <input type ="file" name = "file" value = "请选择文件">
-    <input  type="submit"></input>
-    <h4 th:text="${up}" style="color:red;"> </h4>
-</form>
-  <br>
+    <form action="/upload" method="post" enctype="multipart/form-data" >
+        <input type ="file" name = "file" value = "请选择文件">
+        <input  type="submit">
+        <h4 th:text="${up}" style="color:red;"> </h4>
+    </form>
+      <br>
 
-<h4>解析结果:</h4>
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>key</th>
-            <th>value</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr  th:each="message : ${messages}">
-            <th scope="row" th:text="${message.key}">1</th>
-            <td th:text="${message.value}">neo</td>
-        </tr>
-        </tbody>
-    </table>
+    <h4>解析结果:</h4>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>key</th>
+                <th>value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr  th:each="point : ${lineprotocalData}">
+                <th scope="row" th:text="${point.key}">1</th>
+                <td th:text="${point.value}">neo</td>
+            </tr>
+            </tbody>
+        </table>
 
-</div>
-</body>
+    </div>
+    </body>
 </html>

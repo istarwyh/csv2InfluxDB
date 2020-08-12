@@ -1,9 +1,8 @@
 package com.example.metis.controller;
 
 import com.example.metis.service.InfluxClient;
-import com.example.metis.model.Model_KY;
+import com.example.metis.model.KeyValueModel;
 import com.example.metis.service.Utils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +25,7 @@ class Start {
     }
 
     @RequestMapping("/")
-    public String Root(){
+    public String root(){
         return "upload";
     }
     @PostMapping("/upload")
@@ -43,12 +42,12 @@ class Start {
             Files.write(filePath, bytes);
             String fileName = file.getOriginalFilename();
 
-            List<List<String>> CsvLists = Utils.readCSV(folderPath + fileName);
-            assert CsvLists != null;
-            List<Model_KY> modelList = Utils .transfer(CsvLists);
+            List<List<String>> csvLists = Utils.readCSV(folderPath + fileName);
+            assert csvLists != null;
+            List<KeyValueModel> modelList = Utils.transfer(csvLists);
 
             influxClient.csvToInfluxDB(folderPath + fileName);
-            model.addAttribute("messages",modelList);
+            model.addAttribute("lineprotocalData",modelList);
             return "upload";
         }
         catch (IOException e) {

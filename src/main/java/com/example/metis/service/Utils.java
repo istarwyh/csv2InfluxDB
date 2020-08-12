@@ -1,7 +1,7 @@
 package com.example.metis.service;
 
-import com.example.metis.model.InfluxModel;
-import com.example.metis.model.Model_KY;
+import com.example.metis.model.LineProtocolModel;
+import com.example.metis.model.KeyValueModel;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -14,112 +14,48 @@ import java.util.Date;
 import java.util.List;
 
 public class Utils {
+    /**
+     *     暂时没有配日志结构,只能向控制台打印
+     */
+    public static void copyToLocal(String folderPath,List<LineProtocolModel> lineprotocolList){
+        String localFileName = "test.protocol";
+        File targetFile = new File(folderPath+localFileName);
+        if (!targetFile.exists()) {
+            try {
+                targetFile.createNewFile();
+            } catch (IOException e) {
+                System.out.println("无法创建targetFile");
+            }
+        }
+        out(targetFile,lineprotocolList);
 
+    }
+    public static void out(File targetFile,List<LineProtocolModel> lineprotocolList){
+        try{
+            PrintWriter out = new PrintWriter(targetFile);
+            for (Object lineprotocol : lineprotocolList) {
+                out.println(lineprotocol);
+            }
+        }catch (IOException e){
+            System.out.println("向targetFile输出发生错误");
+        }
+    }
 
-//    public static void main(String[] args) throws ParseException {
-//
-//        String filePath1 = "/Users/huangjiawei/Downloads/";
-//        File dest = new File(filePath1+"new_data.csv");
-//       String filePath = dest.getPath();
-//        BufferedReader bufferedReader = null;
-//        InputStreamReader inputStreamReader = null;
-//        FileInputStream fileInputStream = null;
-//
-//        List<InfluxModel> list = CSVToList(filePath,"measurementName","FieldKey=\"FieldValue\"");
-//        System.out.println("测试数据  "+list.get(2));
-//        System.out.println("测试数据  "+list.get(3));
-//        String fileName = "test.line protocol";
-//        try {
-//            PrintWriter out = new PrintWriter(filePath1+fileName);
-//            for(int i =0;i<list.size();i++){
-//                out.println(list.get(i));
-//            }
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            fileInputStream = new FileInputStream(filePath);
-//            inputStreamReader = new InputStreamReader(fileInputStream);
-//            bufferedReader = new BufferedReader(inputStreamReader);
-//
-//            CSVParser parser = CSVFormat.DEFAULT.parse(bufferedReader);
-//
-//            List<List<String>> values = new ArrayList<>();
-//
-//            List<CSVRecord> records = parser.getRecords();
-//
-//            for(int i =0 ; i <records.size() ; i++){
-//                CSVRecord record = records.get(i);
-//                List<String> value = new ArrayList<>();
-//                for (int j = 0; j < record.size(); j++) {
-//
-//                    value.add(record.get(j));
-//                    // System.out.println(record.get(j));
-//                }
-//                values.add(value);
-//            }
-//            List<InfluxModel> influxModelList = new ArrayList<>();
-//            for(int i =1 ; i<values.size() ; i++) {
-//                List<String> list_cur = values.get(i);
-//                InfluxModel influxModel = new InfluxModel();
-//                influxModel.setTimeStamp(String.valueOf(transferDate(list_cur.get(0)).getTime()));
-//                StringBuilder stringBuilder = new StringBuilder();
-//                for(int j = 1 ; j<list_cur.size() ; j++) {
-//                    stringBuilder.append(list_cur.get(j)+" ");
-//                }
-//                influxModel.setP(stringBuilder.toString().trim());
-//                influxModelList.add(influxModel);
-//            }
-//
-//
-//        } catch (IOException e) {
-//
-//        }finally {
-//            //关闭流
-//            if (bufferedReader != null) {
-//                try {
-//                    bufferedReader.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            if (inputStreamReader != null) {
-//                try {
-//                    inputStreamReader.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            if (fileInputStream != null) {
-//                try {
-//                    fileInputStream.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//
-//
-//
-//    }
+    /**
+     *
+     * @param CSVLists
+     * @return
+     */
+    public static List<KeyValueModel> transfer(List<List<String>> CSVLists){
+        List<KeyValueModel> modelList = new ArrayList<>();
 
+        for(int i =0 ; i < CSVLists.get(0).size() ; i++){
 
-
-
-
-    public static List<Model_KY> transfer(List<List<String>> CsvLists){
-        List<Model_KY> modelList = new ArrayList<>();
-
-        for(int i =0 ; i < CsvLists.get(0).size() ; i++){
-
-            Model_KY model = new Model_KY(CsvLists.get(0).get(i),CsvLists.get(1).get(i));
+            KeyValueModel model = new KeyValueModel(CSVLists.get(0).get(i),CSVLists.get(1).get(i));
             modelList.add(model);
 
         }
-
         return modelList;
-
     }
 
     public static List<List<String>> readCSV(String filePath) {
@@ -144,11 +80,9 @@ public class Utils {
                 for (int j = 0; j < record.size(); j++) {
 
                     value.add(record.get(j));
-                    // System.out.println(record.get(j));
                 }
                 values.add(value);
             }
-           // System.out.println(values);
             return values;
         } catch (IOException e) {
             e.printStackTrace();
@@ -183,15 +117,15 @@ public class Utils {
 
     /**
      * csv文件构造成符合line protocol的字符串形式
-     * @param filePath 目前没有采用流式处理,需要给出csv文件持久化后的路径
-     * @param measurementName 指定时序数据所属表名
+     * @param filePath 目前没有采用流式处理,需要给出csv文件持久化后的路径,如./repository
+     * @param MeasurementName 指定时序数据所属表名
      * @return List<InfluxModel>
      */
-    public static List<InfluxModel> CSVToList(String filePath, String measurementName) {
+    public static List<LineProtocolModel> CSVToList(String filePath, String MeasurementName) {
         BufferedReader bufferedReader = null;
         InputStreamReader inputStreamReader = null;
         FileInputStream fileInputStream = null;
-        List<InfluxModel> influxModelList = new ArrayList<>();
+        List<LineProtocolModel> lineprotocolModelList = new ArrayList<>();
         try {
             fileInputStream = new FileInputStream(filePath);
             inputStreamReader = new InputStreamReader(fileInputStream);
@@ -216,18 +150,19 @@ public class Utils {
 //                其实读的正是csv文件中的一行,但是为了解析这一行将其变为了List<String>
                 List<String> line = values.get(i);
 
-                InfluxModel influxModel = new InfluxModel();
+                LineProtocolModel lineprotocol = new LineProtocolModel();
+
 //                给定表名
-                influxModel.setMeasurementName(measurementName);
+                lineprotocol.setMeasurementName(MeasurementName);
 //                设计TagSet,这里置为空
-                influxModel.setTagSet("");
+                lineprotocol.setTagSet("");
 
-                influxModel.setFiledSet(designFiledSet(line));
+                lineprotocol.setFiledSet(designFiledSet(line));
 
-//                加上时间戳
-                influxModel.setTimeStamp(String.valueOf(transferDate(line.get(0)).getTime()));
+//                加上时间戳,原时间戳位置在csv文件第一位
+                lineprotocol.setTimeStamp(String.valueOf(transferDate(line.get(0)).getTime()));
 
-                influxModelList.add(influxModel);
+                lineprotocolModelList.add(lineprotocol);
             }
 
         } catch (IOException | ParseException e) {
@@ -257,7 +192,7 @@ public class Utils {
             }
         }
 
-        return influxModelList;
+        return lineprotocolModelList;
 
     }
 

@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Model_KY implements Serializable {
+public class KeyValueModel implements Serializable {
     String key;
     String value;
 
