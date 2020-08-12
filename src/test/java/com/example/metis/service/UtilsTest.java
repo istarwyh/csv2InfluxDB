@@ -27,6 +27,7 @@ class UtilsTest {
         assertNotNull(userRoleLists);
         List<KeyValueModel> modelList = Utils.transfer(userRoleLists);
 //        采用直接打印检查输出某些时候比构造测试用例的输出再assert()简单
+//        但是这样不能自动化
         System.out.println(modelList);
     }
 
@@ -44,10 +45,6 @@ class UtilsTest {
         String testName = "test";
         List<LineProtocolModel> lineprotocolList = Utils.CSVToList(folderPath +fileName,testName);
         String newFolderPath = "H:\\桌面\\test\\";
-        try {
-            Utils.copyToLocal(newFolderPath,lineprotocolList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Utils.copyToLocal(newFolderPath,lineprotocolList);
     }
 }

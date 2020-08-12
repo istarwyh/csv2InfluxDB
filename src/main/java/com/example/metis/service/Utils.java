@@ -4,14 +4,14 @@ import com.example.metis.model.LineProtocolModel;
 import com.example.metis.model.KeyValueModel;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.*;
+import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class Utils {
     /**
@@ -59,60 +59,17 @@ public class Utils {
     }
 
     public static List<List<String>> readCSV(String filePath) {
-        BufferedReader bufferedReader = null;
-        InputStreamReader inputStreamReader = null;
-        FileInputStream fileInputStream = null;
-
-        try {
-            fileInputStream = new FileInputStream(filePath);
-            inputStreamReader = new InputStreamReader(fileInputStream);
-            bufferedReader = new BufferedReader(inputStreamReader);
-
-            CSVParser parser = CSVFormat.DEFAULT.parse(bufferedReader);
-
-            List<List<String>> values = new ArrayList<>();
-
-            List<CSVRecord> records = parser.getRecords();
-
-            for(int i =0 ; i <2 ; i++){
-                CSVRecord record = records.get(i);
-                List<String> value = new ArrayList<>();
-                for (int j = 0; j < record.size(); j++) {
-
-                    value.add(record.get(j));
-                }
-                values.add(value);
+        List<CSVRecord> records = getCSVRecord(filePath);
+        List<List<String>> values = new ArrayList<>();
+        for(int i =0 ; i <2 ; i++){
+            CSVRecord record = records.get(i);
+            List<String> value = new ArrayList<>();
+            for (int j = 0; j < record.size(); j++) {
+                value.add(record.get(j));
             }
-            return values;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            //关闭流
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (inputStreamReader != null) {
-                try {
-                    inputStreamReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fileInputStream != null) {
-                try {
-                    fileInputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            values.add(value);
         }
-
-        return null;
-
+        return values;
     }
 
     /**
@@ -122,74 +79,35 @@ public class Utils {
      * @return List<InfluxModel>
      */
     public static List<LineProtocolModel> CSVToList(String filePath, String MeasurementName) {
-        BufferedReader bufferedReader = null;
-        InputStreamReader inputStreamReader = null;
-        FileInputStream fileInputStream = null;
         List<LineProtocolModel> lineprotocolModelList = new ArrayList<>();
-        try {
-            fileInputStream = new FileInputStream(filePath);
-            inputStreamReader = new InputStreamReader(fileInputStream);
-            bufferedReader = new BufferedReader(inputStreamReader);
-
-            CSVParser parser = CSVFormat.DEFAULT.parse(bufferedReader);
-
-            List<List<String>> values = new ArrayList<>();
-
-            List<CSVRecord> records = parser.getRecords();
-
-            for (CSVRecord record : records) {
-                List<String> value = new ArrayList<>();
-                for (int j = 0; j < record.size(); j++) {
-                    value.add(record.get(j));
-                }
-                values.add(value);
+        List<CSVRecord> records = getCSVRecord(filePath);
+        List<List<String>> values = new ArrayList<>();
+        for (CSVRecord record : records) {
+            List<String> value = new ArrayList<>();
+            for (int j = 0; j < record.size(); j++) {
+                value.add(record.get(j));
             }
+            values.add(value);
+        }
 
 
-            for(int i =1 ; i<values.size() ; i++) {
+        for(int i =1 ; i<values.size() ; i++) {
 //                其实读的正是csv文件中的一行,但是为了解析这一行将其变为了List<String>
-                List<String> line = values.get(i);
+            List<String> line = values.get(i);
 
-                LineProtocolModel lineprotocol = new LineProtocolModel();
+            LineProtocolModel lineprotocol = new LineProtocolModel();
 
 //                给定表名
-                lineprotocol.setMeasurementName(MeasurementName);
+            lineprotocol.setMeasurementName(MeasurementName);
 //                设计TagSet,这里置为空
-                lineprotocol.setTagSet("");
+            lineprotocol.setTagSet("");
 
-                lineprotocol.setFiledSet(designFiledSet(line));
+            lineprotocol.setFiledSet(designFiledSet(line));
 
 //                加上时间戳,原时间戳位置在csv文件第一位
-                lineprotocol.setTimeStamp(String.valueOf(transferDate(line.get(0)).getTime()));
+            lineprotocol.setTimeStamp(String.valueOf(Objects.requireNonNull(transferDate(line.get(0))).getTime()));
 
-                lineprotocolModelList.add(lineprotocol);
-            }
-
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        } finally {
-            //关闭流
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (inputStreamReader != null) {
-                try {
-                    inputStreamReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fileInputStream != null) {
-                try {
-                    fileInputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            lineprotocolModelList.add(lineprotocol);
         }
 
         return lineprotocolModelList;
@@ -214,11 +132,65 @@ public class Utils {
         return sb.toString().trim();
     }
 
-    public static Date transferDate(String Date) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return format.parse(Date);
-
+    public static CSVParser CSVParser(String filePath){
+        BufferedReader br = null;
+        InputStreamReader isr = null;
+        FileInputStream fis = null;
+        try{
+            try{
+                fis = new FileInputStream(filePath);
+                isr = new InputStreamReader(fis);
+                br = new BufferedReader(isr);
+                CSVParser csvParser = CSVFormat.DEFAULT.parse(br);
+                return csvParser;
+            }catch (FileNotFoundException e) {
+                System.out.println("读取文件失败");
+            }catch (IOException e) {
+                System.out.println("调用CSVFormat转换BufferedReader失败");
+            }
+            return null;
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            //关闭流
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (isr != null) {
+                try {
+                    isr.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
-
-
+    public static List<CSVRecord> getCSVRecord(String filePath){
+        List<CSVRecord> records = null;
+        try {
+            CSVParser csvParser = CSVParser(filePath);
+            records = csvParser.getRecords();
+        } catch (IOException e) {
+            System.out.println("调用csvParser转换其中记录失败");
+        }
+        return Objects.requireNonNull(records);
+    }
+    public static Date transferDate(String Date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            return format.parse(Date);
+        } catch (ParseException e) {
+            System.out.println("Date转换异常");
+        }
+        return null;
+    }
 }
