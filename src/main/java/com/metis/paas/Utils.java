@@ -1,7 +1,7 @@
-package com.metis.utils;
+package com.metis.paas;
 
-import com.metis.model.LineProtocolModel;
-import com.metis.model.KeyValueModel;
+import com.metis.dto.LineProtocolDTO;
+import com.metis.dto.KeyValueDTO;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -15,7 +15,7 @@ public class Utils {
     /**
      *     暂时没有配日志结构,只能向控制台打印
      */
-    public static void copyToLocal(String folderPath,List<LineProtocolModel> lineprotocolList){
+    public static void copyToLocal(String folderPath,List<LineProtocolDTO> lineprotocolList){
         String localFileName = "test.protocol";
         File targetFile = new File(folderPath+localFileName);
         if (!targetFile.exists()) {
@@ -28,7 +28,7 @@ public class Utils {
         out(targetFile,lineprotocolList);
 
     }
-    public static void out(File targetFile,List<LineProtocolModel> lineprotocolList){
+    public static void out(File targetFile,List<LineProtocolDTO> lineprotocolList){
         try{
             PrintWriter out = new PrintWriter(targetFile);
             for (Object lineprotocol : lineprotocolList) {
@@ -39,12 +39,12 @@ public class Utils {
         }
     }
 
-    public static List<KeyValueModel> transfer(List<List<String>> CSVLists){
-        List<KeyValueModel> modelList = new ArrayList<>();
+    public static List<KeyValueDTO> transfer(List<List<String>> CSVLists){
+        List<KeyValueDTO> modelList = new ArrayList<>();
 
         for(int i =0 ; i < CSVLists.get(0).size() ; i++){
 
-            KeyValueModel model = new KeyValueModel(CSVLists.get(0).get(i),CSVLists.get(1).get(i));
+            KeyValueDTO model = new KeyValueDTO(CSVLists.get(0).get(i),CSVLists.get(1).get(i));
             modelList.add(model);
 
         }
@@ -71,8 +71,8 @@ public class Utils {
      * @param MeasurementName 指定时序数据所属表名
      * @return List<InfluxModel>
      */
-    public static List<LineProtocolModel> CSVToList(String filePath, String MeasurementName) {
-        List<LineProtocolModel> lineprotocolModelList = new ArrayList<>();
+    public static List<LineProtocolDTO> CSVToList(String filePath, String MeasurementName) {
+        List<LineProtocolDTO> lineprotocolDTOList = new ArrayList<>();
         List<CSVRecord> records = getCSVRecord(filePath);
         List<List<String>> values = new ArrayList<>();
         for (CSVRecord record : records) {
@@ -88,7 +88,7 @@ public class Utils {
 //                其实读的正是csv文件中的一行,但是为了解析这一行将其变为了List<String>
             List<String> line = values.get(i);
 
-            LineProtocolModel lineprotocol = new LineProtocolModel();
+            LineProtocolDTO lineprotocol = new LineProtocolDTO();
 
 //                给定表名
             lineprotocol.setMeasurementName(MeasurementName);
@@ -100,10 +100,10 @@ public class Utils {
 //                加上时间戳,原时间戳位置在csv文件第一位
             lineprotocol.setTimeStamp(String.valueOf(Objects.requireNonNull(transferDate(line.get(0))).getTime()));
 
-            lineprotocolModelList.add(lineprotocol);
+            lineprotocolDTOList.add(lineprotocol);
         }
 
-        return lineprotocolModelList;
+        return lineprotocolDTOList;
 
     }
 

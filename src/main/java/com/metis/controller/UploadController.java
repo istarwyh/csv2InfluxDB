@@ -1,8 +1,8 @@
 package com.metis.controller;
 
-import com.metis.service.InfluxClient;
-import com.metis.model.KeyValueModel;
-import com.metis.utils.Utils;
+import com.metis.service.InfluxClientBO;
+import com.metis.dto.KeyValueDTO;
+import com.metis.paas.Utils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @Controller
 class UploadController {
-    private final  InfluxClient influxClient= new InfluxClient();
+    private final InfluxClientBO influxClientBO = new InfluxClientBO();
 
     @RequestMapping("/")
     public String root(){
@@ -39,9 +39,9 @@ class UploadController {
             String fileName = file.getOriginalFilename();
 
             List<List<String>> csvLists = Utils.readCSV(folderPath + fileName);
-            List<KeyValueModel> modelList = Utils.transfer(csvLists);
+            List<KeyValueDTO> modelList = Utils.transfer(csvLists);
 
-            influxClient.csv2InfluxDB(folderPath + fileName);
+            influxClientBO.csv2InfluxDB(folderPath + fileName);
             model.addAttribute("lineprotocalData",modelList);
             return "upload";
         }

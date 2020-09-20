@@ -1,4 +1,4 @@
-package com.metis.model;
+package com.metis.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class LineProtocolModel implements Serializable {
+public class LineProtocolDTO implements Serializable {
     private String measurementName;
     private String tagSet;
     private String timeStamp;

@@ -1,8 +1,8 @@
-package com.metis.service;
+package com.metis.utils;
 
-import com.metis.model.KeyValueModel;
-import com.metis.model.LineProtocolModel;
-import com.metis.utils.Utils;
+import com.metis.paas.Utils;
+import com.metis.dto.KeyValueDTO;
+import com.metis.dto.LineProtocolDTO;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -25,7 +25,7 @@ class UtilsTest {
     void readCSV() {
         List<List<String>> userRoleLists = Utils.readCSV(folderPath +fileName);
         assertNotNull(userRoleLists);
-        List<KeyValueModel> modelList = Utils.transfer(userRoleLists);
+        List<KeyValueDTO> modelList = Utils.transfer(userRoleLists);
 //        采用直接打印检查输出某些时候比构造测试用例的输出再assert()简单
 //        但是这样不能自动化
         System.out.println(modelList);
@@ -34,7 +34,7 @@ class UtilsTest {
     @Test
     void CSVToList() {
         String testName = "test";
-        List<LineProtocolModel> lineprotocolList = Utils.CSVToList(folderPath +fileName,testName);
+        List<LineProtocolDTO> lineprotocolList = Utils.CSVToList(folderPath +fileName,testName);
         System.out.println(lineprotocolList.get(0));
         System.out.println(lineprotocolList.get(1));
 
@@ -43,7 +43,7 @@ class UtilsTest {
     @Test
     void copyToLocal() {
         String testName = "test";
-        List<LineProtocolModel> lineprotocolList = Utils.CSVToList(folderPath +fileName,testName);
+        List<LineProtocolDTO> lineprotocolList = Utils.CSVToList(folderPath +fileName,testName);
         String newFolderPath = "H:\\桌面\\test\\";
         Utils.copyToLocal(newFolderPath,lineprotocolList);
     }

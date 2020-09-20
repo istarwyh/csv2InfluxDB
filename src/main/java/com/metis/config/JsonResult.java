@@ -1,10 +1,13 @@
 package com.metis.config;
 
+import lombok.ToString;
+
 /**
  * 泛型使所有的返回值类型都可以使用该统一结构，在具体的场景将泛型替换成具体的数据类型即可
  * 对状态码和提示信息可以定义一个枚举类型
  * @param <T>
  */
+@ToString
 public class JsonResult<T> {
     private T data;
     private final Integer code;
@@ -36,7 +39,7 @@ public class JsonResult<T> {
     }
 
     /**
-     * 有数据返回，状态码为1，人为指定错误提示信息
+     * 有数据返回但是错误，设定错误状态码为1，人为指定错误提示信息
      */
     public JsonResult(T data, String msg) {
         this.data = data;
