@@ -1,14 +1,12 @@
-package com.example.metis.service;
+package com.metis.utils;
 
-import com.example.metis.model.LineProtocolModel;
-import com.example.metis.model.KeyValueModel;
+import com.metis.model.LineProtocolModel;
+import com.metis.model.KeyValueModel;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.*;
-import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -41,11 +39,6 @@ public class Utils {
         }
     }
 
-    /**
-     *
-     * @param CSVLists
-     * @return
-     */
     public static List<KeyValueModel> transfer(List<List<String>> CSVLists){
         List<KeyValueModel> modelList = new ArrayList<>();
 
@@ -141,8 +134,7 @@ public class Utils {
                 fis = new FileInputStream(filePath);
                 isr = new InputStreamReader(fis);
                 br = new BufferedReader(isr);
-                CSVParser csvParser = CSVFormat.DEFAULT.parse(br);
-                return csvParser;
+                return CSVFormat.DEFAULT.parse(br);
             }catch (FileNotFoundException e) {
                 System.out.println("读取文件失败");
             }catch (IOException e) {
@@ -178,7 +170,9 @@ public class Utils {
         List<CSVRecord> records = null;
         try {
             CSVParser csvParser = CSVParser(filePath);
-            records = csvParser.getRecords();
+            if( csvParser != null ) {
+                records = csvParser.getRecords();
+            }
         } catch (IOException e) {
             System.out.println("调用csvParser转换其中记录失败");
         }

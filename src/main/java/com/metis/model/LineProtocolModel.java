@@ -1,4 +1,4 @@
-package com.example.metis.model;
+package com.metis.model;
 
 import lombok.Getter;
 import lombok.Setter;

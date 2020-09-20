@@ -1,8 +1,8 @@
-package com.example.metis.controller;
+package com.metis.controller;
 
-import com.example.metis.service.InfluxClient;
-import com.example.metis.model.KeyValueModel;
-import com.example.metis.service.Utils;
+import com.metis.service.InfluxClient;
+import com.metis.model.KeyValueModel;
+import com.metis.utils.Utils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,16 +17,12 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
-class Start {
-    private final InfluxClient influxClient;
-
-    public Start(InfluxClient influxClient) {
-        this.influxClient = influxClient;
-    }
+class UploadController {
+    private final  InfluxClient influxClient= new InfluxClient();
 
     @RequestMapping("/")
     public String root(){
-        return "upload";
+        return "index";
     }
     @PostMapping("/upload")
     public String upload(@RequestParam("file") MultipartFile file, Model model){
@@ -43,16 +39,14 @@ class Start {
             String fileName = file.getOriginalFilename();
 
             List<List<String>> csvLists = Utils.readCSV(folderPath + fileName);
-            assert csvLists != null;
             List<KeyValueModel> modelList = Utils.transfer(csvLists);
 
-            influxClient.csvToInfluxDB(folderPath + fileName);
+            influxClient.csv2InfluxDB(folderPath + fileName);
             model.addAttribute("lineprotocalData",modelList);
             return "upload";
         }
         catch (IOException e) {
             e.printStackTrace();
-
         }
 
         model.addAttribute("up","上传失败");

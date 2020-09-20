@@ -1,4 +1,4 @@
-package com.example.metis.model;
+package com.metis.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,5 +26,5 @@ public class KeyValueModel implements Serializable {
                 ", value='" + value + '\'' +
                 '}';
     }
-    
+
 }

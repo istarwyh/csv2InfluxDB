@@ -1,6 +1,6 @@
-package com.example.metis.service;
+package com.metis.service;
 
-import com.example.metis.model.LineProtocolModel;
+import com.metis.model.LineProtocolModel;
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
 import com.influxdb.client.WriteApi;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.util.List;
 
-import static com.example.metis.service.Utils.CSVToList;
+import static com.metis.utils.Utils.CSVToList;
 
 /**
  *TODO:把CSVList重写并剥离出来
@@ -29,7 +29,7 @@ public class InfluxClient {
     @Value(value = "${spring.influx.password}")
     private String password;
 
-    public void csvToInfluxDB(String filePath) {
+    public void csv2InfluxDB(String filePath) {
         InfluxDBClient client = InfluxDBClientFactory.createV1(
                 host,
                 username,

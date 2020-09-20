@@ -1,6 +1,6 @@
-package com.example.metis;
+package com.metis;
 
-import com.example.metis.service.InfluxClient2;
+import com.metis.service.InfluxClient2;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
