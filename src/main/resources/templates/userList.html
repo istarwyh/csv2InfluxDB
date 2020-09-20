@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--使用 thymeleaf 模板-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息</title>
+</head>
+<body>
+<!-- 直接取属性，或者使用get()都可以。必须注意这里它只认它自己生成的userDOList，笔者放进model中的userList它不认识这样的名字。-->
+<form action="" th:each="u:${userDOList}">
+    用户编号:<input name="id" th:value="${u.id}"/><br>
+    用户姓名:<input type="text" name="userPassword" th:value="${u.name}"/><br>
+    登录密码:<input type="text" name="userName" th:value="${u.getAge()}"/><br>
+    用户号码:<input type="text" name="userPhone" th:value="${u.money}"/>
+</form>
+</body>
+</html>

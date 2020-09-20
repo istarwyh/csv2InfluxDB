@@ -8,7 +8,7 @@
     {
       "name": "spring.influx.cloudurl",
       "type": "java.lang.String",
-      "description": "Description for spring.influx.cloudurl."
+      "description": "Description for spring.influx.cloudUrl."
     },
     {
       "name": "spring.influx.token",
@@ -29,5 +29,10 @@
       "name": "filePath",
       "type": "java.lang.String",
       "description": "Description for filePath."
+    },
+    {
+      "name": "spring.influx.database",
+      "type": "java.lang.String",
+      "description": "Description for spring.influx.database."
     }
   ] }

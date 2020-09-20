@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class InfluxClientDO {
-
+    /**
+     *     如果要批量的得到配置信息应该怎么办呢?-->定义配置类并注入IOC容器,用时再导入
+     */
     @Value(value = "${spring.influx.url}")
     private static String host;
     @Value("${spring.influx.database}")

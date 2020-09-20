@@ -12,6 +12,7 @@ class InfluxClientBO2Test {
     /**
      * 测试云端是否正常能接收line protocol的数据
      */
+/*
     @Test
     public void demo2InfluxDB(){
         String token = "u2Xonr9XRJliwwsURBCRju4EZeWmToO5hBAwzBryCekmIhQueNKRFwAsaYKdbKLMxwi0QaViG8AHHmBSBTsAyA==";
@@ -27,6 +28,7 @@ class InfluxClientBO2Test {
             e.printStackTrace();
         }
     }
+*/
 
 
 }

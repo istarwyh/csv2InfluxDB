@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 //TODO:Test方法在启动上是不是就相当于main方法?
 class UtilsTest {
-//    实例变量默认被全部对象及对象的方法共享,即变量作用域在类中--只不过是给过程式编程中的全局变量找了在OO中的意义
+/*//    实例变量默认被全部对象及对象的方法共享,即变量作用域在类中--只不过是给过程式编程中的全局变量找了在OO中的意义
     private String folderPath = "./repository/";
     private String fileName = "test.csv";
 
@@ -46,5 +46,5 @@ class UtilsTest {
         List<LineProtocolDTO> lineprotocolList = Utils.CSVToList(folderPath +fileName,testName);
         String newFolderPath = "H:\\桌面\\test\\";
         Utils.copyToLocal(newFolderPath,lineprotocolList);
-    }
+    }*/
 }
