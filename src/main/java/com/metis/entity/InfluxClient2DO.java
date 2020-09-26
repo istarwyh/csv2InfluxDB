@@ -2,11 +2,9 @@ package com.metis.entity;
 
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
-import com.sun.istack.internal.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Nullable;
 import java.util.Objects;
 
 /**
