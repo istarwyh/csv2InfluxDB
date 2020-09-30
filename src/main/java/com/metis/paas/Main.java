@@ -89,16 +89,6 @@ public class Main {
      * 现要求使用hashMap做一个缓存，缓存不能无限大，需要删除掉最近最少使用数据
      */
     static class LruCache {
-        public static final String r = "lianxiang";
-
-        static{
-            String i = "lian"+"xiang";
-            String a = "lian";
-            String b = "xiang";
-            System.out.println( i == r);
-            System.out.println( (a+b) == r);
-
-        }
 
         private Node head;
         private Node end;

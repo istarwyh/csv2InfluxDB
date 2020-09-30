@@ -72,8 +72,11 @@ public class Utils {
      * @return List<InfluxModel>
      */
     public static List<LineProtocolDTO> CSVToList(String filePath, String MeasurementName) {
-        List<LineProtocolDTO> lineprotocolDTOList = new ArrayList<>();
-        List<CSVRecord> records = getCSVRecord(filePath);
+        if( filePath == null ){  return null;}
+
+        List<CSVRecord> records = getCSVRecord( filePath );
+        if( records == null ){ return null;}
+
         List<List<String>> values = new ArrayList<>();
         for (CSVRecord record : records) {
             List<String> value = new ArrayList<>();
@@ -83,7 +86,7 @@ public class Utils {
             values.add(value);
         }
 
-
+        List<LineProtocolDTO> totalList = new ArrayList<>();
         for(int i =1 ; i<values.size() ; i++) {
 //                其实读的正是csv文件中的一行,但是为了解析这一行将其变为了List<String>
             List<String> line = values.get(i);
@@ -99,11 +102,11 @@ public class Utils {
 
 //                加上时间戳,原时间戳位置在csv文件第一位
             lineprotocol.setTimeStamp(String.valueOf(Objects.requireNonNull(transferDate(line.get(0))).getTime()));
-
-            lineprotocolDTOList.add(lineprotocol);
+//                把每一条lineprotocol插入进去就可以了
+            totalList.add(lineprotocol);
         }
 
-        return lineprotocolDTOList;
+        return totalList;
 
     }
 
@@ -125,65 +128,50 @@ public class Utils {
         return sb.toString().trim();
     }
 
-    public static CSVParser CSVParser(String filePath){
+    /**
+     * 使用引入的org.apache.commons.csv中的CSVParser类包装csv文件构造csv解析器对象
+     * 返回null代表发生了未知错误
+     */
+    public static CSVParser CSVParser(String filePath) {
         BufferedReader br = null;
-        InputStreamReader isr = null;
-        FileInputStream fis = null;
-        try{
-            try{
-                fis = new FileInputStream(filePath);
-                isr = new InputStreamReader(fis);
-                br = new BufferedReader(isr);
-                return CSVFormat.DEFAULT.parse(br);
-            }catch (FileNotFoundException e) {
-                System.out.println("读取文件失败");
-            }catch (IOException e) {
-                System.out.println("调用CSVFormat转换BufferedReader失败");
-            }
-            return null;
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            //关闭流
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (isr != null) {
-                try {
-                    isr.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        try {
+//            从FileInputStream开始,屏蔽底层细节以及提高效率：节点流->字符流->缓冲字符流
+            br = new BufferedReader( new InputStreamReader( new FileInputStream( filePath )));
+            return CSVFormat.DEFAULT.parse(br);
+        } catch (FileNotFoundException e) {
+            System.out.println("CSVParser()读取文件找不到");
+        } catch (IOException e) {
+            System.out.println("调用CSVFormat转换BufferedReader失败");
         }
+        // 对于同一个文件只需要关闭最后一个包装流就可以了，最外观的流会调用其他流的close()
+        // 然后这里应该用try-with-resources,但是貌似不能关
+        return null;
     }
+
+    /**
+     * 返回null代表发生了未知错误
+     */
     public static List<CSVRecord> getCSVRecord(String filePath){
         List<CSVRecord> records = null;
         try {
-            CSVParser csvParser = CSVParser(filePath);
-            if( csvParser != null ) {
-                records = csvParser.getRecords();
-            }
+            records = CSVParser(filePath).getRecords();
+            return Objects.requireNonNull(records);
+
         } catch (IOException e) {
-            System.out.println("调用csvParser转换其中记录失败");
+            System.out.println(e + "\ngetCSVRecord()调用csvParser转换其中记录失败");
         }
-        return Objects.requireNonNull(records);
+        return null;
     }
+
+    /**
+     * 返回null代表发生了未知错误
+     */
     public static Date transferDate(String Date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             return format.parse(Date);
         } catch (ParseException e) {
-            System.out.println("Date转换异常");
+            System.out.println("transferDate() Date转换异常");
         }
         return null;
     }

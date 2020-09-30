@@ -5,6 +5,9 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
+/**
+ * @author wangyihui
+ */
 @Getter
 @Setter
 public class LineProtocolDTO implements Serializable {
