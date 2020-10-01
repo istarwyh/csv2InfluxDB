@@ -22,7 +22,7 @@ public class InfluxClient2BO {
         List<LineProtocolDTO> list = CSVToList(dest.getPath(), measurementName);
 
         System.out.println("*** Write Points ***");
-        WriteApi writeApi = InfluxClient2DO.client2.getWriteApi();
+        WriteApi writeApi = InfluxClient2DO.CLIENT2.getWriteApi();
         for (LineProtocolDTO lineprotocolDTO : list) {
             String data = String.valueOf(lineprotocolDTO);
             System.out.println(lineprotocolDTO);

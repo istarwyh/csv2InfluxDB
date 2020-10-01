@@ -17,6 +17,7 @@ public class InfluxClient2DO {
     private static String cloudUrl;
     public static String bucket;
     public static String org;
-    public static final InfluxDBClient client2 = InfluxDBClientFactory.create(Objects.requireNonNull(cloudUrl), token.toCharArray());
+
+    public static final InfluxDBClient CLIENT2 = InfluxDBClientFactory.create(Objects.requireNonNull(cloudUrl), token.toCharArray());
 
 }

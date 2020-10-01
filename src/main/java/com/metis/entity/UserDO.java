@@ -9,7 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserDO {
     /**
-     * 规范：所有POJO类初始类型必须是包装类型
+     * 规范：所有POJO类初始类型必须是包装类型，即这里不可以是int/double这些
+     * TODO：为什么呢？
      */
     private Integer id;
     private String name;

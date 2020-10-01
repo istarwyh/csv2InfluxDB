@@ -43,10 +43,8 @@ public class Utils {
         List<KeyValueDTO> modelList = new ArrayList<>();
 
         for(int i =0 ; i < CSVLists.get(0).size() ; i++){
-
             KeyValueDTO model = new KeyValueDTO(CSVLists.get(0).get(i),CSVLists.get(1).get(i));
             modelList.add(model);
-
         }
         return modelList;
     }
@@ -144,7 +142,7 @@ public class Utils {
             System.out.println("调用CSVFormat转换BufferedReader失败");
         }
         // 对于同一个文件只需要关闭最后一个包装流就可以了，最外观的流会调用其他流的close()
-        // 然后这里应该用try-with-resources,但是貌似不能关
+        // TODO：这里应该用try-with-resources,但是貌似不能关？需要注册Java钩子什么等到程序结构结束了再关
         return null;
     }
 

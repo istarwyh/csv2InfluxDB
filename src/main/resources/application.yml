@@ -1,3 +1,4 @@
+#yml弥补xml数据标签太多而不重视数据的缺点
 #英文冒号后面必须要有个空格,否则出错还不报错
 #优先级没有properties高
 server:
@@ -10,4 +11,5 @@ spring:
     username: root
     password: mysql
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/tmp?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://127.0.0.1:3306/tmp?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8l
+

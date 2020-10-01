@@ -34,5 +34,10 @@
       "name": "spring.influx.database",
       "type": "java.lang.String",
       "description": "Description for spring.influx.database."
+    },
+    {
+      "name": "mybatis.type-aliases-package",
+      "type": "java.lang.String",
+      "description": "Description for mybatis.type-aliases-package."
     }
   ] }

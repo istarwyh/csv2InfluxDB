@@ -5,7 +5,6 @@ import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Component;
 
 /**
  * 告诉Spring递归地搜索metis包和其子包中直接或间接标记为@Component的类。

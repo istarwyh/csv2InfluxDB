@@ -1,6 +1,7 @@
 package com.metis.controller;
 
 import com.metis.config.JsonResult;
+import com.metis.dao.UserMapper;
 import com.metis.entity.UserDO;
 import com.metis.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import java.util.List;
  */
 @Controller
 /**
- * 告诉Spring MVC不需要使用服务器端视图层(view)渲染对象,而应该直接返回一个ResponseBody
+ * 告诉Spring MVC不需要使用服务器端视图层(view)渲染对象,而应该直接返回一个ResponseBody(String类型)
  * Spring Boot 中默认使用的 Json 解析技术框架是 jackson,来自于spring-boot-starter-json 依赖
  */
 @ResponseBody // @RestController = @ResponseBody + @Controller
@@ -26,12 +27,14 @@ import java.util.List;
  */
 @RequestMapping("/user")
 public class UserController {
-    @Autowired // 运行期间会动态创建一个userService注入，但是规范更提倡下面被注释掉的构造函数
+    @Autowired // 运行期间会动态创建一个userService注入，但是规范更提倡使用下面被注释掉的构造函数
     private  UserService userService;
-
   /*  private UserController(UserService userService) {
         this.userService = userService;
     }*/
+
+    @Autowired
+    private UserMapper userMapper;
 
     @RequestMapping("/insert")
     public List<UserDO> testInsert() {
@@ -54,9 +57,15 @@ public class UserController {
         return new JsonResult().toString();
     }
 
-    @RequestMapping("/query")
+    @RequestMapping("/query1")
     public UserDO testQuery() {
         return userService.selectUserByName("Daisy");
+    }
+
+    @GetMapping("/query2")
+    @ResponseBody //其实这里不用加
+    public List<UserDO> queryUserList(){
+        return userMapper.queryUserList();
     }
 
     @RequestMapping("/changeMoney")
@@ -65,10 +74,8 @@ public class UserController {
         return userService.selectAllUser();
     }
 
-
     /**
-     * 使用实体类来接收前端传过来的数据
-     * TODO:???
+     * TODO:使用实体类来接收前端传过来的数据???
      */
     @PostMapping("/form")
     public String getPostBody(JsonResult<String> form ){
