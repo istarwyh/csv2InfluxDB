@@ -30,5 +30,4 @@ class InfluxClientBO2Test {
     }
 */
 
-
 }

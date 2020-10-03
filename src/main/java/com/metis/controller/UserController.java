@@ -1,5 +1,6 @@
 package com.metis.controller;
 
+import com.metis.annotation.KthLog;
 import com.metis.config.JsonResult;
 import com.metis.dao.UserMapper;
 import com.metis.entity.UserDO;
@@ -29,9 +30,9 @@ import java.util.List;
 public class UserController {
     @Autowired // 运行期间会动态创建一个userService注入，但是规范更提倡使用下面被注释掉的构造函数
     private  UserService userService;
-  /*  private UserController(UserService userService) {
-        this.userService = userService;
-    }*/
+//    private UserController(UserService userService) {
+//        this.userService = userService;
+//    }
 
     @Autowired
     private UserMapper userMapper;
@@ -57,6 +58,7 @@ public class UserController {
         return new JsonResult().toString();
     }
 
+    @KthLog("这是想要输出的日志内容,这里输入后会被自定义的 KthLogger对象的value() 拿到")
     @RequestMapping("/query1")
     public UserDO testQuery() {
         return userService.selectUserByName("Daisy");

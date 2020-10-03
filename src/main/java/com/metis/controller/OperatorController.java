@@ -15,6 +15,11 @@ import java.util.concurrent.atomic.AtomicLong;
 @RequestMapping("/operator")
 public class OperatorController {
 
+    @RequestMapping("/")
+    public String root(){
+        return "index";
+    }
+
     @GetMapping("/404") // @RequestMapping(method=GET)的简写
     public String notFound(){ return  new JsonResult<>(404,"来到了没有信息的荒原").toString();}
     /**
@@ -37,7 +42,7 @@ public class OperatorController {
     }
     private final AtomicLong counter = new AtomicLong();
     @GetMapping("/greeting")
-    public JsonResult greeting(@RequestParam( value = "name",required = false,defaultValue = " World") String name){
+    public JsonResult<?> greeting(@RequestParam( value = "name",required = false,defaultValue = " World") String name){
         // 当被转成int后又会被boxing成Integer,这时候对于JsonResult中定义的方法 方法签名才唯一
         return new JsonResult((int) counter.incrementAndGet(),String.format(TEMPLATE,name));
     }

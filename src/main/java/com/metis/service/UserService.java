@@ -2,6 +2,7 @@ package com.metis.service;
 
 import com.metis.dao.UserDAO;
 import com.metis.entity.UserDO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,11 +14,12 @@ import java.util.List;
  */
 @Service
 public class UserService {
-    private final UserDAO UserDAO;
+    @Autowired
+    private UserDAO UserDAO;
 
-    public UserService(UserDAO UserDAO) {
-        this.UserDAO = UserDAO;
-    }
+//    public UserService(UserDAO UserDAO) {
+//        this.UserDAO = UserDAO;
+//    }
 
     public void insertService() {
 //        因为id是AUTO_INCREMENT的(mysql中的设计),所以直接插入其他信息也就可以了

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,10 +21,6 @@ import java.util.List;
 class UploadController {
     private final InfluxClientBO influxClientBO = new InfluxClientBO();
 
-    @RequestMapping("/")
-    public String root(){
-        return "index";
-    }
     @PostMapping("/upload")
     public String upload(@RequestParam("file") MultipartFile file, Model model){
         if(file.isEmpty()){
@@ -33,6 +30,7 @@ class UploadController {
 
         try{
             byte[] bytes = file.getBytes();
+//            windows下的File.separator是“\”,所以这里不能用；其实是违背了跨平台的初衷
             String folderPath = "./repository/";
             Path filePath = Paths.get(folderPath + file.getOriginalFilename());
             Files.write(filePath, bytes);
