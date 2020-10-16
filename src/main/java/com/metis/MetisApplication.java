@@ -19,7 +19,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @EnableAutoConfiguration
 /**
- * 声明这是一个注解，@SpringBootConfiguration 封装了一些定义注解的注解，如注解适用类型与生命周期等
+ * 声明这是一个注解，@SpringBootConfiguration 封装了一些定义注解的注解(元注解)，如注解适用类型与生命周期等
  *     --> 用一个@SpringBootApplication也就可以了,因为 @SpringBootApplication =
  *     @SpringBootConfiguration + @EnableAutoConfiguration + @ComponentScan
  */
