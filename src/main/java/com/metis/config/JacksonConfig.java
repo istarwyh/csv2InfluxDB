@@ -14,6 +14,7 @@ import java.io.IOException;
 
 /**
  * jackson json配置示例：所有的 null 在转 json 时都变成 "" 这种空字符串
+ * @author sx_wangyihui
  */
 @Configuration
 public class JacksonConfig {

@@ -4,13 +4,14 @@ import org.w3c.dom.Node;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeSet;
 
 /**
  * 类LRUwithQueue的实现描述：哈希表快速存储和更新被缓存的内容，队列管理最近被访问的状态
  *
  * @author sx_wangyihui 2020/10/16  21:11
  */
-public class LRUwithQueue {
+public class LRUwithQueue{
     /**
     *   最近最少使用,类似队列的头,出队
     */
@@ -19,8 +20,8 @@ public class LRUwithQueue {
      * 最近最少使用，类似队列的尾，入队
      */
     private Node tail;
-    private Map<Integer,Node> cache;
-    private int capacity;
+    private final Map<Integer,Node> cache;
+    private final int capacity;
 
     public LRUwithQueue( int capacity ){
         this.cache = new HashMap<>();
@@ -97,7 +98,7 @@ public class LRUwithQueue {
     static class Node{
         private Node prev;
         private Node next;
-        private int key;
+        private final int key;
         private int value;
         Node( int key,int value ){
             this.key = key;

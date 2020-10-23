@@ -15,7 +15,7 @@ public class KthLogAspect {
     /**
      * 用 @Pointcut 声明自定义的注解类(@Interface) KthLog 为切面
      */
-    @Pointcut("@annotation(com.metis .annotation.KthLog)")
+    @Pointcut("@annotation(com.metis.annotation.KthLog)")
     private void pointcut() {
     }
 
