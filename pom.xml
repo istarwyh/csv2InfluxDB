@@ -17,7 +17,9 @@
     <description>A Service leading csv to InfluxDB</description>
     <properties>
         <!--		养成好习惯!这里非常关键的配置信息-->
+<!--        Platform SDK -> Project SDK-->
         <java.version>1.8</java.version>
+<!--        Utilize Javac: project bytecode version -> Target bytecode version-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
@@ -25,6 +27,14 @@
         <!-- thymeleaf2   layout1-->
         <thymeleaf-layout-dialect.version>2.2.2</thymeleaf-layout-dialect.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>private-github-repo</id>
+            <name>The Maven Repository on Github</name>
+            <url>https://istarwyh.github.io/Initial/maven-repo/</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <!--        坐标打包,引入了starter-json,tomcat,spring web,spring webmvc的版本控制-->
@@ -112,6 +122,11 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>cc.mbin</groupId>
+            <artifactId>Initial</artifactId>
+            <version>0.2.1</version>
         </dependency>
     </dependencies>
 
