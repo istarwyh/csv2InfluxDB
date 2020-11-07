@@ -1,8 +1,5 @@
 package com.metis.paas;
 
-
-import org.apache.ibatis.cache.decorators.LruCache;
-
 import java.util.*;
 public class MainS {
     public static void main(String[] args) {

@@ -1,5 +1,6 @@
 package com.metis.controller;
 
+import com.metis.controller.api.Upload;
 import com.metis.service.InfluxClientBO;
 import com.metis.dto.KeyValueDTO;
 import com.metis.paas.Utils;
@@ -18,20 +19,25 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
-class UploadController {
+class UploadController implements Upload {
     private final InfluxClientBO influxClientBO = new InfluxClientBO();
+    /**
+     *     windows下的File.separator是“\”,所以这里不能用其实是违背了跨平台的初衷
+     */
+    private final String folderPath = "./repository/";
 
-    @PostMapping("/upload")
-    public String upload(@RequestParam("file") MultipartFile file, Model model){
+    @Override
+    @PostMapping("/upload") public boolean upload(@RequestParam(value = "file",required = false,defaultValue = "test.csv") MultipartFile file){
+        influxClientBO.csv2InfluxDB(folderPath + file.getName());
+        return true;
+    }
+    @PostMapping("/showOf") public String upload(@RequestParam(value = "file",required = false,defaultValue = "test.csv") MultipartFile file, Model model){
         if(file.isEmpty()){
             model.addAttribute("up","文件为空上传失败");
-            return"upload";
+            return "upload";
         }
-
         try{
             byte[] bytes = file.getBytes();
-//            windows下的File.separator是“\”,所以这里不能用；其实是违背了跨平台的初衷
-            String folderPath = "./repository/";
             Path filePath = Paths.get(folderPath + file.getOriginalFilename());
             Files.write(filePath, bytes);
             String fileName = file.getOriginalFilename();
@@ -39,7 +45,6 @@ class UploadController {
             List<List<String>> csvLists = Utils.readCSV(folderPath + fileName);
             List<KeyValueDTO> modelList = Utils.transfer(csvLists);
 
-            influxClientBO.csv2InfluxDB(folderPath + fileName);
             model.addAttribute("lineprotocalData",modelList);
             return "upload";
         }

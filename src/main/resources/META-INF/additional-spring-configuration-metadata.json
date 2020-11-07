@@ -44,5 +44,10 @@
       "name": "spring.influx.version",
       "type": "java.lang.String",
       "description": "Description for spring.influx.version."
+    },
+    {
+      "name": "spring.influx.versionBound",
+      "type": "java.lang.String",
+      "description": "Description for spring.influx.versionBound."
     }
   ] }

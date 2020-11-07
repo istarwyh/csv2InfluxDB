@@ -15,10 +15,11 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>csv2InfluxDB</name>
     <description>A Service leading csv to InfluxDB</description>
+
     <properties>
         <!--		养成好习惯!这里非常关键的配置信息-->
 <!--        Platform SDK -> Project SDK-->
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
 <!--        Utilize Javac: project bytecode version -> Target bytecode version-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -33,9 +34,27 @@
             <id>private-github-repo</id>
             <name>The Maven Repository on Github</name>
             <url>https://istarwyh.github.io/Initial/maven-repo/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     </repositories>
-
+    <pluginRepositories>
+        <pluginRepository>
+            <id>private-github-repo</id>
+            <name>The Maven Repository on Github</name>
+            <url>https://istarwyh.github.io/Initial/maven-repo/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
     <dependencies>
         <!--        坐标打包,引入了starter-json,tomcat,spring web,spring webmvc的版本控制-->
         <!--		使用starter系列将相关开发所需依赖都集成在一起-->
@@ -123,10 +142,21 @@
                 </exclusion>
             </exclusions>
         </dependency>
+<!--        SpringBoot热部署-->
         <dependency>
-            <groupId>cc.mbin</groupId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.istarwyh</groupId>
             <artifactId>Initial</artifactId>
-            <version>0.2.1</version>
+            <version>0.2.5</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/net.oschina.likaixuan/excelutil -->
+        <dependency>
+            <groupId>net.oschina.likaixuan</groupId>
+            <artifactId>excelutil</artifactId>
+            <version>3.0.3</version>
         </dependency>
     </dependencies>
 

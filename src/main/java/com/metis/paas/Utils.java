@@ -152,11 +152,11 @@ public class Utils {
     public static List<CSVRecord> getCSVRecord(String filePath){
         List<CSVRecord> records = null;
         try {
-            records = CSVParser(filePath).getRecords();
+            records = Objects.requireNonNull(CSVParser(filePath),"CSVParser意外为空,可能因为路径无效").getRecords();
             return Objects.requireNonNull(records);
 
         } catch (IOException e) {
-            System.out.println(e + "\ngetCSVRecord()调用csvParser转换其中记录失败");
+            System.out.println(e + "\ngetCSVRecord()调用csvParser的getRecords()失败");
         }
         return null;
     }

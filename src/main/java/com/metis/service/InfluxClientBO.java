@@ -6,6 +6,7 @@ import com.influxdb.client.domain.WritePrecision;
 import com.metis.entity.InfluxClient;
 import com.metis.entity.InfluxClient1DO;
 import com.metis.entity.InfluxClient2DO;
+import lombok.ToString;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,8 @@ import static com.metis.paas.Utils.CSVToList;
 public class InfluxClientBO {
     @Value(value = "${spring.influx.version}")
     private String v;
+    @Value(value = "${spring.influx.versionBound}")
+    private String versionBound;
 
     public void csv2InfluxDB(String filePath) {
         File dest = new File(filePath);
@@ -33,7 +36,7 @@ public class InfluxClientBO {
         try {
             for (LineProtocolDTO lineprotocolDTO : list) {
                 String data = String.valueOf(lineprotocolDTO);
-                if(version < 2 ){
+                if(version < Integer.parseInt(versionBound) ){
                 writeApi.writeRecord(WritePrecision.NS, data);}
                 else {
                     writeApi.writeRecord(InfluxClient2DO.bucket, InfluxClient2DO.org, WritePrecision.NS, data);

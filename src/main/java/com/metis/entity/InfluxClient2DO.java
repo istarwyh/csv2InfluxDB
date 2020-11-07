@@ -1,17 +1,10 @@
 package com.metis.entity;
 
-import com.influxdb.client.InfluxDBClient;
-import com.influxdb.client.InfluxDBClientFactory;
-import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.ToString;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
-import java.util.Objects;
-
+@ToString
 /**
  * 这个实体类不与数据库表结构对应，而是作为单一实体
  * 添加到IOC容器中，从而使得@ComponentScan可以扫描到
