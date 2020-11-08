@@ -46,10 +46,4 @@ public interface CRUD {
      */
     @ResponseBody List<UserDO> queryUserList();
 
-    /**
-     * 查3
-     * @param model
-     * @return
-     */
-    @ResponseBody String getUserList( @RequestBody Model model);
 }

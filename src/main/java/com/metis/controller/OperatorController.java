@@ -1,12 +1,16 @@
 package com.metis.controller;
 
 import com.metis.config.JsonResult;
+import com.metis.entity.UserDO;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -46,6 +50,19 @@ public class OperatorController {
     @ResponseBody public JsonResult<?> greeting(@RequestParam( value = "name",required = false,defaultValue = " World") String name){
         // 当被转成int后又会被boxing成Integer,这时候对于JsonResult中定义的方法 方法签名才唯一
         return new JsonResult<>((int) counter.incrementAndGet(),String.format(TEMPLATE,name));
+    }
+
+    @GetMapping("/getUserList")
+    public String getUserList(Model model){
+        UserDO user1 = new UserDO(1,"yihui",24,3323.0);
+        UserDO user2 = new UserDO(1,"lijun",23,2333.0);
+        List<UserDO> userList = new ArrayList<>();
+        userList.add(user1);
+        userList.add(user2);
+        //  TODO:对象放到model中,但是model谁给的?model的参数又怎么传到thymeleaf页面的?Model支持的多种构造方式默认的应该怎么用?
+        model.addAttribute( userList );
+        //      指按MVC view的方式解析list,即找templates底下的list.html
+        return "userList";
     }
 
 }

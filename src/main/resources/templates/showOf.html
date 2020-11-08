@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Excel2Region</title>
+        <style>
+            .t-100{ margin:0 auto; width:100%}
+            .t-center{ margin:0 auto; width:450px}
+            /* 要是网页中间内容宽度1000px */
+        </style>
+        <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    </head>
+    <body>
+    <div >
+      <h1>Excel2Region</h1>
+
+    <h4>请上传Excel文件</h4>
+
+    <form action="/showOf" enctype="multipart/form-data" method="post" >
+        <input name = "file" type ="file" value = "请选择文件">
+        <input  type="submit">
+        <h4 style="color:red;" th:text="${up}"> </h4>
+    </form>
+      <br>
+
+    <h4>解析结果:</h4>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>key</th>
+                <th>value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr  th:each="point : ${lineprotocalData}">
+                <th scope="row" th:text="${point.key}">1</th>
+                <td th:text="${point.value}">neo</td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+    </body>
+</html>

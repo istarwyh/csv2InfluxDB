@@ -80,17 +80,4 @@ public class UserController implements CRUD, ChangeMoney {
         return userService.selectAllUser();
     }
 
-    @Override
-    @GetMapping("/getUserList")
-    public String getUserList(Model model){
-        UserDO user1 = new UserDO(1,"yihui",24,3323.0);
-        UserDO user2 = new UserDO(1,"lijun",23,2333.0);
-        List<UserDO> userList = new ArrayList<>();
-        userList.add(user1);
-        userList.add(user2);
-    //  TODO:对象放到model中,但是model谁给的?model的参数又怎么传到thymeleaf页面的?Model支持的多种构造方式默认的应该怎么用?
-        model.addAttribute( userList );
-        //      指按MVC view的方式解析list,即找templates底下的list.html
-        return "userList";
-    }
 }

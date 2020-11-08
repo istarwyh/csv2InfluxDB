@@ -49,7 +49,7 @@ public class KthLogAspect {
         Object result;
         try {
             //从使用了自定义的切面注解@KthLog的方法中拿到返回值
-           result =proceedingJoinPoint.proceed();
+           result = proceedingJoinPoint.proceed();
         } catch (Throwable throwable) {
             throw new Throwable("执行proceed()时出错");
         }
