@@ -2,7 +2,16 @@ package com.metis.entity.excel;
 
 
 import com.lkx.util.Excel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+/**
+ * @author MBin_王艺辉istarwyh
+ */
+@Setter
+@Getter
+@ToString
 public class RegionOfChina {
     @Excel(title = "省")
     private String province;
@@ -10,6 +19,6 @@ public class RegionOfChina {
     private String city;
     @Excel(title = "县")
     private String county;
-    @Excel(title = "脱贫摘帽年份")
+    @Excel(title = "摘帽年份")
     private String outOfPovertyYear;
 }

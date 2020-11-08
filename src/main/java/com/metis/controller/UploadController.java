@@ -1,6 +1,9 @@
 package com.metis.controller;
 
+import com.lkx.util.ExcelUtil;
 import com.metis.controller.api.Upload;
+import com.metis.entity.excel.FromExcel1;
+import com.metis.entity.excel.RegionOfChina;
 import com.metis.service.InfluxClientBO;
 import com.metis.dto.KeyValueDTO;
 import com.metis.paas.Utils;
@@ -13,7 +16,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 class UploadController implements Upload {
@@ -27,7 +34,7 @@ class UploadController implements Upload {
      * 这里需要返回view,所以不要加@ResponseBody了
      */
     @RequestMapping("/") public String root(){
-        return "showOf";
+        return "test";
     }
 
     @Override
@@ -52,6 +59,7 @@ class UploadController implements Upload {
                 // 将文件流写到服务器本地
                 Files.write(Paths.get(filePath), file.getBytes());
             }
+
             List<List<String>> csvLists = Utils.readCSV(filePath);
             List<KeyValueDTO> keyValueList = Utils.transfer(csvLists);
             model.addAttribute("lineprotocalData",keyValueList);
@@ -63,4 +71,33 @@ class UploadController implements Upload {
         }
     }
 
+    @PostMapping(value = "/test")
+    public  String testImport(@RequestParam(value = "file")  MultipartFile file, Model model) throws Exception{
+        /*
+          注意读取时文件表头可能因为隐藏的格式问题读取失败,此时可重写
+         */
+        List<FromExcel1> excelList = ExcelUtil.readXls( file.getBytes(), FromExcel1.class);
+        List<RegionOfChina> resList = new ArrayList<>();
+        String pattern = "(\\d{4})";
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(Objects.requireNonNull(file.getOriginalFilename(),"file没有标识"));
+        String year = "null";
+//        find()这一步与Set的contains()方法不一样,它同时也是寻找匹配的过程.没有这一步将没有分组.
+        if( m.find()) {
+            year= m.group();
+        }
+        for (FromExcel1 row : excelList) {
+            String[] counties = row.getItem().split("、");
+            for (String s : counties) {
+                RegionOfChina res = new RegionOfChina();
+                res.setProvince(row.getProvince());
+                res.setCounty(s);
+                res.setOutOfPovertyYear(year);
+                resList.add(res);
+            }
+        }
+        model.addAttribute("resList",resList);
+        ExcelUtil.exportExcel(folderPath+ year +"res.xlsx",resList,RegionOfChina.class);
+        return "test";
+    }
 }
