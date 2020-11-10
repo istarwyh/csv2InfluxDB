@@ -3,6 +3,7 @@ package com.metis.controller;
 import com.lkx.util.ExcelUtil;
 import com.metis.controller.api.Upload;
 import com.metis.entity.excel.FromExcel1;
+import com.metis.entity.excel.OutOfPovertyRegion;
 import com.metis.entity.excel.RegionOfChina;
 import com.metis.service.InfluxClientBO;
 import com.metis.dto.KeyValueDTO;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -73,11 +75,22 @@ class UploadController implements Upload {
 
     @PostMapping(value = "/test")
     public  String testImport(@RequestParam(value = "file")  MultipartFile file, Model model) throws Exception{
-        /*
+        List<OutOfPovertyRegion> outOfPovertyRegionList = this.getOutOfPoverty(file);
+        model.addAttribute("resList",outOfPovertyRegionList);
+        return "test";
+    }
+
+    private List<OutOfPovertyRegion>  getOutOfPoverty(MultipartFile file) throws Exception{
+         /*
           注意读取时文件表头可能因为隐藏的格式问题读取失败,此时可重写
          */
         List<FromExcel1> excelList = ExcelUtil.readXls( file.getBytes(), FromExcel1.class);
-        List<RegionOfChina> resList = new ArrayList<>();
+        List<RegionOfChina> regionOfChinaList = ExcelUtil.readXls( folderPath+"中国省市区.xlsx",RegionOfChina.class);
+        HashMap<String, String> countyCityMap = new HashMap<>(1024);
+        for( RegionOfChina row : regionOfChinaList ){
+            countyCityMap.put( row.getCounty(),row.getCity());
+        }
+        List<OutOfPovertyRegion> resList = new ArrayList<>();
         String pattern = "(\\d{4})";
         Pattern p = Pattern.compile(pattern);
         Matcher m = p.matcher(Objects.requireNonNull(file.getOriginalFilename(),"file没有标识"));
@@ -89,15 +102,15 @@ class UploadController implements Upload {
         for (FromExcel1 row : excelList) {
             String[] counties = row.getItem().split("、");
             for (String s : counties) {
-                RegionOfChina res = new RegionOfChina();
+                OutOfPovertyRegion res = new OutOfPovertyRegion();
                 res.setProvince(row.getProvince());
+                res.setCity( countyCityMap.getOrDefault(s,"null"));
                 res.setCounty(s);
                 res.setOutOfPovertyYear(year);
                 resList.add(res);
             }
         }
-        model.addAttribute("resList",resList);
-        ExcelUtil.exportExcel(folderPath+ year +"res.xlsx",resList,RegionOfChina.class);
-        return "test";
+        ExcelUtil.exportExcel(folderPath+ year +"res.xlsx",resList, OutOfPovertyRegion.class);
+        return resList;
     }
 }

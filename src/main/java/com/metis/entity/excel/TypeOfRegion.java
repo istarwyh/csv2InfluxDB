@@ -6,15 +6,15 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * @Description: RegionOfChina
+ * @Description: TypeOfRegion
  * @Author: YiHui
- * @Date: 2020-11-09 10:03
+ * @Date: 2020-11-10 16:21
  * @Version: ing
  */
 @Getter
 @Setter
 @ToString
-public class RegionOfChina extends CodeOfRegion{
+public class TypeOfRegion extends RegionOfChina {
     @Excel(title = "编码")
     private String regionCode;
     @Excel(title = "省")
@@ -23,4 +23,7 @@ public class RegionOfChina extends CodeOfRegion{
     private String city;
     @Excel(title = "区")
     private String county;
+    @Excel(title = "行政区划类型")
+    private String typeOfRegion;
+
 }
