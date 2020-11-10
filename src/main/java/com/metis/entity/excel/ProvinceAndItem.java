@@ -13,7 +13,7 @@ import javax.websocket.server.ServerEndpoint;
 @Getter
 @Setter
 @ToString
-public class FromExcel1 {
+public class ProvinceAndItem {
     @Excel(title = "省份")
     private String province;
     @Excel(title = "名单")

@@ -2,7 +2,7 @@ package com.metis.controller;
 
 import com.lkx.util.ExcelUtil;
 import com.metis.controller.api.Upload;
-import com.metis.entity.excel.FromExcel1;
+import com.metis.entity.excel.ProvinceAndItem;
 import com.metis.entity.excel.OutOfPovertyRegion;
 import com.metis.entity.excel.RegionOfChina;
 import com.metis.service.InfluxClientBO;
@@ -84,7 +84,7 @@ class UploadController implements Upload {
          /*
           注意读取时文件表头可能因为隐藏的格式问题读取失败,此时可重写
          */
-        List<FromExcel1> excelList = ExcelUtil.readXls( file.getBytes(), FromExcel1.class);
+        List<ProvinceAndItem> excelList = ExcelUtil.readXls( file.getBytes(), ProvinceAndItem.class);
         List<RegionOfChina> regionOfChinaList = ExcelUtil.readXls( folderPath+"中国省市区.xlsx",RegionOfChina.class);
         HashMap<String, String> countyCityMap = new HashMap<>(1024);
         for( RegionOfChina row : regionOfChinaList ){
@@ -99,7 +99,7 @@ class UploadController implements Upload {
         if( m.find()) {
             year= m.group();
         }
-        for (FromExcel1 row : excelList) {
+        for (ProvinceAndItem row : excelList) {
             String[] counties = row.getItem().split("、");
             for (String s : counties) {
                 OutOfPovertyRegion res = new OutOfPovertyRegion();
