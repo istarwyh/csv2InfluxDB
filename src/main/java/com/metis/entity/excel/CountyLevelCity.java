@@ -15,7 +15,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public class CountyLevelCity {
-    @Excel(title = "省")
+    @Excel(title = "地级市")
     private String province;
     @Excel(title = "县级市")
     private String city;

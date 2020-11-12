@@ -14,7 +14,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * @Description: ToolOfExcel
@@ -54,7 +53,7 @@ public class ToolOfExcel {
     List<List<RegionOfChina>> getAllTypeList() throws Exception{
         List<RegionOfChina> regionOfChinaList = ExcelUtil.readXls( folderPath1+"中国省市区.xlsx",RegionOfChina.class);
         HashMap<String, String> map = new HashMap<>(1024);
-//        县级市归属省
+//        县级市归属地级市,还有部分归属省
         List<CountyLevelCity> countyLevelCityList = ExcelUtil.readXls( folderPath1 + "县级市.xlsx",CountyLevelCity.class);
         String city;String cityName;
         for( CountyLevelCity c : countyLevelCityList ){
@@ -63,11 +62,10 @@ public class ToolOfExcel {
             map.put( cityName , c.getProvince());
         }
         List<RegionOfChina> countyLevelCityMoreList = new ArrayList<>();
-        for( int i =regionOfChinaList.size() -1;i>=0;i-- ){
+        for( int i = regionOfChinaList.size() -1;i>=0;i-- ){
             String checkCounty = regionOfChinaList.get(i).getCounty();
             String checkCountyName = checkCounty.substring(0,checkCounty.length()-1);
             if( map.containsKey(checkCountyName )){
-                regionOfChinaList.get(i).setCity( checkCountyName+"市" );
                 regionOfChinaList.get(i).setCounty( checkCountyName+"市" );
                 countyLevelCityMoreList.add( regionOfChinaList.get(i));
                 regionOfChinaList.remove(i);
@@ -94,6 +92,7 @@ public class ToolOfExcel {
                 regionOfChinaList.remove(i);
             }
         }
+        ExcelUtil.exportExcel(folderPath1+"纯县.xlsx",regionOfChinaList,RegionOfChina.class);
         List<List<RegionOfChina>> joinList = new ArrayList<>();
         joinList.add( countyLevelCityMoreList);
         joinList.add( countyOfCityMoreList);
@@ -127,4 +126,6 @@ public class ToolOfExcel {
 //        输出结果并没有排序,不过排序的事,excel很擅长!
         ExcelUtil.exportExcel(folderPath1+"type.xlsx",typeOfRegionList,TypeOfRegion.class);
     }
+
+
 }
