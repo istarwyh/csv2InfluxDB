@@ -3,8 +3,8 @@ package com.metis.paas;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.lkx.util.Excel;
 import com.lkx.util.ExcelUtil;
+import com.metis.entity.Comparator2Note;
 import com.metis.entity.excel.*;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
@@ -22,8 +22,9 @@ import java.util.List;
  * @Version: ing
  */
 public class ToolOfExcel {
-    private static final String folderPath1 = "./repository/CityLevel/";
-    private static final String folderPath2 = "./repository/GB2260/";
+    public static final String folderPath = "./repository/";
+    public static final String folderPath1 = "./repository/CityLevel/";
+    public static final String folderPath2 = "./repository/GB2260/";
     @Test
     void json2ExcelGB2260() throws Exception{
         int startYear = 1980;
@@ -58,7 +59,8 @@ public class ToolOfExcel {
         String city;String cityName;
         for( CountyLevelCity c : countyLevelCityList ){
             city = c.getCity();
-            cityName = city.substring(0,city.indexOf("市"));
+//            如果只是indexOf("市"),有可能出现"市中市"这种情况
+            cityName = city.substring(0,city.lastIndexOf("市"));
             map.put( cityName , c.getProvince());
         }
         List<RegionOfChina> countyLevelCityMoreList = new ArrayList<>();
@@ -68,6 +70,8 @@ public class ToolOfExcel {
             if( map.containsKey(checkCountyName )){
                 regionOfChinaList.get(i).setCounty( checkCountyName+"市" );
                 countyLevelCityMoreList.add( regionOfChinaList.get(i));
+//                为了防止"东港市"和"东港区"同时存在于regionOfChinaList中的情况
+                map.remove(checkCountyName);
                 regionOfChinaList.remove(i);
             }
         }
@@ -77,22 +81,30 @@ public class ToolOfExcel {
         String county;
         for( CountyOfCity c : countyOfCityList ){
             county = c.getCounty();
-            String countyName = county.substring(0,county.indexOf("区") );
+            String countyName = county.substring(0,county.lastIndexOf("区") );
             map.put( countyName ,c.getCity());
         }
 
         List<RegionOfChina> countyOfCityMoreList = new ArrayList<>();
         for( int i =regionOfChinaList.size() -1;i>=0;i-- ){
             String checkCounty = regionOfChinaList.get(i).getCounty();
-//            多亏了这个数据是干净一点的,要不然该多判断截到尾部了
+//            多亏了这个数据是干净一点的(尾部没有空格),要不然该多判断截到尾部了
             String checkCountyName = checkCounty.substring(0,checkCounty.length()-1);
             if( map.containsKey(checkCountyName )){
                 regionOfChinaList.get(i).setCounty( checkCountyName+"区" );
                 countyOfCityMoreList.add( regionOfChinaList.get(i));
+
+                map.remove( checkCountyName);
                 regionOfChinaList.remove(i);
             }
         }
-        ExcelUtil.exportExcel(folderPath1+"纯县.xlsx",regionOfChinaList,RegionOfChina.class);
+        if( countyOfCityMoreList.size() < countyOfCityList.size() ){
+            System.out.println( countyOfCityList.size()  - countyOfCityMoreList.size() );
+        }
+//        ExcelUtil.exportExcel(folderPath1+"纯县.xlsx",regionOfChinaList,RegionOfChina.class);
+//        来源的中国省市区应当全面!!
+//        否则以芜湖县改名湾沚区为例,清洗之后的countyOfCityMoreList中湾沚区将不会加入
+//        同时芜湖县将保存在regionOfChinaList中
         List<List<RegionOfChina>> joinList = new ArrayList<>();
         joinList.add( countyLevelCityMoreList);
         joinList.add( countyOfCityMoreList);
@@ -112,10 +124,10 @@ public class ToolOfExcel {
                 typeOfRegion.setCity( r.getCity() );
                 String county = r.getCounty();
                 typeOfRegion.setCounty( county );
-
-                if(county.contains("市")){
+//  如果只是用county.contains("市")判断,像"市北区"这种就会被误判成"县级市"
+                if(county.contains("市") && county.lastIndexOf("市") == county.length()-1 ){
                     typeOfRegion.setTypeOfRegion( "县级市");
-                }else if(county.contains("区")){
+                }else if(county.contains("区") && county.lastIndexOf("区") == county.length()-1){
                     typeOfRegion.setTypeOfRegion( "市辖区" );
                 }else{
                     typeOfRegion.setTypeOfRegion("县");
@@ -127,5 +139,19 @@ public class ToolOfExcel {
         ExcelUtil.exportExcel(folderPath1+"type.xlsx",typeOfRegionList,TypeOfRegion.class);
     }
 
+    @Test
+    void comparator2Note() throws Exception {
+        List<Comparator2Note> comparator2NoteList = ExcelUtil.readXls( folderPath + "Comparator2Note.xlsx",Comparator2Note.class);
+        List<Comparator2Note> resList = new ArrayList<>(3000);
+        for( Comparator2Note c : comparator2NoteList ){
+            String k1 = c.getK1();
+            String k2 = c.getK2();
+            if( !k1.equals( k2 )){
+                c.setNote( k2 );
+            }
+            resList.add( c );
+        }
+        ExcelUtil.exportExcel(folderPath + "C2N.xlsx",resList,Comparator2Note.class);
 
+    }
 }

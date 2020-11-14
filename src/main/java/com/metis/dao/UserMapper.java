@@ -10,8 +10,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     /**
-     * 查询所有User在数据库的信息
-     * @return
+     * @return 所有User在数据库的信息
      */
     public List<UserDO> queryUserList();
 }

@@ -7,8 +7,8 @@
     <title>用户信息</title>
 </head>
 <body>
-<!-- 直接取属性，或者使用get()都可以。必须注意这里它只认它自己生成的userDOList，笔者放进model中的userList它不认识这样的名字。-->
-<form action="" th:each="u:${userDOList}">
+<!-- 直接取属性，或者使用get()都可以。如果不指定userDOList对应的key--"u",model会默认它是userDOList-->
+<form action="" th:each="u:${u}">
     用户编号:<input name="id" th:value="${u.id}"/><br>
     用户姓名:<input type="text" name="userPassword" th:value="${u.name}"/><br>
     登录密码:<input type="text" name="userName" th:value="${u.getAge()}"/><br>

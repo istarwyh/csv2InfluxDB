@@ -31,16 +31,12 @@ class UploadController implements Upload {
      *     windows下的File.separator是“\”,所以这里不能用其实是违背了跨平台的初衷
      */
     private final String folderPath = "./repository/";
+    private final String folderPath2 = "./repository/CityLevel/";
 
-    /**
-     * 这里需要返回view,所以不要加@ResponseBody了
-     */
-    @RequestMapping("/") public String root(){
-        return "test";
-    }
 
     @Override
-    @PostMapping("/upload") public boolean upload(@RequestParam(value = "file") MultipartFile file){
+    @PostMapping("/upload")
+    public boolean upload(@RequestParam(value = "file") MultipartFile file){
         return influxClientBO.csv2InfluxDB(folderPath + file.getOriginalFilename());
     }
 
@@ -48,7 +44,8 @@ class UploadController implements Upload {
      * RequestParam允许post请求带URL参数,@RequestBody则要求post请求body内发送json,两者可以同时使用
      * MultipartFile是Spring类型,指代的是从form表单提交的文件(直接访问会被当作Get请求而无效),其中getOriginalFilename()是全名,getName()是文件名,getContentType()是文件后缀名
      */
-    @PostMapping("/showOf") public String upload(@RequestParam(value = "file") MultipartFile file, Model model){
+    @PostMapping("/showOf")
+    public String upload(@RequestParam(value = "file") MultipartFile file, Model model){
         if(file.isEmpty()){
             model.addAttribute("up","文件为空,上传失败");
             return "showOf";
@@ -85,7 +82,7 @@ class UploadController implements Upload {
           注意读取时文件表头可能因为隐藏的格式问题读取失败,此时可重写
          */
         List<ProvinceAndItem> excelList = ExcelUtil.readXls( file.getBytes(), ProvinceAndItem.class);
-        List<RegionOfChina> regionOfChinaList = ExcelUtil.readXls( folderPath+"中国省市区.xlsx",RegionOfChina.class);
+        List<RegionOfChina> regionOfChinaList = ExcelUtil.readXls( folderPath2+"中国省市区.xlsx",RegionOfChina.class);
         HashMap<String, String> countyCityMap = new HashMap<>(1024);
         for( RegionOfChina row : regionOfChinaList ){
             countyCityMap.put( row.getCounty(),row.getCity());
@@ -110,7 +107,7 @@ class UploadController implements Upload {
                 resList.add(res);
             }
         }
-        ExcelUtil.exportExcel(folderPath+ year +"res.xlsx",resList, OutOfPovertyRegion.class);
+        ExcelUtil.exportExcel(folderPath2+ year +"res.xlsx",resList, OutOfPovertyRegion.class);
         return resList;
     }
 }

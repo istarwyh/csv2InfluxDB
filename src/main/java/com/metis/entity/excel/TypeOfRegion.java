@@ -25,5 +25,7 @@ public class TypeOfRegion extends RegionOfChina {
     private String county;
     @Excel(title = "行政区划类型")
     private String typeOfRegion;
+    @Excel(title = "备注")
+    private String note;
 
 }
