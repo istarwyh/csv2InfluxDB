@@ -1,8 +1,10 @@
-package com.metis.entity;
+package com.metis.paas;
 
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
 import com.metis.config.PropertyUtil;
+import com.metis.entity.InfluxClient1DO;
+import com.metis.entity.InfluxClient2DO;
 
 /**
  * 用于生成1.0与2.0不同的客户端

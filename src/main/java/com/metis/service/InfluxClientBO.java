@@ -4,11 +4,8 @@ import com.metis.config.PropertyUtil;
 import com.metis.dto.LineProtocolDTO;
 import com.influxdb.client.WriteApi;
 import com.influxdb.client.domain.WritePrecision;
-import com.metis.entity.InfluxClient;
-import com.metis.entity.InfluxClient1DO;
+import com.metis.paas.InfluxClient;
 import com.metis.entity.InfluxClient2DO;
-import lombok.ToString;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;

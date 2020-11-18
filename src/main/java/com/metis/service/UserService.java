@@ -45,6 +45,7 @@ public class UserService {
 
     /**
      * 模拟事务。 @Transactional注解并加上rollbackFor属性,事务在遇到非RuntimeException时也回滚
+     * 如果参数readOnly值为true，则与方法相关的事务将在方法结束时取消（回滚）。在这种情况下该方法根本无法更改数据库中的信息。
      * 如果转账中途出了意外 Snail 和 Daisy 的钱都不会改变
      *      传入Exception.class -- 即其Class的对象，包含其元数据
      */

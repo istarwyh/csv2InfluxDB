@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!--通过namespace就实现了对对应接口的映射。这样就分离了sql代码与接口-->
+<!--通过namespace就实现了对对应接口的映射。这样就分离了sql代码与接口;每一行数据对应的都是一个实体类UserDO-->
 <mapper namespace="com.metis.dao.UserMapper">
     <select id="queryUserList" resultType="UserDO">
         select * from user

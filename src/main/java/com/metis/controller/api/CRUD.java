@@ -26,7 +26,7 @@ public interface CRUD {
      * @param id
      * @return
      */
-    @ResponseBody String testDelete(int id);
+    @ResponseBody String testDelete(Integer id);
     /**
      * 改--使用实体类来接收前端数据
      * @param form

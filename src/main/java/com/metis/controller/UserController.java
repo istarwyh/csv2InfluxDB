@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,13 +29,20 @@ import java.util.List;
  */
 @RequestMapping("/user")
 public class UserController implements CRUD, ChangeMoney {
-    @Autowired // 运行期间会动态创建一个userService注入，但是规范更提倡使用下面被注释掉的构造函数
+    /**
+     * Spring 常用的依赖注入方法:
+     * 1. 构造器注入：利用构造方法的参数注入依赖
+     * 2. Setter注入：调用Setter的方法注入依赖
+     * 3. 字段注入：在字段上使用@Autowired/Resource注解
+     * 运行期间会动态创建一个userService注入，但是规范更提倡使用下面被注释掉的构造函数
+     */
+    @Autowired
     private  UserService userService;
 //    private UserController(UserService userService) {
 //        this.userService = userService;
 //    }
 
-    @Autowired
+    @Resource
     private UserMapper userMapper;
 
     @Override
@@ -44,18 +52,17 @@ public class UserController implements CRUD, ChangeMoney {
         return userService.selectAllUser();
     }
 
-
     @Override
-    public String testUpdate(@RequestBody JsonResult<String> form) {
-        userService.updateService();
+    @DeleteMapping("/delete/{id}")
+    public String testDelete(@PathVariable Integer id) {
+//        id =3;
+        userService.deleteService(id );
         return new JsonResult().toString();
     }
 
     @Override
-    @RequestMapping("/delete")
-    public String testDelete(int id) {
-        id =3;
-        userService.deleteService(id );
+    public String testUpdate(@RequestBody JsonResult<String> form) {
+        userService.updateService();
         return new JsonResult().toString();
     }
 
@@ -68,7 +75,6 @@ public class UserController implements CRUD, ChangeMoney {
 
     @Override
     @GetMapping("/query2")
-    @ResponseBody //其实这里不用加
     public List<UserDO> queryUserList(){
         return userMapper.queryUserList();
     }
