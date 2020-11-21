@@ -32,7 +32,7 @@ public class HomeController {
 
     /**
      * 接收表单数据之后必须：在处理POST的信息之后，作为响应将Redirect请求(302)返回给用户,之后浏览器会对重定向请求随附的地址发出新GET
-     * Post/Redirect/Get 这样的web 开发设计模式因为最后返回的是GET得到的网页,所以不怕刷新重复提交form,也允许收藏
+         *  这样的web 开发设计模式因为最后返回的是GET得到的网页,所以不怕刷新重复提交form,也允许收藏
      */
     @PostMapping("/")
     public String postHome(@RequestParam String content) {

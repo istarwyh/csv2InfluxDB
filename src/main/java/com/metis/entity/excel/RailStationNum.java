@@ -14,7 +14,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ProvinceCityStation {
+public class RailStationNum {
     @Excel( title = "省")
     private String province;
     @Excel( title = "火车站")
