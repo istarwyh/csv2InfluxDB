@@ -50,6 +50,7 @@ public class UserController<T> implements  Insert<T> , Delete<T>, Update<T>,Quer
     /**
      * 该属性consumes指示该方法侦听的地址接受哪种数据: JSON格式的数据"application/json"(http请求首部)
      * produces则指示有关它产生的数据的信息(http响应首部)
+     * TODO: 接口定义成泛型之后只能再一步去拿到数据再转换,这样真的好吗?
      * @return
      */
     @Override
@@ -70,7 +71,7 @@ public class UserController<T> implements  Insert<T> , Delete<T>, Update<T>,Quer
                 default: {
                     ArrayList<UserDO> failObjList = new ArrayList<>();
                     failObjList.add(userDO);
-                    return new JsonResult<List<UserDO>>(failObjList,"插入对象属性名不完全匹配");
+                    return new JsonResult<>(failObjList, "插入对象属性名不完全匹配");
                 }
             }
             System.out.println(m.getKey()+"  "+m.getValue());
@@ -78,7 +79,7 @@ public class UserController<T> implements  Insert<T> , Delete<T>, Update<T>,Quer
         userService.insertService( userDO );
         List<UserDO> allUser = userService.selectAllUser();
         System.out.println( allUser );
-        return new JsonResult<List<UserDO>>(allUser);
+        return new JsonResult<>(allUser);
     }
 
     /**
@@ -124,7 +125,7 @@ public class UserController<T> implements  Insert<T> , Delete<T>, Update<T>,Quer
             int len = matchedUser.size();
             userDO.setId( matchedUser.get(len-1).getId());
         }
-        return new JsonResult<UserDO>(userDO);
+        return new JsonResult<>(userDO);
     }
 
     /**
