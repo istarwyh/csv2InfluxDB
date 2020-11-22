@@ -4,6 +4,7 @@ import com.metis.entity.UserDO;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -18,19 +19,29 @@ import java.util.List;
 @Repository
 public interface UserDAO {
     /**
-     * 增
+     * 依靠自增AUTO_INCREMENT的(mysql中的设计)id新建一个user
      * @param name
      * @param age
      * @param money
      */
     @Insert("Insert into user(name,age,money) values(#{name},#{age},#{money})")
-    void insertUser(@Param("name") String name, @Param("age") Integer age, @Param("money") Double money);
+    void insertUserLackId(@Param("name") String name, @Param("age") Integer age, @Param("money") Double money);
+
+    /**
+     * 新建一个user
+     * @param name
+     * @param age
+     * @param money
+     */
+    @Insert("Insert into user(id,name,age,money) values(#{id},#{name},#{age},#{money})")
+    void insertUser(@Param("id") Long id,@Param("name") String name, @Param("age") Integer age, @Param("money") Double money);
+
     /**
      * 删
      * @param id
      */
     @Delete("Delete from user where id=#{id}")
-    void deleteUser(@Param("id") int id);
+    void deleteUser(@Param("id") long id);
 
     /**
      * 改
@@ -40,20 +51,29 @@ public interface UserDAO {
      * @param id
      */
     @Update("Update user set name=#{name},age=#{age},money=#{money} where id=#{id}")
-    void updateUser(@Param("name") String name, @Param("age") Integer age, @Param("money") Double money, @Param("id") int id);
+    void updateUser(@Param("name") String name, @Param("age") Integer age, @Param("money") Double money, @Param("id") long id);
 
     /**
-     * 查
+     * 通过用户名查
+     * 这个有坑在于name是不能作为唯一键的,返回的也自然可能是UserDO,可能是List<UserDO>
      * @param name
      * @return
      */
     @Select("Select * from user where name = #{name}")
-    UserDO findUserByName(@Param("name") String name);
+    LinkedList<UserDO> findUserByName(@Param("name") String name);
 
     /**
-     * 查
+     * 通过用户名查
+     * @param id
      * @return
      */
-    @Select("select * from user")
+    @Select("Select * from user where id = #{id}")
+    UserDO findUserById(@Param("id") Long id);
+
+    /**
+     * 查询所有用户信息
+     * @return
+     */
+    @Select("select * from user order by id desc")
     List<UserDO> findAllUser();
 }

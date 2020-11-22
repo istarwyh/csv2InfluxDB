@@ -15,11 +15,9 @@
 <p>Welcome Back Home: 我曾惊讶于世界之大...</p>
 
 <!--  Thymeleaf的原理便是服务器端处理之后把新的html页面发给客户端渲染  -->
-<li>
-    <p th:each="m : ${message}">
-        <span th:text="${m}">hello world!</span>
-    </p>
-</li>
+<p th:each="m : ${message}">
+    <span th:text="${m}">hello world!</span>
+</p>
 
 </body>
 </html>

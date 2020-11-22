@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -21,22 +22,32 @@ public class UserService {
 //        this.UserDAO = UserDAO;
 //    }
 
-    public void insertService() {
-//        因为id是AUTO_INCREMENT的(mysql中的设计),所以直接插入其他信息也就可以了
-        UserDAO.insertUser("Snail", 22, 3000.0);
-        UserDAO.insertUser("Daisy", 19, 3000.0);
+    public void insertService(UserDO userDO) {
+        if( userDO.getId() == null ){
+            UserDAO.insertUserLackId(userDO.getName(), userDO.getAge(),userDO.getMoney() );
+        }else{
+            UserDAO.insertUser(userDO.getId(), userDO.getName(),userDO.getAge(),userDO.getMoney());
+        }
     }
 
-    public void deleteService(int id) {
+    public void deleteService(long id) {
         UserDAO.deleteUser(id);
     }
 
-    public void updateService() {
-        UserDAO.updateUser("YiHui", 23, 5000.0, 1);
+    public void updateService(UserDO userDO) {
+        if( selectUserById( userDO.getId() ) == null ){
+            insertService(userDO);
+        }else{
+            UserDAO.updateUser(userDO.getName(), userDO.getAge(), userDO.getMoney(), userDO.getId());
+        }
     }
 
-    public UserDO selectUserByName(String name) {
+    public LinkedList<UserDO> selectUserByName(String name) {
         return UserDAO.findUserByName(name);
+    }
+
+    public UserDO selectUserById(Long id){
+        return UserDAO.findUserById(id);
     }
 
     public List<UserDO> selectAllUser() {

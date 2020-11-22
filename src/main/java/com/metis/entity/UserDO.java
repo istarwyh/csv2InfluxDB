@@ -9,7 +9,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 /**
  * 规范：所有POJO类初始类型必须是包装类型，即这里不可以是int/double这些 TODO：为什么呢？
- * 数据库中存储的每个类别都必须具有一个注释@Entity和一个@Id标有注释的属性，该属性用作数据库表的主键
+ * 数据库中存储的每个类别都必须具有一个注释@Entity和一个@Id标有注释的属性，该属性用作数据库表的主键->JPA面向对象开发时
+ * Mybatis可能更多像一个driver(驱动),以sql为中心,将sql发送给Database执行完后再将数据绑定到业务对象上
  */
 @Getter
 @Setter
@@ -25,7 +26,7 @@ public class UserDO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Column(name = "name")
     private String name;
     @Column(name = "age")

@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -32,7 +30,6 @@ public class OperatorController {
         return "index";
     }
 
-
     private static final String TEMPLATE;
     static {
         /**
@@ -49,21 +46,12 @@ public class OperatorController {
     }
 
     /**
-     * 如果有多个参数，则用分隔&,即.../mapReceiveParam?k1=v1&k2=v2&k3=v3
-     * Get方法传参有长度限制,8000byte左右
-     */
-    @GetMapping("/mapReceiveParam")
-    @ResponseBody public String mapReceiveParam(@RequestParam Map<String, String> mapParam) {
-        return mapParam.keySet().toString() + "="+mapParam.values();
-    }
-
-    /**
      * Model可以认为是一个全局的对象,将Model对象作为参数添加到请求处理程序方法时，Spring允许它在Thymeleaf页面也被访问
      */
     @GetMapping("/getUserList")
     public String getUserList(Model model){
-        UserDO user1 = new UserDO(1,"yihui",24,3323.0);
-        UserDO user2 = new UserDO(1,"lijun",23,2333.0);
+        UserDO user1 = new UserDO((long) 1,"yihui",24,3323.0);
+        UserDO user2 = new UserDO((long) 1,"lijun",23,2333.0);
         List<UserDO> userDOList = new ArrayList<>();
         userDOList.add(user1);
         userDOList.add(user2);

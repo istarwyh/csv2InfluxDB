@@ -1,14 +1,18 @@
 package com.metis.config;
 
-import lombok.ToString;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.stereotype.Repository;
 
 /**
  * 泛型使所有的返回值类型都可以使用该统一结构，在具体的场景将泛型替换成具体的数据类型即可
  * 对状态码和提示信息可以定义一个枚举类型
  * @author istarwyh
  * @param <T>
- *     TODO:没有定义JsonResult的Converter,所以直接返回JsonResult会报错
+ * 如果不加@Getter,那么JsonResult中的属性不能从外面访问,那么JsonResult不能被自动转成json
+ * 而没有@Setter,只是没有了提供修改的口子
  */
+@Getter
 public class JsonResult<T> {
     private T data;
     private final Integer code;
@@ -55,5 +59,4 @@ public class JsonResult<T> {
                 "\", \"code\":\"" + code +
                 "\", \"msg\":\"" + msg + "\"}";
     }
-    // 省略get和set方法
 }

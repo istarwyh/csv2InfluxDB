@@ -56,5 +56,4 @@ class UtilsTest {
         Utils.copyToLocal(newFolderPath,lineprotocolList);
     }
 
-
 }

@@ -10,5 +10,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface KthLog {
-    String value() default "";
+    String value() default "这里居然空空如也";
 }

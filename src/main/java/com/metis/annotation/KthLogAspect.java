@@ -6,6 +6,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @author sx_wangyihui
  */
@@ -56,11 +58,17 @@ public class KthLogAspect {
         //并对返回值进行增强处理。这里假设User的id需要从 1 以开始计数，而前端是从 0 开始计数
         if(result != null){
             if(result instanceof UserDO){
-                UserDO user = (UserDO) result;
+                final UserDO user = (UserDO) result;
                 user.setId( user.getId()+1 );
                 return user;
+            }else if( result instanceof List){
+                final List<UserDO> userDOList = (List<UserDO>)result;
+                for( UserDO u : userDOList ){
+                    u.setId( u.getId() + 1);
+                }
+                return userDOList;
             }else{
-                throw new Exception("result不是UserDO的实例（is-a)");
+                throw new Exception("result不是UserDO和List<UserDO>的实例（is-a)");
             }
         }else{
             throw new NullPointerException("没有找到指定编号的user");

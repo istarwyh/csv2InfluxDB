@@ -27,6 +27,8 @@ import org.springframework.context.annotation.ComponentScan;
 public class MetisApplication {
 
     public static void main(String[] args) {
+//        也可以在application.properties中配置
+//        System.setProperty("spring.devtools.restart.enabled", "false");
         SpringApplication.run(MetisApplication.class, args);
     }
 
