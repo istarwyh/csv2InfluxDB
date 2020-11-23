@@ -8,7 +8,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 /**
- * 规范：所有POJO类初始类型必须是包装类型，即这里不可以是int/double这些 TODO：为什么呢？
+ * 规范：所有POJO类属性类型必须是包装类型，即这里不可以是int/double这些:
+ *      1. 使用Integer而不是int,可以充分利用虚拟机提供的缓存(默认-128-127)
+ *      2. 当POJO类对应数据库表,使用int将不能区分表中字段为空与为0的情况,因为为空的字段返回后对应到int的属性是0,对应到Integer是null,后者可以表示空字段
+ *      3. POJO类被序列化传输时,如果调用方得到null则可以表示调用异常,使用int则无此功能
  * 数据库中存储的每个类别都必须具有一个注释@Entity和一个@Id标有注释的属性，该属性用作数据库表的主键->JPA面向对象开发时
  * Mybatis可能更多像一个driver(驱动),以sql为中心,将sql发送给Database执行完后再将数据绑定到业务对象上
  */

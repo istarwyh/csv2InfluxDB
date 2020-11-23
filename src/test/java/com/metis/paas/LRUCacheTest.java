@@ -2,8 +2,6 @@ package com.metis.paas;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Scanner;
-
 /**
  * @Description: LRUCacheTest
  * @Author: YiHui
@@ -11,16 +9,17 @@ import java.util.Scanner;
  * @Version: ing
  */
 public class LRUCacheTest {
+//    LruCache lruCache = new LruCache(5);
+    LRUWithQueue lruCache = new LRUWithQueue(5);
     @Test
-    void test1() {
-        LruCache lruCache = new LruCache(5);
+    void testLRU() {
         lruCache.put("001", "用户1信息");
         lruCache.put("002", "用户2信息");
         lruCache.put("003", "用户3信息");
         lruCache.put("004", "用户4信息");
         lruCache.put("005", "用户5信息");
 
-        String input = "0";
+        String input = "9";
         switch (input) {
             //调用get（001）方法，检验队首变为002，队尾变成001
             case "0":
@@ -91,5 +90,10 @@ public class LRUCacheTest {
                 System.out.println("wrong");
                 break;
         }
+    }
+
+    @Test
+    void testLRUwithQueue(){
+
     }
 }
