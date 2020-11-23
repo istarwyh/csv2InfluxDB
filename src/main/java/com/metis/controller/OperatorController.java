@@ -35,7 +35,7 @@ public class OperatorController {
         /**
          * %s 占位符,配合String.format()使用
          */
-        TEMPLATE = "Hello,%s!";
+        TEMPLATE = "Hello %s!";
     }
     private final AtomicLong counter = new AtomicLong();
     @GetMapping("/greeting")
