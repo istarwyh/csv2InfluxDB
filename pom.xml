@@ -19,7 +19,7 @@
     <properties>
         <!--		养成好习惯!这里非常关键的配置信息-->
 <!--        Platform SDK -> Project SDK-->
-        <java.version>11</java.version>
+        <java.version>8</java.version>
 <!--        Utilize Javac: project bytecode version -> Target bytecode version-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
