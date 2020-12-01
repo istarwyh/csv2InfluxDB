@@ -133,11 +133,12 @@
             <artifactId>influxdb-client-java</artifactId>
             <version>1.8.0</version>
         </dependency>
+
         <!--集成springBoot Data JPA-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-data-jpa</artifactId>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
         <!--        配置redis缓存,需要本机启动redis服务器-->
         <!--        <dependency>-->
         <!--            <groupId>org.springframework.boot</groupId>-->
@@ -170,25 +171,6 @@
             <artifactId>commons-io</artifactId>
             <version>2.4</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.11.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>3.141.59</version>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-firefox-driver</artifactId>
-            <version>3.141.59</version>
-        </dependency>
 
         <dependency>
             <groupId>cn.hutool</groupId>
@@ -200,13 +182,6 @@
             <artifactId>Initial</artifactId>
             <version>0.2.5</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/net.oschina.likaixuan/excelutil -->
-        <dependency>
-            <groupId>net.oschina.likaixuan</groupId>
-            <artifactId>excelutil</artifactId>
-            <version>3.0.3</version>
-        </dependency>
-
     </dependencies>
 
     <build>

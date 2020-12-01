@@ -1,19 +1,11 @@
 package com.metis.paas;
 
 
-import com.alibaba.fastjson.JSONObject;
-import com.lkx.util.ExcelUtil;
 import com.metis.dto.KeyValueDTO;
 import com.metis.dto.LineProtocolDTO;
-import com.metis.entity.excel.CodeOfRegion;
 import org.junit.jupiter.api.Test;
-import org.springframework.util.ResourceUtils;
-import org.apache.commons.io.FileUtils;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 
-import java.io.File;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
