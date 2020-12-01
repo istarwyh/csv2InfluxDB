@@ -25,10 +25,6 @@ public class HomeController {
         model.addAttribute("message",message);
         return "index";
     }
-    @GetMapping("/root")
-    public String root(){
-        return "test";
-    }
 
     /**
      * 接收表单数据之后必须：在处理POST的信息之后，作为响应将Redirect请求(302)返回给用户,之后浏览器会对重定向请求随附的地址发出新GET

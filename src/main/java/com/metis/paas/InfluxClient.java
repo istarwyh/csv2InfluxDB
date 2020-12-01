@@ -27,7 +27,7 @@ public class InfluxClient {
                     InfluxClient1DO.database,
                     InfluxClient1DO.retentionPolicy);
         }else{
-           return InfluxDBClientFactory.create( (InfluxClient2DO.cloudUrl),
+            return InfluxDBClientFactory.create( (InfluxClient2DO.cloudUrl),
                     InfluxClient2DO.token.toCharArray());
         }
     }
