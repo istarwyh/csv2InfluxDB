@@ -17,11 +17,12 @@ public enum StatusEnum {
     /**
      * 返回状态码
      */
-    private Integer code;
+    private final Integer code;
     /**
      * 返回描述
      */
-    private String desc;
+    private final String desc;
+
     public static String getDescByCode(Integer code){
         if( code == null ){
             return "无";

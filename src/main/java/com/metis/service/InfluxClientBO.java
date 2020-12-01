@@ -4,8 +4,8 @@ import com.metis.config.PropertyUtil;
 import com.metis.dto.LineProtocolDTO;
 import com.influxdb.client.WriteApi;
 import com.influxdb.client.domain.WritePrecision;
-import com.metis.paas.InfluxClient;
-import com.metis.entity.InfluxClient2DO;
+import com.metis.entity.InfluxDBClient1DO;
+import com.metis.entity.InfluxDBClient2DO;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -24,8 +24,12 @@ public class InfluxClientBO {
 //    @Value(value = "${spring.influx.versionBound}")
 //    private String versionBound;
 
-    private static final String V = PropertyUtil.getProperty("spring.influx.version");
-    private static final String VERSION_BOUND = PropertyUtil.getProperty("spring.influx.versionBound");
+    private static final Float VERSION = Float.parseFloat( PropertyUtil.getProperty("spring.influx.version") );
+    private static final Float VERSION_BOUND = Float.parseFloat(PropertyUtil.getProperty("spring.influx" +
+            ".versionBound"));
+    public static final String BUCKET = PropertyUtil.getProperty("spring.influx.bucket");
+    public static final String ORG = PropertyUtil.getProperty("spring.influx.org") ;
+
 
     public boolean csv2InfluxDB(String filePath) {
         File dest = new File(filePath);
@@ -33,15 +37,19 @@ public class InfluxClientBO {
         List<LineProtocolDTO> list = CSVToList(dest.getPath(), measurementName);
 
         System.out.println("*** Write Points ***");
-        float version = Float.parseFloat(V);
-        WriteApi writeApi = InfluxClient.getClient().getWriteApi();
+        WriteApi writeApi;
+        if(VERSION < VERSION_BOUND ){
+            writeApi = InfluxDBClient1DO.getInfluxDBClient1().getWriteApi();
+        }else{
+            writeApi = InfluxDBClient2DO.getInfluxDBClient2().getWriteApi();
+        }
         try {
             for (LineProtocolDTO lineprotocolDTO : list) {
                 String data = String.valueOf(lineprotocolDTO);
-                if(version < Float.parseFloat(VERSION_BOUND) ){
+                if(VERSION < VERSION_BOUND ){
                     writeApi.writeRecord(WritePrecision.NS, data);}
                 else {
-                    writeApi.writeRecord(InfluxClient2DO.bucket, InfluxClient2DO.org, WritePrecision.NS, data);
+                    writeApi.writeRecord(BUCKET, ORG, WritePrecision.NS, data);
                 }
             }
         } catch (Exception e) {
