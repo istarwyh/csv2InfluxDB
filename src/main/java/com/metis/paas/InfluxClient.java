@@ -12,13 +12,9 @@ import com.metis.entity.InfluxClient2DO;
  * @author MBin_王艺辉istarwyh
  */
 public class InfluxClient {
-    private static final InfluxDBClient CLIENT;
-    private static final String V = PropertyUtil.getProperty("spring.influx.version");
     private static final String VERSION_BOUND = PropertyUtil.getProperty("spring.influx.versionBound");
-    static {
-        CLIENT = createClient( Float.parseFloat(V) );
-    }
-    private static InfluxDBClient createClient(float version){
+
+    public static InfluxDBClient of(float version){
         if( version < Float.parseFloat(VERSION_BOUND) ){
             return InfluxDBClientFactory.createV1(
                     InfluxClient1DO.host,
@@ -30,15 +26,5 @@ public class InfluxClient {
            return InfluxDBClientFactory.create( (InfluxClient2DO.cloudUrl),
                     InfluxClient2DO.token.toCharArray());
         }
-    }
-    public static InfluxDBClient getClient() {
-//        if(client == null ){
-//            synchronized (client){
-//                if( InfluxClient.client == null ){
-//                    client = createClient(version);
-//                }
-//            }
-//        }
-        return CLIENT;
     }
 }
