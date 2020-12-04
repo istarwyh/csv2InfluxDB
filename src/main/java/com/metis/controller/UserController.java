@@ -5,13 +5,12 @@ import com.metis.config.JsonResult;
 import com.metis.controller.api.*;
 import com.metis.dao.UserMapper;
 import com.metis.entity.UserDO;
-import com.metis.service.UserService;
+import com.metis.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.rmi.UnexpectedException;
 import java.util.*;
 
 @Controller
@@ -25,16 +24,16 @@ import java.util.*;
  * Request默认情况下映射所有的HTTP操作：get/post/delete...
  */
 @RequestMapping("/user")
-public class UserController<T> implements  Insert<T> , Delete<T>, Update<T>,Query, ChangeMoney {
+public class UserController<T> implements  Insert<UserDO> , Delete<Map<String, String>>, Update<UserDO>,Query, ChangeMoney {
     /**
      * Spring 常用的依赖注入方法:
      * 1. 构造器注入：利用构造方法的参数注入依赖
      * 2. Setter注入：调用Setter的方法注入依赖
      * 3. 字段注入：在字段上使用@Autowired/Resource注解
-     * 运行期间会动态创建一个userService注入，但是规范更提倡使用下面被注释掉的构造函数
+     * 运行期间会动态创建一个UserService(以接口方式提供)注入，但是规范更提倡使用下面被注释掉的构造函数
      */
     @Autowired
-    private  UserService userService;
+    private UserService userService;
 //    private UserController(UserService userService) {
 //        this.userService = userService;
 //    }
@@ -50,33 +49,31 @@ public class UserController<T> implements  Insert<T> , Delete<T>, Update<T>,Quer
     /**
      * 该属性consumes指示该方法侦听的地址接受哪种数据: JSON格式的数据"application/json"(http请求首部)
      * produces则指示有关它产生的数据的信息(http响应首部)
-     * TODO: 接口定义成泛型之后只能再一步去拿到数据再转换,这样真的好吗?
-     * @return
      */
     @Override
     @PostMapping(path= "/insert", consumes="application/json", produces="application/json")
-    public JsonResult<List<UserDO>> userInsert(@RequestBody T t) {
+    public JsonResult<List<UserDO>> userInsert(@RequestBody UserDO t) {
         if( t == null ) {
             return new JsonResult<>(1,"插入的对象为空");
         }
 //        boostrap类加载器或者restartClassLoader默认把传进来的泛型参数当成LinkedHashMap
-        LinkedHashMap<String, String> map = (LinkedHashMap)t;
-        UserDO userDO = new UserDO();
-        for(Map.Entry<String, String> m : map.entrySet() ){
-            switch ( m.getKey() ){
-                case "id": userDO.setId( Long.parseLong( m.getValue() ));break;
-                case "age": userDO.setAge( Integer.parseInt( m.getValue()));break;
-                case "name": userDO.setName( m.getValue());break;
-                case "money": userDO.setMoney(Double.valueOf(m.getValue()));break;
-                default: {
-                    ArrayList<UserDO> failObjList = new ArrayList<>();
-                    failObjList.add(userDO);
-                    return new JsonResult<>(failObjList, "插入对象属性名不完全匹配");
-                }
-            }
-            System.out.println(m.getKey()+"  "+m.getValue());
-        }
-        userService.insertService( userDO );
+//        LinkedHashMap<String, String> map = (LinkedHashMap)t;
+//        UserDO userDO = new UserDO();
+//        for(Map.Entry<String, String> m : map.entrySet() ){
+//            switch ( m.getKey() ){
+//                case "id": userDO.setId( Long.parseLong( m.getValue() ));break;
+//                case "age": userDO.setAge( Integer.parseInt( m.getValue()));break;
+//                case "name": userDO.setName( m.getValue());break;
+//                case "money": userDO.setMoney(Double.valueOf(m.getValue()));break;
+//                default: {
+//                    ArrayList<UserDO> failObjList = new ArrayList<>();
+//                    failObjList.add(userDO);
+//                    return new JsonResult<>(failObjList, "插入对象属性名不完全匹配");
+//                }
+//            }
+//            System.out.println(m.getKey()+"  "+m.getValue());
+//        }
+        userService.insertUser( t );
         List<UserDO> allUser = userService.selectAllUser();
         System.out.println( allUser );
         return new JsonResult<>(allUser);
@@ -90,28 +87,25 @@ public class UserController<T> implements  Insert<T> , Delete<T>, Update<T>,Quer
     @Override
     @DeleteMapping("/delete/{id}")
     public String deleteById(@PathVariable Long id) {
-        userService.deleteService( id );
+        userService.deleteUserById( id );
         return new JsonResult<T>(0, String.valueOf(id) ).toString();
     }
 
     /**
-     *
-     * 1. 如果有多个参数，则用分隔&,即.../delete?k1=v1&k2=v2&k3=v3
-     * 2. 这里不能使用IdentityHashMap来实现接收"id=1&id=2"这样key相同的格式的目的,因为如果不是使用对象接收,则默认是LinkedHashMap接收
-     *      而IdentityHashMap并不是LinkedHashMap的父类,就会出现类型不匹配的错误
-     * 3. 这里不要用Map<String,Long>这种格式接收,因为传过来的数据默认是LinkedHashMap<String,String>
-     * @param mapParam
-     * @return
+     * @param mapParam 1. 如果有多个参数，则用分隔&,即.../delete?k1=v1&k2=v2&k3=v3
+     *                 2. 这里不能使用IdentityHashMap来实现接收"id=1&id=2"这样key相同的格式的目的,
+     *                 因为如果不是使用对象接收,则默认是LinkedHashMap接收,
+     *                 而IdentityHashMap并不是LinkedHashMap的父类,就会出现类型不匹配的错误
+     *                 3. 这里不要用Map<String,Long>这种格式接收,因为传过来的数据默认是LinkedHashMap<String,String>
      */
     @Override
     @DeleteMapping("/delete")
     public JsonResult<Map<String, String>> deleteUseId( @RequestParam Map<String, String> mapParam) {
         for( String id : mapParam.values() ) {
-            userService.deleteService( Long.parseLong(id) );
+            userService.deleteUserById( Long.parseLong(id) );
         }
         return new JsonResult<>( mapParam );
     }
-
 
     @Override
     @PutMapping("/update")
@@ -119,7 +113,7 @@ public class UserController<T> implements  Insert<T> , Delete<T>, Update<T>,Quer
         if( userDO == null ){
             return new JsonResult<UserDO>(2,"参数不是UserDO类型");
         }
-        userService.updateService(userDO);
+        userService.updateUser(userDO);
         if(userDO.getId() == null) {
             LinkedList<UserDO> matchedUser = userService.selectUserByName( userDO.getName());
             int len = matchedUser.size();

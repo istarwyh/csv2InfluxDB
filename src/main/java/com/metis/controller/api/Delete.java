@@ -25,5 +25,5 @@ public interface Delete<T> {
      * @param mapParam
      * @return
      */
-    @ResponseBody JsonResult<Map<String, String>> deleteUseId(@RequestParam Map<String, String> mapParam);
+    @ResponseBody JsonResult<T> deleteUseId(@RequestParam T mapParam);
 }

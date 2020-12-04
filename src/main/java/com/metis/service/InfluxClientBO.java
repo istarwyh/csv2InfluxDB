@@ -8,6 +8,7 @@ import com.metis.entity.InfluxDBClient1DO;
 import com.metis.entity.InfluxDBClient2DO;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.util.List;
 
@@ -29,7 +30,16 @@ public class InfluxClientBO {
             ".versionBound"));
     public static final String BUCKET = PropertyUtil.getProperty("spring.influx.bucket");
     public static final String ORG = PropertyUtil.getProperty("spring.influx.org") ;
-
+    /**
+     * InfluxDB1.0 client
+     */
+    @Resource
+    protected InfluxDBClient1DO influxDBClient1DO;
+    /**
+     * InfluxDB2.0 client
+     */
+    @Resource
+    protected InfluxDBClient2DO influxDBClient2DO;
 
     public boolean csv2InfluxDB(String filePath) {
         File dest = new File(filePath);
@@ -39,9 +49,9 @@ public class InfluxClientBO {
         System.out.println("*** Write Points ***");
         WriteApi writeApi;
         if(VERSION < VERSION_BOUND ){
-            writeApi = InfluxDBClient1DO.getInfluxDBClient1().getWriteApi();
+            writeApi = influxDBClient1DO.getInfluxDBClient1().getWriteApi();
         }else{
-            writeApi = InfluxDBClient2DO.getInfluxDBClient2().getWriteApi();
+            writeApi = influxDBClient2DO.getInfluxDBClient2().getWriteApi();
         }
         try {
             for (LineProtocolDTO lineprotocolDTO : list) {

@@ -3,6 +3,8 @@ package com.metis.entity;
 
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
+@Getter
+@Setter
 @ToString
 public class InfluxDBClient1DO  {
     /**
@@ -54,7 +58,11 @@ public class InfluxDBClient1DO  {
         InfluxDBClient1DO.password = password;
     }
 
-    public static InfluxDBClient getInfluxDBClient1(){
+    /**
+     * 不可以做成静态方法，因为这里应当允许InfluxCBClient对象被修改，那么每一个influxDBclient都应当是一个
+     * @return
+     */
+    public InfluxDBClient getInfluxDBClient1(){
         return InfluxDBClientFactory.createV1(
                 host,
                 username,

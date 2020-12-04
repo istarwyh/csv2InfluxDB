@@ -10,7 +10,7 @@ import javax.annotation.Resource;
  * 通过@SpringBootTest可以在这里也使用IoC容器中的对象
  */
 @SpringBootTest
-class UserServiceTest {
+class UserServiceImplTest {
     @Resource
     private UserDAO UserDAO;
     @Test

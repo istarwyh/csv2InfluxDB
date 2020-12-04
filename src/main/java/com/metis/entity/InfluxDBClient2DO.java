@@ -2,8 +2,13 @@ package com.metis.entity;
 
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
+
+import javax.persistence.SecondaryTable;
 
 /**
  * @Description: InfluxDBClient2DO
@@ -12,6 +17,9 @@ import org.springframework.beans.factory.annotation.Value;
  * @version: 1.0.0
  */
 @ToString
+@Setter
+@Getter
+@Repository
 public class InfluxDBClient2DO {
 
     public static String token;
@@ -26,7 +34,7 @@ public class InfluxDBClient2DO {
         InfluxDBClient2DO.cloudUrl = cloudUrl;
     }
 
-    public static InfluxDBClient getInfluxDBClient2(){
+    public InfluxDBClient getInfluxDBClient2(){
         return InfluxDBClientFactory.create(
                 cloudUrl,
                 token.toCharArray());
