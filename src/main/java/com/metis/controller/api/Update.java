@@ -13,15 +13,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 public interface Update<T> {
 
-
-//    @ResponseBody
-//    JsonResult<T> update(@RequestBody T t);
-
     /**
      *
-     * @param userDO
-     * @return 必须要返回JsonResult<UserDO>吗?而不能是一个泛型? TODO
+     * @param t
+     * @return 必须要返回JsonResult<UserDO>吗?而不能是一个泛型?
      */
     @ResponseBody
-    JsonResult<UserDO> update(@RequestBody UserDO userDO);
+    JsonResult<T> update(@RequestBody T t);
 }

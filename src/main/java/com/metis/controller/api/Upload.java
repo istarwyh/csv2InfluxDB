@@ -10,11 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
  * @Date: 2020-11-0720:09
  * @Version: ing
  */
-public interface Upload {
+public interface Upload<T> {
     /**
-     * MultipartFile是spring类型，代表HTML中form data方式上传的文件，包含二进制数据+文件名称。
-     * @param file
-     * @return
+     * MultipartFile是Spring类型，代表HTML中form data方式上传的文件，包含二进制数据+文件名称。
      */
-    String upload(@RequestParam("file") MultipartFile file, Model model);
+    String upload(@RequestParam("file") T file, Model model);
 }

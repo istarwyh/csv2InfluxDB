@@ -9,26 +9,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 @Controller
-class UploadController implements Upload {
-    private final InfluxClientBO influxClientBO = new InfluxClientBO();
+class UploadController implements Upload<MultipartFile> {
+    @Resource
+    private InfluxClientBO influxClientBO;
     /**
      *     windows下的File.separator是“\”,所以这里不能用其实是违背了跨平台的初衷
      */
     private final String folderPath = "./repository/";
-    private final String folderPath2 = "./repository/CityLevel/";
-
 
     @Override
     @PostMapping("/upload")
