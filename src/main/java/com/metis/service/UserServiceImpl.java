@@ -1,10 +1,9 @@
 package com.metis.service;
 
 import com.metis.dao.UserDAO;
+import com.metis.dto.ContextDTO;
 import com.metis.entity.UserDO;
-import com.metis.service.impl.MoneyService;
 import com.metis.service.impl.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,6 +72,19 @@ public class UserServiceImpl implements UserService {
         // 模拟转账过程中可能遇到的意外状况
         int error = 1 / 0;
         UserDAO.updateUser("Daisy", 19, 4000.0, 4);
+    }
+
+    @Override
+    public UserDO store(double money) {
+        ContextDTO context = new ContextDTO();
+
+        double account = context.getUserDO().getMoney();
+//        account += money其实也是个语法糖,实际是下面两步
+        double newAccount = account + money;
+        account = newAccount;
+        context.getUserDO().setMoney(account);
+
+        return context.getUserDO();
     }
 
 }
