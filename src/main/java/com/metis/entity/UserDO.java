@@ -1,9 +1,7 @@
 package com.metis.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import okhttp3.OkHttpClient.Builder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,12 +12,13 @@ import java.io.Serializable;
  *      3. POJO类被序列化传输时,如果调用方得到null则可以表示调用异常,使用int则无此功能
  * 数据库中存储的每个类别都必须具有一个注释@Entity和一个@Id标有注释的属性，该属性用作数据库表的主键->JPA面向对象开发时
  * Mybatis可能更多像一个driver(驱动),以sql为中心,将sql发送给Database执行完后再将数据绑定到业务对象上
+ * @author MBin_王艺辉istarwyh
  */
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Entity
+//@Builder
+@Entity // @Entity表明这是一个映射到数据库的实体类
 public class UserDO implements Serializable {
 
     /**
@@ -37,6 +36,37 @@ public class UserDO implements Serializable {
     @Column(name = "money")
     private Double money;
 
+    private UserDO(Builder builder){
+        this.id = builder.id;
+        this.age = builder.age;
+        this.name = builder.name;
+        this.money = builder.money;
+    }
+
+    public static class Builder{
+        private final Long id;
+        private String name;
+        private Integer age;
+        private Double money;
+        public Builder(Long id){
+            this.id = id;
+        }
+        public Builder name(String val){
+            name = val;
+            return this;
+        }
+        public Builder age(Integer val){
+            age = val;
+            return this;
+        }
+        public Builder money(Double val){
+            this.money = val;
+            return this;
+        }
+        public UserDO build(){
+            return new UserDO(this);
+        }
+    }
     @Override
     public String toString() {
         return "User{" +

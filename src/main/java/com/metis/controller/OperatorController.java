@@ -32,7 +32,7 @@ public class OperatorController {
 
     private static final String TEMPLATE;
     static {
-        /**
+        /*
          * %s 占位符,配合String.format()使用
          */
         TEMPLATE = "Hello %s!";
@@ -49,8 +49,8 @@ public class OperatorController {
      */
     @GetMapping("/getUserList")
     public String getUserList(Model model){
-        UserDO user1 = new UserDO((long) 1,"yihui",24,3323.0);
-        UserDO user2 = new UserDO((long) 1,"lijun",23,2333.0);
+        UserDO user1 = new UserDO.Builder((long)1).name("yihui").age(24).money(2233.0).build();
+        UserDO user2 = new UserDO.Builder((long)2).name("lijun").age(23).money(6666.0).build();
         List<UserDO> userDOList = new ArrayList<>();
         userDOList.add(user1);
         userDOList.add(user2);
