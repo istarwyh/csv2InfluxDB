@@ -9,11 +9,11 @@ public enum StatusEnum {
     /**
      * 成功
      */
-    SUCCESS(0,"操作成功"),
+    SUCCESS(20000,"操作成功"),
     /**
      * 失败
      */
-    FAILURE(1,"操作失败");
+    FAILURE(99999,"操作失败");
     /**
      * 返回状态码
      */
@@ -34,5 +34,4 @@ public enum StatusEnum {
         }
         return "未知的错误";
     }
-
 }

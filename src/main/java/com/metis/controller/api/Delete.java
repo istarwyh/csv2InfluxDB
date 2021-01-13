@@ -25,5 +25,5 @@ public interface Delete<T> {
      * @param mapParam
      * @return
      */
-    @ResponseBody JsonResult<T> deleteUseId(@RequestParam T mapParam);
+    @ResponseBody JsonResult<T> deleteByMultiId(@RequestParam T mapParam);
 }

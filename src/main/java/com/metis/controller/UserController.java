@@ -100,7 +100,7 @@ public class UserController<T> implements  Insert<UserDO> , Delete<Map<String, S
      */
     @Override
     @DeleteMapping("/delete")
-    public JsonResult<Map<String, String>> deleteUseId( @RequestParam Map<String, String> mapParam) {
+    public JsonResult<Map<String, String>> deleteByMultiId(@RequestParam Map<String, String> mapParam) {
         for( String id : mapParam.values() ) {
             userService.deleteUserById( Long.parseLong(id) );
         }
