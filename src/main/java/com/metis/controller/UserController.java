@@ -1,5 +1,6 @@
 package com.metis.controller;
 
+import com.metis.annotation.DuringTime;
 import com.metis.annotation.KthLog;
 import com.metis.config.JsonResult;
 import com.metis.controller.api.*;
@@ -137,6 +138,7 @@ public class UserController<T> implements  Insert<UserDO> , Delete<Map<String, S
     @Override
     @GetMapping("/queryAllUser")
     @KthLog("查询所有的用户名单")
+    @DuringTime("oooooo")
     public List<UserDO> queryAllUser(){
         return userMapper.queryUserList();
     }

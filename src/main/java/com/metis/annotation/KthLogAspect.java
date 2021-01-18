@@ -8,9 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * @author sx_wangyihui
- */
 @Component
 @Aspect
 public class KthLogAspect {

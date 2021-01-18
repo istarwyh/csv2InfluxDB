@@ -1,5 +1,6 @@
 package com.metis.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+@Slf4j
 @SpringBootTest
 class OperatorControllerTest {
     @Autowired
@@ -48,6 +49,7 @@ class OperatorControllerTest {
                 .andReturn();
 
         String content = res.getResponse().getContentAsString();
+        log.info("content->{}",content);
         Assertions.assertTrue( content.contains("Hello  World"));
     }
 }

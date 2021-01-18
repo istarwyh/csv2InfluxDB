@@ -179,10 +179,21 @@
         <dependency>
             <groupId>com.github.istarwyh</groupId>
             <artifactId>Initial</artifactId>
-            <version>0.2.5</version>
+            <version>0.2.7</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/net.bytebuddy/byte-buddy-agent -->
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy-agent</artifactId>
+            <version>1.10.19</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 
@@ -191,6 +202,39 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy-maven-plugin</artifactId>
+                <version>1.10.12</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>transform</goal>
+                        </goals>
+                        <configuration>
+                            <initialization>
+                                <entryPoint>REDEFINE</entryPoint>
+                            </initialization>
+                            <transformations>
+                                <transformation>
+                                    <groupId>net.bytebuddy</groupId>
+                                    <artifactId>byte-buddy</artifactId>
+                                    <version>1.10.12</version>
+                                    <plugin>net.bytebuddy.build.HashCodeAndEqualsPlugin$WithNonNullableFields</plugin>
+                                </transformation>
+                                <transformation>
+                                    <groupId>net.bytebuddy</groupId>
+                                    <artifactId>byte-buddy</artifactId>
+                                    <version>1.10.12</version>
+                                    <plugin>net.bytebuddy.build.CachedReturnPlugin</plugin>
+                                </transformation>
+                            </transformations>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
