@@ -1,6 +1,6 @@
 package com.metis.annotation;
 
-import com.metis.entity.UserDO;
+import com.metis.entity.User;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -54,16 +54,16 @@ public class KthLogAspect {
         }
         //并对返回值进行增强处理。这里假设User的id需要从 1 以开始计数，而前端是从 0 开始计数
         if(result != null){
-            if(result instanceof UserDO){
-                final UserDO user = (UserDO) result;
+            if(result instanceof User){
+                final User user = (User) result;
                 user.setId( user.getId()+1 );
                 return user;
             }else if( result instanceof List){
-                final List<UserDO> userDOList = (List<UserDO>)result;
-                for( UserDO u : userDOList ){
+                final List<User> userList = (List<User>)result;
+                for( User u : userList){
                     u.setId( u.getId() + 1);
                 }
-                return userDOList;
+                return userList;
             }else{
                 throw new Exception("result不是UserDO和List<UserDO>的实例（is-a)");
             }

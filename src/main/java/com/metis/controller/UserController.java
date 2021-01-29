@@ -4,8 +4,8 @@ import com.metis.annotation.DuringTime;
 import com.metis.annotation.KthLog;
 import com.metis.config.JsonResult;
 import com.metis.controller.api.*;
-import com.metis.dao.UserMapper;
-import com.metis.entity.UserDO;
+import com.metis.dao.user.UserMapper;
+import com.metis.entity.User;
 import com.metis.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +25,7 @@ import java.util.*;
  * Request默认情况下映射所有的HTTP操作：get/post/delete...
  */
 @RequestMapping("/user")
-public class UserController<T> implements  Insert<UserDO> , Delete<Map<String, String>>, Update<UserDO>,Query, ChangeMoney {
+public class UserController<T> implements  Insert<User> , Delete<Map<String, String>>, Update<User>,Query, ChangeMoney {
     /**
      * Spring 常用的依赖注入方法:
      * 1. 构造器注入：利用构造方法的参数注入依赖
@@ -53,7 +53,7 @@ public class UserController<T> implements  Insert<UserDO> , Delete<Map<String, S
      */
     @Override
     @PostMapping(path= "/insert", consumes="application/json", produces="application/json")
-    public JsonResult<List<UserDO>> userInsert(@RequestBody UserDO t) {
+    public JsonResult<List<User>> userInsert(@RequestBody User t) {
         if( t == null ) {
             return new JsonResult<>(1,"插入的对象为空");
         }
@@ -75,7 +75,7 @@ public class UserController<T> implements  Insert<UserDO> , Delete<Map<String, S
 //            System.out.println(m.getKey()+"  "+m.getValue());
 //        }
         userService.insertUser( t );
-        List<UserDO> allUser = userService.selectAllUser();
+        List<User> allUser = userService.selectAllUser();
         System.out.println( allUser );
         return new JsonResult<>(allUser);
     }
@@ -110,17 +110,17 @@ public class UserController<T> implements  Insert<UserDO> , Delete<Map<String, S
 
     @Override
     @PutMapping("/update")
-    public JsonResult<UserDO> update(@RequestBody UserDO userDO) {
-        if( userDO == null ){
-            return new JsonResult<UserDO>(2,"参数不是UserDO类型");
+    public JsonResult<User> update(@RequestBody User user) {
+        if( user == null ){
+            return new JsonResult<User>(2,"参数不是UserDO类型");
         }
-        userService.updateUser(userDO);
-        if(userDO.getId() == null) {
-            LinkedList<UserDO> matchedUser = userService.selectUserByName( userDO.getName());
+        userService.updateUser(user);
+        if(user.getId() == null) {
+            LinkedList<User> matchedUser = userService.selectUserByName( user.getName());
             int len = matchedUser.size();
-            userDO.setId( matchedUser.get(len-1).getId());
+            user.setId( matchedUser.get(len-1).getId());
         }
-        return new JsonResult<>(userDO);
+        return new JsonResult<>(user);
     }
 
     /**
@@ -131,21 +131,21 @@ public class UserController<T> implements  Insert<UserDO> , Delete<Map<String, S
     @Override
     @KthLog("这是想要输出的日志内容,这里输入后会被自定义的 KthLogger对象的value() 拿到")
     @GetMapping("/queryByUserName")
-    public LinkedList<UserDO> queryByUserName(String name) {
+    public LinkedList<User> queryByUserName(String name) {
         return userService.selectUserByName(name);
     }
 
     @Override
     @GetMapping("/queryAllUser")
     @KthLog("查询所有的用户名单")
-    @DuringTime("oooooo")
-    public List<UserDO> queryAllUser(){
+    @DuringTime
+    public List<User> queryAllUser(){
         return userMapper.queryUserList();
     }
 
     @Override
     @RequestMapping("/changeMoney")
-    public List<UserDO> testChangeMoney() {
+    public List<User> testChangeMoney() {
         userService.changeMoney();
         return userService.selectAllUser();
     }

@@ -1,6 +1,6 @@
 package com.metis.controller.api;
 
-import com.metis.entity.UserDO;
+import com.metis.entity.User;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -18,5 +18,5 @@ public interface ChangeMoney {
      * @return
      */
     @ResponseBody
-    List<UserDO> testChangeMoney();
+    List<User> testChangeMoney();
 }

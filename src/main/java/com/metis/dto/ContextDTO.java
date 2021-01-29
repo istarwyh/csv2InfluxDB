@@ -1,6 +1,6 @@
 package com.metis.dto;
 
-import com.metis.entity.UserDO;
+import com.metis.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,5 +15,5 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ContextDTO {
-    private UserDO userDO;
+    private User user;
 }

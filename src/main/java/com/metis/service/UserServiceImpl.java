@@ -1,8 +1,8 @@
 package com.metis.service;
 
-import com.metis.dao.UserDAO;
+import com.metis.dao.user.UserDAO;
 import com.metis.dto.ContextDTO;
-import com.metis.entity.UserDO;
+import com.metis.entity.User;
 import com.metis.service.impl.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,11 +22,11 @@ public class UserServiceImpl implements UserService {
     private UserDAO UserDAO;
 
     @Override
-    public void insertUser(UserDO userDO) {
-        if( userDO.getId() == null ){
-            UserDAO.insertUserLackId(userDO.getName(), userDO.getAge(),userDO.getMoney() );
+    public void insertUser(User user) {
+        if( user.getId() == null ){
+            UserDAO.insertUserLackId(user.getName(), user.getAge(), user.getMoney() );
         }else{
-            UserDAO.insertUser(userDO.getId(), userDO.getName(),userDO.getAge(),userDO.getMoney());
+            UserDAO.insertUser(user.getId(), user.getName(), user.getAge(), user.getMoney());
         }
     }
 
@@ -36,26 +36,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(UserDO userDO) {
-        if( selectUserById( userDO.getId() ) == null ){
-            insertUser(userDO);
+    public void updateUser(User user) {
+        if( selectUserById( user.getId() ) == null ){
+            insertUser(user);
         }else{
-            UserDAO.updateUser(userDO.getName(), userDO.getAge(), userDO.getMoney(), userDO.getId());
+            UserDAO.updateUser(user.getName(), user.getAge(), user.getMoney(), user.getId());
         }
     }
 
     @Override
-    public LinkedList<UserDO> selectUserByName(String name) {
+    public LinkedList<User> selectUserByName(String name) {
         return UserDAO.findUserByName(name);
     }
 
     @Override
-    public UserDO selectUserById(Long id){
+    public User selectUserById(Long id){
         return UserDAO.findUserById(id);
     }
 
     @Override
-    public List<UserDO> selectAllUser() {
+    public List<User> selectAllUser() {
         return UserDAO.findAllUser();
     }
 
@@ -75,16 +75,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDO store(double money) {
+    public User store(double money) {
         ContextDTO context = new ContextDTO();
 
-        double account = context.getUserDO().getMoney();
+        double account = context.getUser().getMoney();
 //        account += money其实也是个语法糖,实际是下面两步
         double newAccount = account + money;
         account = newAccount;
-        context.getUserDO().setMoney(account);
+        context.getUser().setMoney(account);
 
-        return context.getUserDO();
+        return context.getUser();
     }
 
 }

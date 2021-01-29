@@ -1,7 +1,6 @@
 package com.metis.controller.api;
 
 import com.metis.config.JsonResult;
-import com.metis.entity.UserDO;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 

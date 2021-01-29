@@ -1,6 +1,6 @@
 package com.metis.service;
 
-import com.metis.dao.UserDAO;
+import com.metis.dao.user.UserDAO;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

@@ -1,7 +1,7 @@
 package com.metis.controller;
 
 import com.metis.config.JsonResult;
-import com.metis.entity.UserDO;
+import com.metis.entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,13 +49,13 @@ public class OperatorController {
      */
     @GetMapping("/getUserList")
     public String getUserList(Model model){
-        UserDO user1 = new UserDO.Builder((long)1).name("yihui").age(24).money(2233.0).build();
-        UserDO user2 = new UserDO.Builder((long)2).name("lijun").age(23).money(6666.0).build();
-        List<UserDO> userDOList = new ArrayList<>();
-        userDOList.add(user1);
-        userDOList.add(user2);
+        User user1 = new User.Builder((long)1).name("yihui").age(24).money(2233.0).build();
+        User user2 = new User.Builder((long)2).name("lijun").age(23).money(6666.0).build();
+        List<User> userList = new ArrayList<>();
+        userList.add(user1);
+        userList.add(user2);
         //  TODO:对象放到model中,但是model谁给的?model的参数又怎么传到thymeleaf页面的?
-        model.addAttribute( "u",userDOList );
+        model.addAttribute( "u", userList);
         //      指按MVC view的方式解析list,即找templates底下的userList.html
         return "userList";
     }

@@ -1,7 +1,6 @@
 package com.metis.entity;
 
 import lombok.*;
-import okhttp3.OkHttpClient.Builder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,7 +18,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 //@Builder
 @Entity // @Entity表明这是一个映射到数据库的实体类
-public class UserDO implements Serializable {
+public class User implements Serializable {
 
     /**
      * 使用JPA时，该id属性通常是数字（Long或Integer），但是使用字符串变得越来越普遍
@@ -36,7 +35,7 @@ public class UserDO implements Serializable {
     @Column(name = "money")
     private Double money;
 
-    private UserDO(Builder builder){
+    private User(Builder builder){
         this.id = builder.id;
         this.age = builder.age;
         this.name = builder.name;
@@ -63,8 +62,8 @@ public class UserDO implements Serializable {
             this.money = val;
             return this;
         }
-        public UserDO build(){
-            return new UserDO(this);
+        public User build(){
+            return new User(this);
         }
     }
     @Override

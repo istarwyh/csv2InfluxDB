@@ -1,5 +1,7 @@
 package com.metis.annotation;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * @Description: Tracer
  * @Author: YiHui
@@ -7,6 +9,7 @@ package com.metis.annotation;
  * @Version: ing
  */
 public class Tracer {
+
     public static Tracer newTracer() {
         return new Tracer();
     }
@@ -17,11 +20,14 @@ public class Tracer {
 
 
     public static class Span {
+        private final AtomicLong spanId = new AtomicLong();
         public void start() {
+            spanId.incrementAndGet();
             System.out.println("---start a span---");
         }
 
         public void end() {
+            spanId.incrementAndGet();
             System.out.println("---span finish---");
             // todo: save span in db
         }

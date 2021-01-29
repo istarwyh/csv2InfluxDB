@@ -1,9 +1,6 @@
 package com.metis.controller.api;
 
-import com.metis.config.JsonResult;
-import com.metis.entity.UserDO;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.metis.entity.User;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.LinkedList;
@@ -23,12 +20,12 @@ public interface Query {
      * @param name
      */
     @ResponseBody
-    LinkedList<UserDO> queryByUserName(String name);
+    LinkedList<User> queryByUserName(String name);
 
     /**
      * 查2
      * @return
      */
-    @ResponseBody List<UserDO> queryAllUser();
+    @ResponseBody List<User> queryAllUser();
 
 }

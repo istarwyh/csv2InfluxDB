@@ -16,18 +16,22 @@ public class DuringTimeAspect {
 
     @Pointcut("@annotation(com.metis.annotation.DuringTime)")
     private void pointcut() { }
+
     @Before("pointcut()")
     public void advice(JoinPoint joinPoint) {
         long startTime = System.currentTimeMillis();
         System.out.println("["
                 + joinPoint.getSignature().getDeclaringType().getSimpleName()
                 + "][" + joinPoint.getSignature().getName()
-                + "]-开始时间-[" + startTime + "]");
+                + "]-方法开始时间-[" + startTime + "]");
     }
 
-    @After("pointcut() && @annotation(timeLogger)")
-    public void then(KthLog timeLogger) {
+    @After("pointcut()")
+    public void then(JoinPoint joinPoint) {
         long endTime = System.currentTimeMillis();
-        System.out.printf("--- 结束时间:[ %s ]---",endTime);
+        System.out.println("["
+                + joinPoint.getSignature().getDeclaringType().getSimpleName()
+                + "][" + joinPoint.getSignature().getName()
+                + "]-方法结束时间-[" + endTime + "]");
     }
 }

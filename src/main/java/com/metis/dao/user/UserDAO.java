@@ -1,6 +1,6 @@
-package com.metis.dao;
+package com.metis.dao.user;
 
-import com.metis.entity.UserDO;
+import com.metis.entity.User;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -60,7 +60,7 @@ public interface UserDAO {
      * @return
      */
     @Select("Select * from user where name = #{name}")
-    LinkedList<UserDO> findUserByName(@Param("name") String name);
+    LinkedList<User> findUserByName(@Param("name") String name);
 
     /**
      * 通过用户名查
@@ -68,12 +68,12 @@ public interface UserDAO {
      * @return
      */
     @Select("Select * from user where id = #{id}")
-    UserDO findUserById(@Param("id") Long id);
+    User findUserById(@Param("id") Long id);
 
     /**
      * 查询所有用户信息
      * @return
      */
     @Select("select * from user order by id desc")
-    List<UserDO> findAllUser();
+    List<User> findAllUser();
 }

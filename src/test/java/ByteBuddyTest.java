@@ -22,7 +22,7 @@ import java.lang.reflect.Modifier;
  * @Version: https://my.oschina.net/u/4657223/blog/4863547
  */
 public class ByteBuddyTest {
-    public static void premain(String agentArgs, Instrumentation inst) {
+    public static void premain( Instrumentation inst,String allClassName,String methodName) {
 
         // ByteBuddy 的 API 用来修改
         AgentBuilder agentBuilder = new AgentBuilder.Default()
@@ -33,7 +33,7 @@ public class ByteBuddyTest {
 
         agentBuilder = agentBuilder
                 // 匹配目标类的全类名
-                .type(ElementMatchers.named("com.metis.controller.Greeting"))
+                .type(ElementMatchers.named(allClassName))
                 .transform(new AgentBuilder.Transformer() {
                     @Override
                     public DynamicType.Builder<?> transform(DynamicType.Builder<?> builder,
@@ -45,7 +45,7 @@ public class ByteBuddyTest {
                                 // 织入切面
                                 Advice.to(TraceAdvice.class)
                                         // 匹配目标类的方法
-                                        .on(ElementMatchers.named("sayHello"))
+                                        .on(ElementMatchers.named(methodName))
                         );
                     }
                 });
@@ -78,12 +78,12 @@ public class ByteBuddyTest {
         Instrumentation inst = ByteBuddyAgent.getInstrumentation();
 
         // 增强
-        premain(null, inst);
+        premain(inst,"com.metis.controller.Greeting","sayHello");
         // after enable --> 调用
         Class<?> greetingType = Greeting.class.
                 getClassLoader().loadClass(Greeting.class.getName());
         Method sayHello = greetingType.getDeclaredMethod("sayHello", String.class);
-        sayHello.invoke(null, "developer");
+        sayHello.invoke(new Greeting(), "WangYiHui");
     }
 
 }

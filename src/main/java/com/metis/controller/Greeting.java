@@ -7,7 +7,7 @@ package com.metis.controller;
  * @Version: ing
  */
 public class Greeting {
-    public static void sayHello(String name) {
+    public void sayHello(String name) {
         System.out.println("Hi! " + name);
     }
 }

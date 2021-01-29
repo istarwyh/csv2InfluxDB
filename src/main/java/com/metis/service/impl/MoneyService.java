@@ -1,6 +1,6 @@
 package com.metis.service.impl;
 
-import com.metis.entity.UserDO;
+import com.metis.entity.User;
 
 /**
  * @Description: MoneyService
@@ -18,5 +18,5 @@ public interface MoneyService {
      * 客户存款
      * @param money 向用户账户存款
      */
-    UserDO store(double money);
+    User store(double money);
 }

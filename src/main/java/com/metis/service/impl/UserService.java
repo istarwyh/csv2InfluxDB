@@ -1,6 +1,6 @@
 package com.metis.service.impl;
 
-import com.metis.entity.UserDO;
+import com.metis.entity.User;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +15,7 @@ public interface UserService extends MoneyService{
     /**
      * 增
      */
-    void insertUser(UserDO userDO);
+    void insertUser(User user);
 
     /**
      * 删
@@ -25,25 +25,25 @@ public interface UserService extends MoneyService{
     /**
      * 改
      */
-    void updateUser(UserDO userDO);
+    void updateUser(User user);
 
     /**
      * 查
      * @param name
      * @return
      */
-    LinkedList<UserDO> selectUserByName(String name);
+    LinkedList<User> selectUserByName(String name);
 
     /**
      * 查
      * @param id
      * @return
      */
-    UserDO selectUserById(Long id);
+    User selectUserById(Long id);
 
     /**
      * 查
      * @return
      */
-    List<UserDO> selectAllUser();
+    List<User> selectAllUser();
 }

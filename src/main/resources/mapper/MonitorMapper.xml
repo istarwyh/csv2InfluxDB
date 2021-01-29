@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.metis.dao.monitor.MonitorMapper">
+<!--define resultMap: ensure the property match the column.
+    The design of the ResultMaps is such that simple statements
+    don't require explicit result mappings at all,
+    and more complex statements require
+    no more than is absolutely necessary to describe the relationships.-->
+    <resultMap type="Monitor" id="MonitorResult">
+        <result property="traceId"    column="trace_id"    />
+        <result property="spanId"    column="span_id"    />
+    </resultMap>
+
+    <insert id="insertMonitor" parameterType="Monitor"  >
+        insert into monitor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="traceId != null  ">trace_id,</if>
+            <if test="spanId != null  ">span_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="traceId != null  ">#{traceId},</if>
+            <if test="spanId != null  ">#{spanId},</if>
+        </trim>
+    </insert>
+
+    <delete id="deleteMonitorById" parameterType="Long">
+        delete from monitor where trace_id = #{traceId}
+    </delete>
+
+    <delete id="deleteMonitorByIds" parameterType="String">
+        delete from monitor where trace_id in
+        <foreach item="traceId" collection="array" open="(" separator="," close=")">
+            #{traceId}
+        </foreach>
+    </delete>
+
+    <update id="updateMonitor" parameterType="Monitor">
+        update monitor
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="spanId != null  ">span_id = #{spanId},</if>
+        </trim>
+        where trace_id = #{traceId}
+    </update>
+
+    <sql id="selectMonitorVo">
+        select trace_id, span_id from monitor
+    </sql>
+
+    <select id="selectMonitorList" parameterType="Monitor" resultMap="MonitorResult">
+        <include refid="selectMonitorVo"/>
+        <where>
+            <if test="traceId != null "> and trace_id = #{traceId}</if>
+            <if test="spanId != null "> and span_id = #{spanId}</if>
+        </where>
+    </select>
+
+    <select id="selectMonitorById" parameterType="Long" resultMap="MonitorResult">
+        <include refid="selectMonitorVo"/>
+        where trace_id = #{traceId}
+    </select>
+</mapper>
