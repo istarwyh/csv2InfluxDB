@@ -15,7 +15,7 @@ public interface Update<T> {
     /**
      *
      * @param t
-     * @return 必须要返回JsonResult<UserDO>吗?而不能是一个泛型?
+     * @return
      */
     @ResponseBody
     JsonResult<T> update(@RequestBody T t);

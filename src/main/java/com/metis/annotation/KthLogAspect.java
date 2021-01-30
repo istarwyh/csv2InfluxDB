@@ -27,7 +27,7 @@ public class KthLogAspect {
         System.out.println("["
                 + joinPoint.getSignature().getDeclaringType().getSimpleName()
                 + "][" + joinPoint.getSignature().getName()
-                + "]-日志内容-[" + kthLogger.value() + "]");
+                + "]-日志内容-[" + kthLogger.title() + "]");
     }
 
     @After("pointcut() && @annotation(kthLogger)")

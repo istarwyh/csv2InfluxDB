@@ -1,4 +1,4 @@
-package com.metis.service;
+package com.metis.service.client;
 
 import com.influxdb.client.InfluxDBClientFactory;
 import com.metis.config.PropertyUtil;

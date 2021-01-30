@@ -12,7 +12,7 @@
         <result property="traceId"    column="trace_id"    />
         <result property="spanId"    column="span_id"    />
     </resultMap>
-
+<!--增-->
     <insert id="insertMonitor" parameterType="Monitor"  >
         insert into monitor
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -24,7 +24,7 @@
             <if test="spanId != null  ">#{spanId},</if>
         </trim>
     </insert>
-
+<!--删-->
     <delete id="deleteMonitorById" parameterType="Long">
         delete from monitor where trace_id = #{traceId}
     </delete>
@@ -35,7 +35,7 @@
             #{traceId}
         </foreach>
     </delete>
-
+<!--改-->
     <update id="updateMonitor" parameterType="Monitor">
         update monitor
         <trim prefix="SET" suffixOverrides=",">
@@ -43,7 +43,7 @@
         </trim>
         where trace_id = #{traceId}
     </update>
-
+<!--查-->
     <sql id="selectMonitorVo">
         select trace_id, span_id from monitor
     </sql>

@@ -1,4 +1,4 @@
-package com.metis.service.impl;
+package com.metis.service;
 
 import com.metis.entity.User;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * @Date: 2020-12-04 13:51
  * @version: 1.0.0
  */
-public interface UserService extends MoneyService{
+public interface UserService extends MoneyService {
     /**
      * 增
      */

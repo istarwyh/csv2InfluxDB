@@ -23,6 +23,7 @@ public class JacksonConfig {
     @ConditionalOnMissingBean(ObjectMapper.class)
     public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
         ObjectMapper objectMapper = builder.createXmlMapper(false).build();
+//        NullValue-->""
         objectMapper.getSerializerProvider().setNullValueSerializer(
                 new JsonSerializer<Object>() {
                     @Override

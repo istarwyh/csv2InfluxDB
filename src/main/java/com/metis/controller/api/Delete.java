@@ -1,6 +1,7 @@
 package com.metis.controller.api;
 
 import com.metis.config.JsonResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -20,10 +21,11 @@ public interface Delete<T> {
      * @return
      */
     @ResponseBody String deleteById(Long id);
+
     /**
-     * 返回的 JsonResult<T>会被自动转成Json
-     * @param mapParam
+     * 删除 String[] 类型的ids的数据
+     * @param ids
      * @return
      */
-    @ResponseBody JsonResult<T> deleteByMultiId(@RequestParam T mapParam);
+    @ResponseBody JsonResult<?> deleteByIds(@RequestBody String[] ids);
 }

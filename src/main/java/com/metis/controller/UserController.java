@@ -6,7 +6,7 @@ import com.metis.config.JsonResult;
 import com.metis.controller.api.*;
 import com.metis.dao.user.UserMapper;
 import com.metis.entity.User;
-import com.metis.service.impl.UserService;
+import com.metis.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.*;
 
-@Controller
+
 /**
  * 告诉Spring MVC不需要使用服务器端视图层(view)渲染对象,而应该直接返回一个ResponseBody(String类型)
  * Spring Boot 中默认使用的 Json 解析技术框架是 jackson,来自于spring-boot-starter-json 依赖
@@ -23,9 +23,11 @@ import java.util.*;
 /**
  * http请求头中需要带上"/user".
  * Request默认情况下映射所有的HTTP操作：get/post/delete...
+ * @author MBin_王艺辉istarwyh
  */
+@Controller
 @RequestMapping("/user")
-public class UserController<T> implements  Insert<User> , Delete<Map<String, String>>, Update<User>,Query, ChangeMoney {
+public class UserController<T> implements ChangeMoney, BaseController<User>{
     /**
      * Spring 常用的依赖注入方法:
      * 1. 构造器注入：利用构造方法的参数注入依赖
@@ -53,7 +55,7 @@ public class UserController<T> implements  Insert<User> , Delete<Map<String, Str
      */
     @Override
     @PostMapping(path= "/insert", consumes="application/json", produces="application/json")
-    public JsonResult<List<User>> userInsert(@RequestBody User t) {
+    public JsonResult<List<User>> insert(@RequestBody User t) {
         if( t == null ) {
             return new JsonResult<>(1,"插入的对象为空");
         }
@@ -76,7 +78,6 @@ public class UserController<T> implements  Insert<User> , Delete<Map<String, Str
 //        }
         userService.insertUser( t );
         List<User> allUser = userService.selectAllUser();
-        System.out.println( allUser );
         return new JsonResult<>(allUser);
     }
 
@@ -93,19 +94,24 @@ public class UserController<T> implements  Insert<User> , Delete<Map<String, Str
     }
 
     /**
+     * 返回的 JsonResult<T>会被自动转成Json
      * @param mapParam 1. 如果有多个参数，则用分隔&,即.../delete?k1=v1&k2=v2&k3=v3
      *                 2. 这里不能使用IdentityHashMap来实现接收"id=1&id=2"这样key相同的格式的目的,
-     *                 因为如果不是使用对象接收,则默认是LinkedHashMap接收,
-     *                 而IdentityHashMap并不是LinkedHashMap的父类,就会出现类型不匹配的错误
+     *                    因为如果不是使用对象接收,则默认是LinkedHashMap接收,
+     *                    而IdentityHashMap并不是LinkedHashMap的父类,就会出现类型不匹配的错误
      *                 3. 这里不要用Map<String,Long>这种格式接收,因为传过来的数据默认是LinkedHashMap<String,String>
      */
-    @Override
     @DeleteMapping("/delete")
-    public JsonResult<Map<String, String>> deleteByMultiId(@RequestParam Map<String, String> mapParam) {
+    public JsonResult<Map<String, String>> deleteByIds(@RequestParam Map<String, String> mapParam) {
         for( String id : mapParam.values() ) {
             userService.deleteUserById( Long.parseLong(id) );
         }
         return new JsonResult<>( mapParam );
+    }
+
+    @Override
+    public JsonResult<?> deleteByIds(@RequestBody String[] ids) {
+        return null;
     }
 
     @Override
@@ -128,18 +134,17 @@ public class UserController<T> implements  Insert<User> , Delete<Map<String, Str
      * @param name
      * @return
      */
-    @Override
-    @KthLog("这是想要输出的日志内容,这里输入后会被自定义的 KthLogger对象的value() 拿到")
+    @KthLog(title = "这是想要输出的日志内容,这里输入后会被自定义的 KthLogger对象的title() 拿到")
     @GetMapping("/queryByUserName")
-    public LinkedList<User> queryByUserName(String name) {
+    public LinkedList<User> selectByName(String name) {
         return userService.selectUserByName(name);
     }
 
+
     @Override
     @GetMapping("/queryAllUser")
-    @KthLog("查询所有的用户名单")
-    @DuringTime
-    public List<User> queryAllUser(){
+    @KthLog(title = "查询所有的用户名单")
+    public List<User> queryAll(){
         return userMapper.queryUserList();
     }
 

@@ -1,7 +1,7 @@
 package com.metis.controller;
 
 import com.metis.controller.api.Upload;
-import com.metis.service.InfluxClientBO;
+import com.metis.service.client.InfluxClientBO;
 import com.metis.dto.KeyValueDTO;
 import com.metis.paas.Utils;
 import org.springframework.stereotype.Controller;
@@ -56,10 +56,10 @@ class UploadController implements Upload<MultipartFile> {
      * MultipartFile是Spring类型,指代的是从form表单提交的文件(直接访问会被当作Get请求而无效),其中getOriginalFilename()是全名,getName()是文件名,getContentType()是文件后缀名
      */
     @PostMapping("/showUploadWeb")
-    public String showUploadWeb(String filePath, Model model){
+    private String showUploadWeb(String filePath, Model model){
             List<List<String>> csvLists = Utils.readCSV(filePath);
             List<KeyValueDTO> keyValueList = Utils.transfer(csvLists);
             model.addAttribute("lineprotocalData",keyValueList);
-            return "showOf";
+            return "upload";
     }
 }

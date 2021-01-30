@@ -18,5 +18,6 @@ public interface Insert<T> {
      * @param t
      * @return
      */
-    @ResponseBody JsonResult<List<T>> userInsert(@RequestBody T t);
+    @ResponseBody JsonResult<?> insert(@RequestBody T t);
+
 }

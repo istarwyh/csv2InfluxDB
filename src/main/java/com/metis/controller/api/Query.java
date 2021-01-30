@@ -12,20 +12,12 @@ import java.util.List;
  * @Date: 2020-10-2318:18
  * @version: 1.0.0
  */
-public interface Query {
-
-    /**
-     * 查1
-     * @return
-     * @param name
-     */
-    @ResponseBody
-    LinkedList<User> queryByUserName(String name);
+public interface Query<T> {
 
     /**
      * 查2
      * @return
      */
-    @ResponseBody List<User> queryAllUser();
+    @ResponseBody List<T> queryAll();
 
 }

@@ -1,9 +1,9 @@
-package com.metis.service;
+package com.metis.service.impl;
 
 import com.metis.dao.user.UserDAO;
 import com.metis.dto.ContextDTO;
 import com.metis.entity.User;
-import com.metis.service.impl.UserService;
+import com.metis.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

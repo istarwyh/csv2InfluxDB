@@ -1,5 +1,7 @@
 package com.metis.annotation;
 
+import com.metis.config.BusinessType;
+
 import java.lang.annotation.*;
 
 /**
@@ -11,5 +13,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface KthLog {
-    String value() default "这里居然空空如也";
+    String title() default "这里居然空空如也";
+    BusinessType businessType() default BusinessType.UNKNOWN_BEHAVIOR;
 }

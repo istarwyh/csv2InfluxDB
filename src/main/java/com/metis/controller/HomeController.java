@@ -18,7 +18,7 @@ public class HomeController {
 
     private String message;
     /**
-     * 这里需要返回view,所以不要加@ResponseBody了
+     * 这里需要返回view,所以不要加@ResponseBody
      */
     @GetMapping("/")
     public String home(Model model) {
