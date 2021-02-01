@@ -1,37 +1,41 @@
-package com.metis.config;
+package com.metis.config.exception;
+
+import com.metis.config.StatusEnum;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 /**
- * to define the corresponding enum of functional status beyond http status code
- * @author MBin_王艺辉istarwyh
+ * @Description: exceptionEnum
+ * @Author: YiHui
+ * @Date: 2021-01-30 21:53
+ * @Version: ing
  */
-@Getter
 @AllArgsConstructor
-public enum StatusEnum {
+public enum ExceptionEnum {
     /**
-     * 成功,最终状态
+     * 中间状态,需要处理-->最终状态
      */
-    SUCCESS(20000,"操作成功"),
+    LACK_PARAM(40000,"缺少必要的请求参数"),
     /**
-     * 失败,最终状态
+     * 中间状态,需要处理-->最终状态
      */
-    FAILURE(99999,"操作失败"),
-    /**
-     * 未知错误,中间状态,需要处理-->最终状态
-     */
-    UNKNOWN_ERROR(44444,"未知错误");
-
+    NULL_VALUE(50000,"数据不正常未null");
     /**
      * 返回状态码
      */
-    private final Integer code;
+    private final int code;
     /**
      * 返回描述
      */
     private final String desc;
 
+    public int code(){
+        return this.code;
+    }
+
+    public String getDesc(){
+        return this.desc;
+    }
     public static String getDescByCode(Integer code){
         if( code == null ){
             return "无";

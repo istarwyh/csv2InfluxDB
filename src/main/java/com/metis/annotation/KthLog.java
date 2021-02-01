@@ -1,6 +1,6 @@
 package com.metis.annotation;
 
-import com.metis.config.BusinessType;
+import com.metis.config.business.BusinessType;
 
 import java.lang.annotation.*;
 

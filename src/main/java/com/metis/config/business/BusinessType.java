@@ -1,4 +1,4 @@
-package com.metis.config;
+package com.metis.config.business;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

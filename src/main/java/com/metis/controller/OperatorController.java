@@ -1,6 +1,8 @@
 package com.metis.controller;
 
 import com.metis.config.JsonResult;
+import com.metis.config.business.BusinessErrorException;
+import com.metis.config.business.BusinessMsgEnum;
 import com.metis.entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,11 +18,8 @@ import java.util.concurrent.atomic.AtomicLong;
 @Controller
 @RequestMapping("/operator")
 public class OperatorController {
-
-    @GetMapping("/404") // @RequestMapping(method=GET)的简写
-    @ResponseBody public String notFound(){ return new JsonResult<>(404,"来到了没有信息的荒原").toString();}
-
     /**
+     *  没有GlobalExceptionHandler全局拦截的时候:
      *     虽然给的是index,但是会自动找/templates/下的500页面,如果没有就使用默认的404页面(包含错误信息)覆盖
      */
     @GetMapping("500")
@@ -28,6 +27,17 @@ public class OperatorController {
         // 模拟服务器运行错误
         int i = 1 / 0;
         return "index";
+    }
+
+    @GetMapping("/business")
+    public JsonResult<?> testException() {
+        try {
+            int i = 1 / 0;
+        } catch (Exception e) {
+            throw new
+                    BusinessErrorException(BusinessMsgEnum.UNEXPECTED_EXCEPTION);
+        }
+        return new JsonResult<>();
     }
 
     private static final String TEMPLATE;
@@ -38,7 +48,7 @@ public class OperatorController {
         TEMPLATE = "Hello %s!";
     }
     private final AtomicLong counter = new AtomicLong();
-    @GetMapping("/greeting")
+    @GetMapping("/greeting")// @RequestMapping(method=GET)的简写
     @ResponseBody public JsonResult<?> greeting(@RequestParam( value = "name",required = false,defaultValue = " World") String name){
         // 当被转成int后又会被boxing成Integer,这时候对于JsonResult中定义的方法 方法签名才唯一
         return new JsonResult<>((int) counter.incrementAndGet(),String.format(TEMPLATE,name));
