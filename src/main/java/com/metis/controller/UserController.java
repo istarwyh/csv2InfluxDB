@@ -2,6 +2,7 @@ package com.metis.controller;
 
 import com.metis.annotation.DuringTime;
 import com.metis.annotation.KthLog;
+import com.metis.annotation.business.Modify1;
 import com.metis.config.JsonResult;
 import com.metis.controller.api.*;
 import com.metis.dao.user.UserMapper;
@@ -144,6 +145,7 @@ public class UserController<T> implements ChangeMoney, BaseController<User>{
     @Override
     @GetMapping("/queryAllUser")
     @KthLog(title = "查询所有的用户名单")
+    @Modify1
     public List<User> queryAll(){
         return userMapper.queryUserList();
     }

@@ -19,7 +19,7 @@ public enum ExceptionEnum {
     /**
      * 中间状态,需要处理-->最终状态
      */
-    NULL_VALUE(50000,"数据不正常未null");
+    NULL_VALUE(50000,"数据不正常为null");
     /**
      * 返回状态码
      */
