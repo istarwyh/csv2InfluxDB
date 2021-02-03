@@ -31,12 +31,12 @@ class OperatorControllerTest {
 
     @BeforeEach
     public void setUp() {
-        System.out.println("----测试开始-----");
+        log.info("----测试开始-----");
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webAppContext).build();
     }
     @AfterEach
     public void tearDown() {
-        System.out.println("----测试结束----");
+        log.info("----测试结束----");
     }
     @Test
     void greeting() throws Exception {

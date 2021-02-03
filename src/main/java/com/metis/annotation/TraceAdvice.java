@@ -21,7 +21,7 @@ public class TraceAdvice {
     }
 
     /**
-     * @param target 目标类实例--一个类被AOP织入增强后就编程了代理类Proxy
+     * @param target 目标类实例--一个类被AOP织入增强后就变成了代理类Proxy
      * @param clazz  目标类class
      * @param method 目标方法
      * @param args   目标方法参数

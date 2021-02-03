@@ -8,6 +8,6 @@ package com.metis.controller;
  */
 public class Greeting {
     public void sayHello(String name) {
-        System.out.println("Hi! " + name);
+        System.out.println("Hi! [This is a test]" + name);
     }
 }

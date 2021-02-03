@@ -13,3 +13,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 #    %2b 是 “+” 的转义，所以GMT%2b8即”GMT+8“这个北京时间
     url: jdbc:mysql://127.0.0.1:3306/tmp?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
+# slf4j的日志配置
+logging:
+  config: logback.xml
+  level:
+    com.metis.dao: trace

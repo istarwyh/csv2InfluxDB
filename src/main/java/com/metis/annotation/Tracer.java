@@ -23,12 +23,12 @@ public class Tracer {
         private final AtomicLong spanId = new AtomicLong();
         public void start() {
             spanId.incrementAndGet();
-            System.out.println("---start a span---");
+            System.out.printf("---start a span[%s]---\n",spanId);
         }
 
         public void end() {
             spanId.incrementAndGet();
-            System.out.println("---span finish---");
+            System.out.printf("---span[%s] finish----\n",spanId);
             // todo: save span in db
         }
     }

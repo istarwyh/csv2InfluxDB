@@ -1,5 +1,6 @@
 package com.metis.paas;
 
+import com.metis.annotation.DuringTime;
 import org.junit.jupiter.api.Test;
 
 import com.github.istarwyh.Array;
@@ -70,7 +71,7 @@ public class SolutionTest {
         }
         return dummyNode.next;
     }
-
+    @DuringTime
     public void reorderList(ListNode head) {
         if (head == null || head.next == null)
             return;

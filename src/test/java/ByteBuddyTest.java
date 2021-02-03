@@ -24,7 +24,7 @@ import java.lang.reflect.Modifier;
 public class ByteBuddyTest {
     public static void premain( Instrumentation inst,String allClassName,String methodName) {
 
-        // ByteBuddy 的 API 用来修改
+        // 用ByteBuddy 的 API 来修改已有程序
         AgentBuilder agentBuilder = new AgentBuilder.Default()
                 .with(AgentBuilder.PoolStrategy.Default.EXTENDED)
                 .with(AgentBuilder.InitializationStrategy.NoOp.INSTANCE)
@@ -53,7 +53,7 @@ public class ByteBuddyTest {
     }
 
     /**
-     * generate "Hello World" program at runtimes
+     * generate "greeting" program at runtimes
      * @throws Exception
      */
     @Test
@@ -72,6 +72,10 @@ public class ByteBuddyTest {
         System.out.println(method.invoke(helloWorld));
     }
 
+    /**
+     * test the "premain" program
+     * @throws Exception
+     */
     @Test
     public void test2() throws Exception {
         ByteBuddyAgent.install();
@@ -85,5 +89,4 @@ public class ByteBuddyTest {
         Method sayHello = greetingType.getDeclaredMethod("sayHello", String.class);
         sayHello.invoke(new Greeting(), "WangYiHui");
     }
-
 }

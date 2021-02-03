@@ -11,6 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 //TODO:Test方法在启动上是不是就相当于main方法?
+//当单测主方法结束的时候里面的线程也要结束，不管是不是执行完成
 class UtilsTest {
     //    实例变量默认被全部对象及对象的方法共享,即变量作用域在类中--只不过是给过程式编程中的全局变量找了在OO中的意义
     private static final String folderPath = "./repository/";
