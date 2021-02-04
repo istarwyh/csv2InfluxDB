@@ -1,4 +1,4 @@
-package com.metis.annotation;
+package com.metis.annotation.log;
 
 import com.metis.config.business.BusinessType;
 

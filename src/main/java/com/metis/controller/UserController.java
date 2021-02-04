@@ -1,7 +1,6 @@
 package com.metis.controller;
 
-import com.metis.annotation.DuringTime;
-import com.metis.annotation.KthLog;
+import com.metis.annotation.log.KthLog;
 import com.metis.annotation.business.Modify1;
 import com.metis.config.JsonResult;
 import com.metis.controller.api.*;

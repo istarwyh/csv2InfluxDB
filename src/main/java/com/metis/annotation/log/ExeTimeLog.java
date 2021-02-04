@@ -1,4 +1,4 @@
-package com.metis.annotation;
+package com.metis.annotation.log;
 
 import java.lang.annotation.*;
 
@@ -11,6 +11,6 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface DuringTime {
+public @interface ExeTimeLog {
     String value() default "这里居然空空如也";
 }
