@@ -7,6 +7,7 @@ import com.metis.dto.ContextDTO;
 import com.metis.entity.User;
 import com.metis.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -67,13 +68,15 @@ public class UserServiceImpl implements UserService {
      *          事务在遇到非RuntimeException时也回滚
      *      * 如果转账中途出了意外 Snail 和 Daisy 的钱都不会改变
      *      * 如果参数readOnly值为true，则与方法相关的事务将在方法结束时取消（回滚）。在这种情况下该方法根本无法更改数据库中的信息。
-     * Spring事务的底层是Spring AOP,这里的方法
-     *  - 类中方法内直接调用changeMoney()事务不会生效,因为是被代理后再生效,可以自己注入自己UserServiceImpl或放到其他类中
-     *  - 需要被代理(修改),权限不可为private
-     *  - 需要被重写,不可为final
+     * 原理：Spring事务使用AOP动态代理运用代理模式,简单说便是继承当前类创建代理类并重写方法.
+     *     - 需要被重写,不可为final/static/private
+     *     - 类中方法内直接调用changeMoney()事务不会生效,直接调用==this.changeMoney(),传递的是未代理前的对象指针
+     *       为了拿到代理后的对象,可以自己注入UserServiceImpl(实际注入的是UserServiceImplProxy)或放到其他类中
+     *
+     * Propagation.REQUIRES_NEW的意思是若前面方法有事务存在，会将前面事务挂起，再重启一个新事务
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
     public void changeMoney() {
         UserDAO.updateUser("Snail", 22, 2000.0, 3);
         // 模拟转账过程中可能遇到的意外状况

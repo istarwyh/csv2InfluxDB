@@ -7,7 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 
 /**
  * 告诉Spring递归地搜索metis包和其子包中直接或间接标记为@Component的类。
- * @author wangyihui
  */
 @ComponentScan
 /**
@@ -20,6 +19,7 @@ import org.springframework.context.annotation.ComponentScan;
  * 声明这是一个注解，@SpringBootConfiguration 封装了一些定义注解的注解(元注解)，如注解适用类型与生命周期等
  *     --> 用一个@SpringBootApplication也就可以了,因为 @SpringBootApplication =
  *     @SpringBootConfiguration + @EnableAutoConfiguration + @ComponentScan
+ * @author MBin_王艺辉istarwyh
  */
 @SpringBootConfiguration
 public class MetisApplication {

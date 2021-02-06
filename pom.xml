@@ -3,7 +3,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-<!--        快速导入开发一个Web容器所需要的依赖-->
+<!--        启动时会去依赖的starter包中寻找/META-INF/spring.factories文件，然后根据spring.factories中配置的Jar包扫描
+项目中所依赖的Jar包,SPI机制(Service Provider Interface,类似IOC)配合@Conditional系列注解实现精确配置加载Bean-->
 <!--        要是没有这个parent,底下的spring-boot-starter-web这种依赖集合是不起作用的-->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>

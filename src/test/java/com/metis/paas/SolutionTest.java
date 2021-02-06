@@ -1,6 +1,7 @@
 package com.metis.paas;
 
 import com.metis.annotation.log.ExeTimeLog;
+import com.metis.paas.solution.SpringUtil;
 import org.junit.jupiter.api.Test;
 
 import com.github.istarwyh.Array;
@@ -8,6 +9,11 @@ import com.github.istarwyh.ListNode;
 import com.github.istarwyh.factory.ListNodes;
 
 import lombok.var;
+import org.springframework.aop.framework.AopContext;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Service;
+
+import java.net.Socket;
 
 /**
  * @Description: SolutionTest
@@ -15,14 +21,31 @@ import lombok.var;
  * @Date: 2020-12-04 17:20
  * @version: 1.0.0
  */
-
+@Service
+@SpringBootTest
 public class SolutionTest {
+
     @Test
     void test() {
         ListNode l1 = ListNode.createListNodeByArray(Array.getArr(1, 2, 3, 4));
         ListNode l2 = ListNode.createListNodeByArray(Array.getArr(1, 3, 4));
-        reorderList(l1);
+        //        Error: Set 'exposeProxy' property on Advised to 'true' to make it available, and ensure that
+        //              AopContext.currentProxy() is invoked in the same thread as the AOP invocation context.
+        //        ((SolutionTest) AopContext.currentProxy()).reorderList(l1);
+
+//        by this way, Exception:
+//          in thread "task-2" java.lang.IllegalStateException: EntityManagerFactory is closed
+//          The reason may be that the thread invoked by test() is closed compulsorily when test() closed meanwhile the JPA EntityManager is closed,
+//              but due to @SpringBootTest Spring want to initialize EntityManagerFactory after that.
+        getProxyObj().reorderList(l1);
         System.out.println(l1);
+    }
+
+    /**
+     * get the proxy Object by the runtime class of this Object
+     */
+    private SolutionTest getProxyObj() {
+        return SpringUtil.getBean(this.getClass());
     }
 
     public void reorderListWithLength(ListNode head) {
@@ -71,17 +94,19 @@ public class SolutionTest {
         }
         return dummyNode.next;
     }
+
     @ExeTimeLog
     public void reorderList(ListNode head) {
         if (head == null || head.next == null)
             return;
         ListNode endNode1 = getSplitNode(head);
         ListNode startNode2 = endNode1.next;
-        ListNode l1 = getFirstPart(head,endNode1);
+        ListNode l1 = getFirstPart(head, endNode1);
         ListNode l2 = reverseListAsSecondPart(startNode2);
         merge(l1, l2);
     }
-    private ListNode getSplitNode(ListNode head){
+
+    private ListNode getSplitNode(ListNode head) {
         ListNode prev = null, slow = head, fast = head;
         while (fast != null && fast.next != null) {
             prev = slow;
@@ -93,13 +118,14 @@ public class SolutionTest {
 
     /**
      * 切割得到第一部分链表
+     * 
      * @param head 链表原始头结点
      * @param endNode 切割后第一部分链表尾结点
      * @return
      */
     private ListNode getFirstPart(ListNode head, ListNode endNode) {
-//        注释上写why
-//        保证第一部分与第二部分切断联系
+        //        注释上写why
+        //        保证第一部分与第二部分切断联系
         endNode.next = null;
         return head;
     }
@@ -121,7 +147,6 @@ public class SolutionTest {
     }
 
     /**
-     *
      * @param l1 head所在的链表，同时也是切割后第一部分链表
      * @param l2 切割后第二部分链表
      */
