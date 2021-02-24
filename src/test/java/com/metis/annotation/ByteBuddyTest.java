@@ -1,3 +1,5 @@
+package com.metis.annotation;
+
 import com.metis.annotation.TraceAdvice;
 import com.metis.controller.Greeting;
 import net.bytebuddy.ByteBuddy;
@@ -16,7 +18,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 /**
- * @Description: ByteBuddyTest
+ * @Description: com.metis.annotation.ByteBuddyTest
  * @Author: YiHui
  * @Date: 2021-01-18 23:23
  * @Version: https://my.oschina.net/u/4657223/blog/4863547

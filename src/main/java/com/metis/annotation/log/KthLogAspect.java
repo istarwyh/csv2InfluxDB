@@ -9,6 +9,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 /**
+ * 这里不使用Slf4j,那么日志就不会进入日志文件,在控制台输出就是输出了
  * @author MBin_王艺辉istarwyh
  */
 @Component

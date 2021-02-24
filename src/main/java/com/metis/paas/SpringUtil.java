@@ -1,4 +1,4 @@
-package com.metis.paas.solution;
+package com.metis.paas;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

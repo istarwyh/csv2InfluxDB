@@ -4,6 +4,7 @@ import com.metis.config.JsonResult;
 import com.metis.config.business.BusinessErrorException;
 import com.metis.config.business.BusinessMsgEnum;
 import com.metis.entity.User;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,12 +16,20 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 
+/**
+ * @author MBin_王艺辉istarwyh
+ * 如果没有对应的映射,就返回默认的404页面/json(包含错误信息)
+ */
 @Controller
 @RequestMapping("/operator")
 public class OperatorController {
     /**
-     *  没有GlobalExceptionHandler全局拦截的时候:
-     *     虽然给的是index,但是会自动找/templates/下的500页面,如果没有就使用默认的404页面(包含错误信息)覆盖
+     *  没有GlobalExceptionHandler全局拦截的时候, "i = 1 / 0" --> GET "/error", parameters={}
+     *      org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#errorHtml:
+     *     - 对于浏览器访问,会自动找/templates/下的500页面;如果没有,会报一个默认的whitelabel error view
+     *     - 对于APP访问,会以json形式报全部的error detail
+        设置了自适应的GlobalExceptionHandler:
+           -
      */
     @GetMapping("500")
     public String serverError(){
@@ -29,8 +38,12 @@ public class OperatorController {
         return "index";
     }
 
+    /**
+     * 模拟抛出 BusinessMsgEnum.UNEXPECTED_EXCEPTION 业务异常
+     * @return
+     */
     @GetMapping("/business")
-    public JsonResult<?> testException() {
+    public JsonResult<?> testBusinessException() {
         try {
             int i = 1 / 0;
         } catch (Exception e) {

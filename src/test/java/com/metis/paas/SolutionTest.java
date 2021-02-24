@@ -1,7 +1,6 @@
 package com.metis.paas;
 
 import com.metis.annotation.log.ExeTimeLog;
-import com.metis.paas.solution.SpringUtil;
 import org.junit.jupiter.api.Test;
 
 import com.github.istarwyh.Array;
@@ -9,11 +8,8 @@ import com.github.istarwyh.ListNode;
 import com.github.istarwyh.factory.ListNodes;
 
 import lombok.var;
-import org.springframework.aop.framework.AopContext;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Service;
-
-import java.net.Socket;
 
 /**
  * @Description: SolutionTest

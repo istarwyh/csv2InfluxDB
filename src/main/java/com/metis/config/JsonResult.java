@@ -1,7 +1,10 @@
 package com.metis.config;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,8 +14,11 @@ import org.springframework.stereotype.Repository;
  * @param <T>
  * 如果不加@Getter,那么JsonResult中的属性不能从外面访问,那么JsonResult不能被自动转成json
  * 而没有@Setter,只是没有了提供修改的口子
- */
+ * 有了@SuperBuilder 允许即使继承父类也可以使用lambda,连new都隐藏起来了;注意Builder依赖全参构造器
+*/
 @Getter
+@Builder
+@AllArgsConstructor
 public class JsonResult<T> {
     private T data;
     private final Integer code;

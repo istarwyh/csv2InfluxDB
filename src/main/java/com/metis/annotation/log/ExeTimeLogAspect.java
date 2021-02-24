@@ -1,8 +1,5 @@
 package com.metis.annotation.log;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -42,9 +39,11 @@ public class ExeTimeLogAspect {
     public void then(JoinPoint joinPoint) {
         stopWatch.stop();
         long exeTime = stopWatch.getTotalTimeMillis();
+        System.out.println();
         logger.info("["
                 + joinPoint.getSignature().getDeclaringType().getSimpleName()
                 + "][" + joinPoint.getSignature().getName()
                 + "]-method took [" + exeTime + "ms]");
+        System.out.println();
     }
 }
