@@ -28,8 +28,7 @@ public class OperatorController {
      *      org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#errorHtml:
      *     - 对于浏览器访问,会自动找/templates/下的500页面;如果没有,会报一个默认的whitelabel error view
      *     - 对于APP访问,会以json形式报全部的error detail
-        设置了自适应的GlobalExceptionHandler:
-           -
+        然后我们设置自适应的GlobalExceptionHandler,相比原本的把错误信息留在日志里,不给外面的错误信息
      */
     @GetMapping("500")
     public String serverError(){

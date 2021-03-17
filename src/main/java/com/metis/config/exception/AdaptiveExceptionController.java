@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.metis.config.JsonResult;
 
 /**
- * @Description: 仿造BasicErrorController 实现自适应异常
+ * @Description: 仿造BasicErrorController 实现自适应异常(如果是浏览器请求返回网页,否则返回数据)
  *               GlobalExceptionHandler forward对应请求被这个Controller拦截
  * @Author: wx:istarwyh
  * @Date: 2021-02-24 19:44
@@ -51,8 +51,7 @@ public class AdaptiveExceptionController {
         }
         try {
             return HttpStatus.valueOf(statusCode);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return HttpStatus.INTERNAL_SERVER_ERROR;
         }
     }

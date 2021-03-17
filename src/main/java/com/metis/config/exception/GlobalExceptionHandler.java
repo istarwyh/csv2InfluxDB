@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     /**
      * 打印log
      */
-    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler1.class);
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
      * 系统异常 预期以外异常
