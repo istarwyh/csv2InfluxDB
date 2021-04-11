@@ -29,6 +29,13 @@ public class SpringUtil implements ApplicationContextAware {
         return applicationContext.getBean(name);
     }
 
+    /**
+     * get the proxy Object by the runtime class of this Object
+     */
+    public static <T> T getProxyObj(Class<T> cla) {
+        return applicationContext.getBean(cla);
+    }
+
     public static String getProperty(String key) {
         return applicationContext.getBean(Environment.class).getProperty(key);
     }

@@ -1,15 +1,15 @@
 package com.metis.paas;
 
-import com.metis.annotation.log.ExeTimeLog;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Service;
 
 import com.github.istarwyh.Array;
 import com.github.istarwyh.ListNode;
-import com.github.istarwyh.factory.ListNodes;
-
-import lombok.var;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.stereotype.Service;
+import com.metis.annotation.log.ExeTimeLog;
 
 /**
  * @Description: SolutionTest
@@ -23,70 +23,143 @@ public class SolutionTest {
 
     @Test
     void test() {
-        ListNode l1 = ListNode.createListNodeByArray(Array.getArr(1, 2, 3, 4));
+        ListNode l1 = ListNode.createListNodeByArray(Array.getArr(1));
         ListNode l2 = ListNode.createListNodeByArray(Array.getArr(1, 3, 4));
         //        Error: Set 'exposeProxy' property on Advised to 'true' to make it available, and ensure that
         //              AopContext.currentProxy() is invoked in the same thread as the AOP invocation context.
         //        ((SolutionTest) AopContext.currentProxy()).reorderList(l1);
 
-//        by this way, Exception:
-//          in thread "task-2" java.lang.IllegalStateException: EntityManagerFactory is closed
-//          The reason may be that the thread invoked by test() is closed compulsorily when test() closed meanwhile the JPA EntityManager is closed,
-//              but due to @SpringBootTest Spring want to initialize EntityManagerFactory after that.
-        getProxyObj().reorderList(l1);
-        System.out.println(l1);
+        //        by this way, Exception:
+        //          in thread "task-2" java.lang.IllegalStateException: EntityManagerFactory is closed
+        //          The reason may be that the thread invoked by test() is closed compulsorily when test() closed meanwhile the JPA EntityManager is closed,
+        //              but due to @SpringBootTest Spring want to initialize EntityManagerFactory after that.
+        //        SpringUtil.getProxyObj(this.getClass()).reorderList(l1);
+        System.out.println(rotateRight(l1,1));
     }
 
-    /**
-     * get the proxy Object by the runtime class of this Object
-     */
-    private SolutionTest getProxyObj() {
-        return SpringUtil.getBean(this.getClass());
-    }
+    public  ListNode rotateRight(ListNode head, int k) {
+            assert(k>=0);
+            if( k == 0 || head == null) return head;
+            ListNode dummyNode = new ListNode(-1);
+            dummyNode.next = head;
+            ListNode pre = dummyNode;
+            ListNode cur = dummyNode;
+            ListNode end = dummyNode;
+            ListNode tmp = head;
 
-    public void reorderListWithLength(ListNode head) {
-        if (head == null || head.next == null)
-            return;
-        int nodeNo = length(head) - 1;
-        int mid = (int) Math.floor(nodeNo / 2.0);
-        ListNode splitNode = getSplitNode(head, mid);
-        ListNode secondPartStartNode = splitNode.next;
-        var p1 = getFirstPart(head, splitNode);
-        var p2 = reverseListAsSecondPart(secondPartStartNode);
-        head = mergeTwo(nodeNo + 1, p1, p2);
-    }
-
-    private int length(ListNode head) {
-        int len = 0;
-        ListNode cur = head;
-        while (cur != null) {
-            cur = cur.next;
-            len++;
-        }
-        return len;
-    }
-
-    private ListNode getSplitNode(ListNode head, int mid) {
-        ListNode cur = head;
-        for (int i = 0; i < mid; i++) {
-            cur = cur.next;
-        }
-        return cur;
-    }
-
-    private ListNode mergeTwo(int len, ListNode p1, ListNode p2) {
-        int count = 0;
-        var dummyNode = ListNodes.create(-1);
-        while (count < len) {
-            if (count % 2 == 0) {
-                dummyNode.next = p1;
-                p1 = p1.next;
-            } else {
-                dummyNode.next = p2;
-                p2 = p2.next;
+            int len = 0;
+            while(tmp != null){
+                tmp = tmp.next;
+                len++;
             }
-            count++;
-            dummyNode = dummyNode.next;
+            k = k> len ? k%len : k;
+
+//            让end先多走一步
+            end = end.next;
+            for( int i=0;i< k-1;i++){
+                cur = cur.next;
+                end = end.next;
+            }
+
+            while( end != null ){
+//                旋转元素的头一个结点
+                pre = pre.next;
+//                尾结点
+                cur = cur.next;
+//                空结点
+                end = end.next;
+            }
+            ListNode retNode;
+            assert (pre != null);
+            if( pre.next == null )
+                retNode = dummyNode.next;
+            else{
+                retNode = pre.next;
+            }
+            if( cur != null ) {
+                cur.next = dummyNode.next;
+                pre.next = null;
+            }
+            return retNode;
+    }
+
+    public int findKthLargest(int[] nums, int k) {
+        if (nums == null || nums.length == 0 || k < 1)
+            return -1;
+        int lo = 0;
+        int hi = nums.length - 1;
+        int requiredIndex = nums.length - k;
+        while (true) {
+            int j = partition(nums, lo, hi);
+            if (j > requiredIndex) {
+                hi = j - 1;
+            } else if (j < requiredIndex) {
+                lo = j + 1;
+            } else {
+                return nums[j];
+            }
+        }
+    }
+
+    public int partition(int[] nums, int lo, int hi) {
+        if (lo >= hi) {
+            return lo;
+        }
+        int i = lo;
+        int j = hi + 1;
+        int pivot = nums[lo];
+        while (true) {
+            while (less(nums[++i], pivot)) {
+                if (i == hi)
+                    break;
+            }
+            while (less(pivot, nums[--j])) {
+                if (j == lo)
+                    break;
+            }
+            if(i >= j){
+                break;
+            }
+            swap(nums,i,j);
+        }
+        swap(nums,lo,j);
+        return j;
+    }
+    public void swap(int[] nums,int i,int j ){
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+    public boolean less(int a, int b) {
+        return a < b;
+    }
+
+    public ArrayList<Integer> GetLeastNumbers_Solution(int[] input, int k) {
+        if (k > input.length)
+            return new ArrayList<>();
+        Arrays.sort(input);
+        ArrayList<Integer> l = new ArrayList<Integer>(16);
+        for (int i : Arrays.copyOfRange(input, 0, 4)) {
+            l.add(i);
+        }
+        return l;
+    }
+
+    public ListNode swapPairs(ListNode head) {
+        if (head == null)
+            return null;
+        ListNode dummyNode = new ListNode();
+        dummyNode.next = head;
+        ListNode pre = dummyNode;
+        while (pre.next != null && pre.next.next != null) {
+            ListNode cur = pre.next;
+            ListNode next = cur.next;
+            //
+            cur.next = next.next;
+            next.next = cur;
+            pre.next = next;
+
+            pre = cur;
         }
         return dummyNode.next;
     }
