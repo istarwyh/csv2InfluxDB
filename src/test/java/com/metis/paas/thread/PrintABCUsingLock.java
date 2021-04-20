@@ -1,11 +1,5 @@
 package com.metis.paas.thread;
 
-import com.github.istarwyh.UserRejectHandler;
-import com.github.istarwyh.UserThreadFactory;
-
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -21,7 +15,7 @@ public class PrintABCUsingLock {
      * 控制打印次数
      */
     private final int  times;
-    private Lock       lock  = new ReentrantLock();
+    private final Lock       lock  = new ReentrantLock();
     /**
      * 当前状态值,保证三个线程交替打印
      */
@@ -48,7 +42,9 @@ public class PrintABCUsingLock {
                 lock.unlock();
             }
         }
-//        todo:下面这段代码为什么不行?已知应该是Thread-C拿不到state变为2的值,因为加上volatile是可行的(虽然不是原子操作)
+//        todo:下面这段代码为什么不行?
+//         已知应该是Thread-C拿不到state变为2的值,因为加上volatile是可行的(虽然不是原子操作)
+//            因为需要保证state的可见性吗?
 //        for (int i = 0; i < times;) {
 //            if (state % 3 == targetNum){
 //                lock.lock();
