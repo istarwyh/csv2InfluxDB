@@ -217,7 +217,7 @@ predictor = Predictor(model, batch_size=config.batch_size, n_z=config.test_n_z,
 - bidSPOT类:在单变量数据集运行DSPOT算法(upper and lower bounds)
 
 **学习思路**
-![微信图片_20200512095727](https://gitee.com/istarwyh/images/raw/master/1589852213_20200512100014351_27868.jpg =600x)
+![微信图片_20200512095727](https://gitee.com/istarwyh/images/raw/master/1589852213_20200512100014351_27868.jpg)
 ## 4.7. spot.py
 
 - SPOT类:在单变量数据集上运行SPOT算法(upper  bounds)
