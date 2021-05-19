@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- 下面这一行相当于是th的依赖-->
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -8,7 +8,9 @@
 <body>
 <!--@{}这样的语法允许存在多个相同路径或路径包含的情况进行映射-->
 <form method="POST" th:action="@{/}">
-    <input name="content" type="text"/>
+    <label>
+        <input name="content" type="text"/>
+    </label>
     <input type="submit"/>
 </form>
 
