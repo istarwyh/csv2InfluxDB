@@ -39,7 +39,6 @@ public class UserController<T> implements ChangeMoney, BaseController<User>{
     private UserService userService;
 //    private UserController(UserService userService) {
 //        this.userService = userService;
-//    }
 
     /**
      * Spring提供的@Autowired,即它是特定IoC提供的特定注解，这就导致了应用与框架的强绑定，一旦换用了其他IOC框架是不能够支持注入的。
@@ -139,7 +138,6 @@ public class UserController<T> implements ChangeMoney, BaseController<User>{
     public LinkedList<User> selectByName(String name) {
         return userService.selectUserByName(name);
     }
-
 
     @Override
     @GetMapping("/queryAllUser")

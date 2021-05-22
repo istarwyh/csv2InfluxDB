@@ -23,8 +23,7 @@ import com.metis.service.IMonitorService;
  */
 @Controller
 @RequestMapping("/monitor")
-public class MonitorController implements BaseController<Monitor>
-{
+public class MonitorController implements BaseController<Monitor> {
 
     @Resource
     private IMonitorService monitorService;

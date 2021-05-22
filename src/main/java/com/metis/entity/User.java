@@ -66,6 +66,7 @@ public class User implements Serializable {
             return new User(this);
         }
     }
+
     @Override
     public String toString() {
         return "User{" +

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class HomeController {
 
-
     private String message;
     /**
      * 这里需要返回view,所以不要加@ResponseBody
