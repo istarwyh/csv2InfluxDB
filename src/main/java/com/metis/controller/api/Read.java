@@ -12,7 +12,7 @@ import java.util.List;
  * @Date: 2020-10-2318:18
  * @version: 1.0.0
  */
-public interface Query<T> {
+public interface Read<T> {
 
     /**
      * 查2

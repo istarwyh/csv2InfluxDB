@@ -12,7 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface Upload<T> {
     /**
-     * MultipartFile是Spring类型，代表HTML中form data方式上传的文件，包含二进制数据+文件名称。
-     */
+     *
+     * @param file MultipartFile是Spring类型，代表HTML中form data方式上传的文件，包含二进制数据+文件名称。
+     * @param model 模型数据Map,用于模板中数据绑定
+     * @return 逻辑视图名称
+     **/
     String upload(@RequestParam("file") T file, Model model);
 }

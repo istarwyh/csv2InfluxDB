@@ -12,7 +12,7 @@ import java.util.List;
  * @Date: 2020-11-21 22:19
  * @Version: ing
  */
-public interface Insert<T> {
+public interface Create<T> {
     /**
      * 增
      * @param t
