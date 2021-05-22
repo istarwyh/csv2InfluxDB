@@ -1,4 +1,4 @@
-package com.metis.config;
+package com.metis.paas;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,6 @@ public class PropertyUtil {
         props = new Properties();
         InputStream in = null;
         try {
-
             in = PropertyUtil.class.getClassLoader().
                     getResourceAsStream("application.properties");
             props.load(in);

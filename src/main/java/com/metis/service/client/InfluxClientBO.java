@@ -1,7 +1,7 @@
 package com.metis.service.client;
 
 import com.influxdb.client.InfluxDBClientFactory;
-import com.metis.config.PropertyUtil;
+import com.metis.paas.PropertyUtil;
 import com.metis.dto.LineProtocolDTO;
 import com.influxdb.client.WriteApi;
 import com.influxdb.client.domain.WritePrecision;
@@ -58,7 +58,7 @@ public class InfluxClientBO {
     /**
      *  * TODO:为什么@Autowired不能用于静态域与方法
      *  这里不应该因为参数多就选择用一个类把参数包起来。
-     *  因为通过工厂方法生产InfluxDBClient,区别只是V1,V2,InfluxDBClient本身已经是工厂类的对象
+     *  因为通过工厂方法生产InfluxDBClient,区别只是V1,V2. InfluxDBClient本身已经是工厂类的对象
      *      而两个版本的客户端并没有共性，不能抽象出类，即参数再多也成为不了某个新公共的类成员或对象属性
      */
     private WriteApi getWriteApi(){

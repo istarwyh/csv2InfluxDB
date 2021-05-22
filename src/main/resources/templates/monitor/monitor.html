@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" xmlns:th="http://www.thymeleaf.org" >
 <head>
+<!--	include不能被解析,可能说明模板过期了-->
 	<th:block th:include="include :: header('info of monitor列表')" />
+	<title>Monitor</title>
 </head>
 <body class="gray-bg">
      <div class="container-div">

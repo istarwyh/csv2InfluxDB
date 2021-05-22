@@ -552,8 +552,11 @@ public static class Mem {
 [^冷热数据分离方案]:[蘑菇街Kafka](https://juejin.im/post/5e1bad1ce51d453cee48c976)
 [^成熟]:[腾讯三大运维开源项目齐聚“OSCAR开源先锋日”](https://segmentfault.com/a/1190000016749190)
 [^织云]:[织云 Metis：看腾讯怎么做智能运维](https://zhuanlan.zhihu.com/p/36333033)
+
+
+
 # csv2InfluxDB
-a service for transfering csv to InfluxDB
+a service for transferring csv to InfluxDB
 ## Configuration
 In `application.properties`:
 
@@ -570,7 +573,7 @@ spring.influx.bucket=05d5f0d32448f000
 spring.influx.cloudUrl=https://us-central1-1.gcp.cloud2.influxdata.com
 filePath=./repository/test.csv
 ```
-## Other Mapper:
+## Other Mapper
 This can be imported by Postman:
 ```json5
 {
@@ -750,4 +753,3 @@ This can be imported by Postman:
 		}
 	]
 }
-```

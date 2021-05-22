@@ -1,14 +1,17 @@
 package com.metis.paas;
 
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import org.junit.jupiter.api.Test;
+
 import com.github.istarwyh.UserRejectHandler;
 import com.github.istarwyh.UserThreadFactory;
 import com.metis.paas.thread.OddEvenPrinter;
 import com.metis.paas.thread.PrintABCUsingLock;
 import com.metis.paas.thread.PrintABCUsingWaitNotify;
-import org.junit.jupiter.api.Test;
-
-import java.util.Date;
-import java.util.concurrent.*;
 
 /**
  * @Description: ThreadTest
