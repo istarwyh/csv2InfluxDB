@@ -9,11 +9,11 @@ import java.util.List;
 
 /**
  * 这里是将sql语句写在Java代码中
- * 还有一种是写在xml中
+ * 还有一种是写在xml中:复杂的 SQL与代码分开
  */
 @Mapper
 /**
- * 2.0以上,@Repository其将数据访问(DO)层的类标识为Spring Bean
+ * 2.0以上,@Repository其将数据访问(DAO)层的类标识为Spring Bean
  * 并将所标注的类中抛出的数据访问异常封装为 Spring 的数据访问异常类型
  */
 @Repository

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!--通过namespace就实现了对对应接口的映射。这样就分离了sql代码与接口;每一行数据对应的都是一个实体类UserDO-->
+<!--通过namespace就实现了对对应接口的映射。这样就分离出了接口以及接口的实现-sql代码-->
 <mapper namespace="com.metis.dao.user.UserMapper">
+<!--这一行数据绑定了一个实体类UserDO-->
     <select id="queryUserList" resultType="User">
         select * from user
+    </select>
+    <select id="findUserByName" parameterType="String" resultType="User">
+        SELECT * FROM user WHERE name = #{name}
     </select>
 </mapper>
