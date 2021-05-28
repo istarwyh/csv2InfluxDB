@@ -1,4 +1,4 @@
-package com.metis.paas;
+package com.metis.infrastructure;
 
 import com.metis.config.exception.NonBusinessRuntimeException;
 import org.apache.commons.lang3.ObjectUtils;

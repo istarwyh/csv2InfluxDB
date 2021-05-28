@@ -1,4 +1,4 @@
-package com.metis.paas;
+package com.metis.infrastructure;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

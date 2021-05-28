@@ -1,4 +1,4 @@
-package com.metis.paas;
+package com.metis.infrastructure;
 
 
 import com.metis.dto.KeyValueDTO;

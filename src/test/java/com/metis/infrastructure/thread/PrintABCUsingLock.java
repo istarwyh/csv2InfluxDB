@@ -1,4 +1,4 @@
-package com.metis.paas.thread;
+package com.metis.infrastructure.thread;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;

@@ -13,10 +13,4 @@ public interface MoneyService {
      * 测试钱财转账中出现的错误
      */
     void changeMoney();
-
-    /**
-     * 客户存款
-     * @param money 向用户账户存款
-     */
-    User store(double money);
 }

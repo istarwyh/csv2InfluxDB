@@ -1,9 +1,14 @@
 package com.metis.entity;
 
-import lombok.*;
+import java.io.Serializable;
 
 import javax.persistence.*;
-import java.io.Serializable;
+
+import com.metis.dto.ContextDTO;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 /**
  * 规范：所有POJO类属性类型必须是包装类型，即这里不可以是int/double这些:
  *      1. 使用Integer而不是int,可以充分利用虚拟机提供的缓存(默认-128-127)
@@ -65,6 +70,24 @@ public class User implements Serializable {
         public User build(){
             return new User(this);
         }
+    }
+
+    /**
+     * 客户存款
+     * 
+     * @param money 向用户账户的存款
+     * @return 存完钱的用户
+     */
+    public User store(double money) {
+        ContextDTO context = new ContextDTO();
+
+        double account = context.getUser().getMoney();
+        //        account += money其实也是个语法糖,实际是下面两步
+        double newAccount = account + money;
+        account = newAccount;
+        context.getUser().setMoney(account);
+
+        return context.getUser();
     }
 
     @Override

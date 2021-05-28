@@ -1,6 +1,6 @@
 package com.metis.config.exception;
 
-import com.metis.paas.IAssert;
+import com.metis.infrastructure.IAssert;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

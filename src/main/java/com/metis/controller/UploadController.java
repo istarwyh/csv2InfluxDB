@@ -3,7 +3,7 @@ package com.metis.controller;
 import com.metis.controller.api.Upload;
 import com.metis.service.client.InfluxClientBO;
 import com.metis.dto.KeyValueDTO;
-import com.metis.paas.Utils;
+import com.metis.infrastructure.Utils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

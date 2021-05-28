@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @Description: @RestControllerAdvice => @ControllerAdvice + @ResponseBody
  *               动态代理盒子模型包裹下:Controller->Aspect->ControllerAdvice->Interceptor->filter
+ *               https://blog.csdn.net/Peelarmy/article/details/107814358?spm=1001.2014.3001.5501
  *               404的错误信息被SpringBoot自己实现了全局自适应异常,即如果浏览器访问找不到会返回对应的html,
  *               APP访问找不到则返回对应的json.这里内部类中也仿照实现.
  * @Author: wx:istarwyh
