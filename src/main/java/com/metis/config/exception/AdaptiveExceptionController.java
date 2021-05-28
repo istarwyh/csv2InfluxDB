@@ -6,13 +6,12 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.metis.config.ResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.metis.config.JsonResult;
 
 /**
  * @Description: 仿造BasicErrorController 实现自适应异常(如果是浏览器请求返回网页,否则返回数据)
@@ -37,11 +36,12 @@ public class AdaptiveExceptionController {
      */
     @RequestMapping(value = "/error/500")
     @ResponseBody
-    public JsonResult<?> unexpectedError(HttpServletRequest request, HttpServletResponse response){
+    public ResponseDTO<?> unexpectedError(HttpServletRequest request, HttpServletResponse response) {
         response.setStatus(getStatus(request).value());
         HashMap<Integer, String> map = new HashMap<>(8);
         map.put(response.getStatus(),request.getRequestURI());
-        return JsonResult.builder().data(map).code(HttpStatus.INTERNAL_SERVER_ERROR.value()).msg(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()).build();
+        return ResponseDTO.builder().data(map).code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .msg(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()).build();
     }
 
     protected HttpStatus getStatus(HttpServletRequest request) {

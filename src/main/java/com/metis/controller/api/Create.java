@@ -1,10 +1,8 @@
 package com.metis.controller.api;
 
-import com.metis.config.JsonResult;
+import com.metis.config.ResponseDTO;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 /**
  * @Description: insert
@@ -18,6 +16,7 @@ public interface Create<T> {
      * @param t
      * @return
      */
-    @ResponseBody JsonResult<?> insert(@RequestBody T t);
+    @ResponseBody
+    ResponseDTO<?> insert(@RequestBody T t);
 
 }

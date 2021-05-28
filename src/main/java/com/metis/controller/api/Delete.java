@@ -1,12 +1,8 @@
 package com.metis.controller.api;
 
-import com.metis.config.JsonResult;
+import com.metis.config.ResponseDTO;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.IdentityHashMap;
-import java.util.Map;
 
 /**
  * @Description: Delete
@@ -27,5 +23,6 @@ public interface Delete<T> {
      * @param ids
      * @return
      */
-    @ResponseBody JsonResult<?> deleteByIds(@RequestBody String[] ids);
+    @ResponseBody
+    ResponseDTO<?> deleteByIds(@RequestBody String[] ids);
 }

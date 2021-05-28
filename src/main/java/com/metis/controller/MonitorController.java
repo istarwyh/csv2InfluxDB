@@ -4,13 +4,13 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.metis.config.ResponseDTO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.metis.annotation.log.KthLog;
 import com.metis.config.business.BusinessType;
-import com.metis.config.JsonResult;
 import com.metis.controller.api.BaseController;
 import com.metis.entity.Monitor;
 import com.metis.service.IMonitorService;
@@ -42,20 +42,24 @@ public class MonitorController implements BaseController<Monitor> {
     @KthLog(title = "info of monitor", businessType = BusinessType.INSERT)
     @PostMapping("/insert")
     @ResponseBody
-    @Override public JsonResult<?> insert(Monitor monitor) {
+    @Override
+    public ResponseDTO<?> insert(Monitor monitor) {
         int data = monitorService.insertMonitor(monitor);
-        return new JsonResult<>(data);
+        return new ResponseDTO<>(data);
     }
 
     @Override
     @KthLog(title = "info of monitor", businessType = BusinessType.DELETE)
     @PostMapping("/delete")
     public String deleteById(Long id) {
-        return new JsonResult<>(monitorService.deleteMonitorById(id)).toString();
+        return new ResponseDTO<>(monitorService.deleteMonitorById(id)).toString();
     }
 
     @GetMapping("/404") // @RequestMapping(method=GET)的简写
-    @ResponseBody public String notFound(){ return new JsonResult<>(404,"来到了没有信息的荒原").toString();}
+    @ResponseBody
+    public String notFound() {
+        return new ResponseDTO<>(404, "来到了没有信息的荒原").toString();
+    }
     /**
      *
      * @param ids
@@ -65,8 +69,8 @@ public class MonitorController implements BaseController<Monitor> {
     @RequiresPermissions("metis:monitor:remove")
     @KthLog(title = "info of monitor", businessType = BusinessType.REMOVE)
     @PostMapping( "/remove")
-    public JsonResult<?> deleteByIds(@RequestBody String[] ids) {
-        return new JsonResult<>(monitorService.deleteMonitorByIds(ids));
+    public ResponseDTO<?> deleteByIds(@RequestBody String[] ids) {
+        return new ResponseDTO<>(monitorService.deleteMonitorByIds(ids));
     }
 
     /**
@@ -84,7 +88,7 @@ public class MonitorController implements BaseController<Monitor> {
     }
 
     @Override
-    public JsonResult<Monitor> update(Monitor monitor) {
+    public ResponseDTO<Monitor> update(Monitor monitor) {
         return null;
     }
 }

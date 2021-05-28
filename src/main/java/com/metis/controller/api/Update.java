@@ -1,6 +1,6 @@
 package com.metis.controller.api;
 
-import com.metis.config.JsonResult;
+import com.metis.config.ResponseDTO;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -18,5 +18,5 @@ public interface Update<T> {
      * @return
      */
     @ResponseBody
-    JsonResult<T> update(@RequestBody T t);
+    ResponseDTO<T> update(@RequestBody T t);
 }

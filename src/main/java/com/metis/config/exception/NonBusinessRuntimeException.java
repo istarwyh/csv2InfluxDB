@@ -14,7 +14,7 @@ public class NonBusinessRuntimeException extends RuntimeException {
     /**
      * 异常码
      */
-    private final String code;
+    private final Integer code;
     /**
      * 异常提示信息
      */

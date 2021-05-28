@@ -2,7 +2,7 @@ package com.metis.controller;
 
 import com.metis.annotation.log.KthLog;
 import com.metis.annotation.business.Modify1;
-import com.metis.config.JsonResult;
+import com.metis.config.ResponseDTO;
 import com.metis.controller.api.*;
 import com.metis.dao.user.UserMapper;
 import com.metis.entity.User;
@@ -54,9 +54,9 @@ public class UserController<T> implements ChangeMoney, BaseController<User>{
      */
     @Override
     @PostMapping(path= "/insert", consumes="application/json", produces="application/json")
-    public JsonResult<List<User>> insert(@RequestBody User t) {
+    public ResponseDTO<List<User>> insert(@RequestBody User t) {
         if( t == null ) {
-            return new JsonResult<>(1,"插入的对象为空");
+            return new ResponseDTO<>(1, "插入的对象为空");
         }
 //        boostrap类加载器或者restartClassLoader默认把传进来的泛型参数当成LinkedHashMap
 //        LinkedHashMap<String, String> map = (LinkedHashMap)t;
@@ -70,14 +70,14 @@ public class UserController<T> implements ChangeMoney, BaseController<User>{
 //                default: {
 //                    ArrayList<UserDO> failObjList = new ArrayList<>();
 //                    failObjList.add(userDO);
-//                    return new JsonResult<>(failObjList, "插入对象属性名不完全匹配");
+//                    return new ResponseDTO<>(failObjList, "插入对象属性名不完全匹配");
 //                }
 //            }
 //            System.out.println(m.getKey()+"  "+m.getValue());
 //        }
         userService.insertUser( t );
         List<User> allUser = userService.selectAllUser();
-        return new JsonResult<>(allUser);
+        return new ResponseDTO<>(allUser);
     }
 
     /**
@@ -89,35 +89,36 @@ public class UserController<T> implements ChangeMoney, BaseController<User>{
     @DeleteMapping("/delete/{id}")
     public String deleteById(@PathVariable Long id) {
         userService.deleteUserById( id );
-        return new JsonResult<T>(0, String.valueOf(id) ).toString();
+        return new ResponseDTO<T>(0, String.valueOf(id)).toString();
     }
 
     /**
-     * 返回的 JsonResult<T>会被自动转成Json
-     * @param mapParam 1. 如果有多个参数，则用分隔&,即.../delete?k1=v1&k2=v2&k3=v3
-     *                 2. 这里不能使用IdentityHashMap来实现接收"id=1&id=2"这样key相同的格式的目的,
-     *                    因为如果不是使用对象接收,则默认是LinkedHashMap接收,
-     *                    而IdentityHashMap并不是LinkedHashMap的父类,就会出现类型不匹配的错误
-     *                 3. 这里不要用Map<String,Long>这种格式接收,因为传过来的数据默认是LinkedHashMap<String,String>
+     * 返回的 ResponseDTO<T>会被自动转成Json
+     * 
+     * @param mapParam 1. 如果有多个参数，则用分隔&,即.../delete?k1=v1&k2=v2&k3=v3 2.
+     *            这里不能使用IdentityHashMap来实现接收"id=1&id=2"这样key相同的格式的目的,
+     *            因为如果不是使用对象接收,则默认是LinkedHashMap接收,
+     *            而IdentityHashMap并不是LinkedHashMap的父类,就会出现类型不匹配的错误 3.
+     *            这里不要用Map<String,Long>这种格式接收,因为传过来的数据默认是LinkedHashMap<String,String>
      */
     @DeleteMapping("/delete")
-    public JsonResult<Map<String, String>> deleteByIds(@RequestParam Map<String, String> mapParam) {
+    public ResponseDTO<Map<String, String>> deleteByIds(@RequestParam Map<String, String> mapParam) {
         for( String id : mapParam.values() ) {
             userService.deleteUserById( Long.parseLong(id) );
         }
-        return new JsonResult<>( mapParam );
+        return new ResponseDTO<>(mapParam);
     }
 
     @Override
-    public JsonResult<?> deleteByIds(@RequestBody String[] ids) {
+    public ResponseDTO<?> deleteByIds(@RequestBody String[] ids) {
         return null;
     }
 
     @Override
     @PutMapping("/update")
-    public JsonResult<User> update(@RequestBody User user) {
+    public ResponseDTO<User> update(@RequestBody User user) {
         if( user == null ){
-            return new JsonResult<User>(2,"参数不是UserDO类型");
+            return new ResponseDTO<User>(2, "参数不是UserDO类型");
         }
         userService.updateUser(user);
         if(user.getId() == null) {
@@ -125,7 +126,7 @@ public class UserController<T> implements ChangeMoney, BaseController<User>{
             int len = matchedUser.size();
             user.setId( matchedUser.get(len-1).getId());
         }
-        return new JsonResult<>(user);
+        return new ResponseDTO<>(user);
     }
 
     /**

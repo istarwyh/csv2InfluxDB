@@ -1,6 +1,6 @@
 package com.metis.controller;
 
-import com.metis.config.JsonResult;
+import com.metis.config.ResponseDTO;
 import com.metis.config.exception.NonBusinessRuntimeException;
 import com.metis.config.exception.ExceptionMsgEnum;
 import com.metis.entity.User;
@@ -42,14 +42,14 @@ public class OperatorController {
      * @return
      */
     @GetMapping("/business")
-    public JsonResult<?> testBusinessException() {
+    public ResponseDTO<?> testBusinessException() {
         try {
             int i = 1 / 0;
         } catch (Exception e) {
             throw new
             NonBusinessRuntimeException(ExceptionMsgEnum.UNEXPECTED_EXCEPTION);
         }
-        return new JsonResult<>();
+        return new ResponseDTO<>();
     }
 
     private static final String TEMPLATE;
@@ -61,9 +61,10 @@ public class OperatorController {
     }
     private final AtomicLong counter = new AtomicLong();
     @GetMapping("/greeting")// @RequestMapping(method=GET)的简写
-    @ResponseBody public JsonResult<?> greeting(@RequestParam( value = "name",required = false,defaultValue = " World") String name){
+    @ResponseBody
+    public ResponseDTO<?> greeting(@RequestParam(value = "name", required = false, defaultValue = " World") String name) {
         // 当被转成int后又会被boxing成Integer,这时候对于JsonResult中定义的方法 方法签名才唯一
-        return new JsonResult<>((int) counter.incrementAndGet(),String.format(TEMPLATE,name));
+        return new ResponseDTO<>((int) counter.incrementAndGet(), String.format(TEMPLATE, name));
     }
 
     /**
