@@ -14,13 +14,23 @@ public class NonBusinessRuntimeException extends RuntimeException {
     /**
      * 异常码
      */
-    private final Integer code;
+    private Integer code;
     /**
      * 异常提示信息
      */
-    private final String message;
+    private String  message;
+
+    public NonBusinessRuntimeException() {
+        super(ExceptionMsgEnum.UNEXPECTED_EXCEPTION.getMsg());
+    }
 
     public NonBusinessRuntimeException(ExceptionMsgEnum ee) {
+        this.code = ee.getCode();
+        this.message = ee.getMsg();
+    }
+
+    public NonBusinessRuntimeException(ExceptionMsgEnum ee, Throwable t) {
+        super(t);
         this.code = ee.getCode();
         this.message = ee.getMsg();
     }

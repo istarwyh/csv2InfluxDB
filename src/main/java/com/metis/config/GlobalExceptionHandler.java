@@ -1,8 +1,7 @@
 package com.metis.config;
 
-import com.metis.config.business.BusinessStatusEnum;
-import com.metis.config.exception.ExceptionMsgEnum;
 import com.metis.config.exception.NonBusinessRuntimeException;
+import com.metis.dto.ResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -26,7 +25,7 @@ public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
-     * 系统异常 预期以外异常
+     * 业务异常以及预期非业务以外异常,但是不是Error/Throwable,说明还是属于程序本身可以处理的异常,不是OOM这种
      *
      * @param ex Exception 优先级低
      *            因为handleUnexpectedServer要forward到其他url,所以不能适用@ResponseBody,后面单独建立内部类
@@ -76,9 +75,13 @@ public class GlobalExceptionHandler {
          *
          * @param ex NonBusinessRuntimeException
          */
+
         @ExceptionHandler(NonBusinessRuntimeException.class)
         @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
         public ResponseDTO<?> handleBusinessError(NonBusinessRuntimeException ex) {
+            if (ex.getCause() != null && !((ex.getCause() instanceof NonBusinessRuntimeException))) {
+                logger.error("系统自身异常:", ex);
+            }
             return ResponseDTO.ofOriginal(ex.getCode(), ex.getMessage());
         }
     }

@@ -1,6 +1,6 @@
 package com.metis.controller;
 
-import com.metis.config.ResponseDTO;
+import com.metis.dto.ResponseDTO;
 import com.metis.config.exception.NonBusinessRuntimeException;
 import com.metis.config.exception.ExceptionMsgEnum;
 import com.metis.entity.User;

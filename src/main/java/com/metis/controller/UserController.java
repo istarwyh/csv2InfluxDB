@@ -2,7 +2,7 @@ package com.metis.controller;
 
 import com.metis.annotation.log.KthLog;
 import com.metis.annotation.business.Modify1;
-import com.metis.config.ResponseDTO;
+import com.metis.dto.ResponseDTO;
 import com.metis.controller.api.*;
 import com.metis.dao.user.UserMapper;
 import com.metis.entity.User;

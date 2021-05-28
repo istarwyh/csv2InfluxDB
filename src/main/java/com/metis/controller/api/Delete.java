@@ -1,6 +1,6 @@
 package com.metis.controller.api;
 
-import com.metis.config.ResponseDTO;
+import com.metis.dto.ResponseDTO;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 

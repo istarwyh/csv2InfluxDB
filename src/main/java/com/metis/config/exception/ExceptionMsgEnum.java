@@ -1,5 +1,6 @@
 package com.metis.config.exception;
 
+import com.metis.paas.IAssert;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,13 +11,13 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum ExceptionMsgEnum {
+public enum ExceptionMsgEnum implements IAssert {
     /** 参数异常 */
     PARAM_EXCEPTION(102, "参数异常!"),
     /** 等待超时 */
     SERVICE_TIME_OUT(103, "服务调用超时！"),
     /** 空指针异常 */
-    NULL_VALUE(501, "数据不正常为null"),
+    NULL_VALUE(501, "出现了不正常的null值"),
     /** 500 : 一劳永逸的提示也可以在这定义 */
     UNEXPECTED_EXCEPTION(500, "未知错误,请联系管理员！");
 
@@ -28,4 +29,29 @@ public enum ExceptionMsgEnum {
      * 消息内容
      */
     private final String  msg;
+
+    public NonBusinessRuntimeException getException() {
+        return new NonBusinessRuntimeException(this);
+    }
+
+    /**
+     * 创建新的异常
+     *
+     * @return
+     */
+    @Override
+    public NonBusinessRuntimeException newException() {
+        return new NonBusinessRuntimeException(this);
+    }
+
+    /**
+     * 根据抛出异常类和ErrorCode创建新的异常
+     *
+     * @param t
+     * @return
+     */
+    @Override
+    public NonBusinessRuntimeException newException(Throwable t) {
+        return new NonBusinessRuntimeException(this, t);
+    }
 }

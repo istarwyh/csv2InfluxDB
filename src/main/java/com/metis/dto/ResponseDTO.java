@@ -1,4 +1,4 @@
-package com.metis.config;
+package com.metis.dto;
 
 import com.metis.config.business.BusinessStatusEnum;
 import com.metis.config.exception.ExceptionMsgEnum;
@@ -58,6 +58,10 @@ public class ResponseDTO<T> {
 
     public static <T> ResponseDTO<T> forLackParam() {
         return new ResponseDTO<>(BusinessStatusEnum.LACK_PARAM.getCode(), BusinessStatusEnum.LACK_PARAM.getDesc());
+    }
+
+    public boolean isOk() {
+        return BusinessStatusEnum.SUCCESS.getCode().equals(code);
     }
 
     public static <T> ResponseDTO<T> forNullValue() {
