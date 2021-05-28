@@ -1,11 +1,9 @@
 package com.metis.config;
 
+import com.metis.config.business.BusinessStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
-import org.springframework.stereotype.Repository;
 
 /**
  * 泛型使所有的返回值类型都可以使用该统一结构，在具体的场景将泛型替换成具体的数据类型即可
@@ -28,8 +26,8 @@ public class JsonResult<T> {
      * 若没有数据返回，默认状态码为0，提示信息为：操作成功！
      */
     public JsonResult() {
-        this.code = StatusEnum.SUCCESS.getCode() ;
-        this.msg = StatusEnum.SUCCESS.getDesc();
+        this.code = BusinessStatusEnum.SUCCESS.getCode();
+        this.msg = BusinessStatusEnum.SUCCESS.getDesc();
     }
 
     /**
@@ -45,8 +43,8 @@ public class JsonResult<T> {
      */
     public JsonResult(T data) {
         this.data = data;
-        this.code = StatusEnum.SUCCESS.getCode();
-        this.msg = StatusEnum.SUCCESS.getDesc();
+        this.code = BusinessStatusEnum.SUCCESS.getCode();
+        this.msg = BusinessStatusEnum.SUCCESS.getDesc();
     }
 
     /**
@@ -54,7 +52,7 @@ public class JsonResult<T> {
      */
     public JsonResult(T data, String msg) {
         this.data = data;
-        this.code = StatusEnum.FAILURE.getCode();
+        this.code = BusinessStatusEnum.FAILURE.getCode();
         this.msg = msg;
     }
 

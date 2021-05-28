@@ -17,10 +17,15 @@ import com.metis.entity.User;
  * @Version: ing
  */
 @Component
+/**
+ * Spring AOP 借助AspectJ的Pointcut表述语言的外衣推出了@Aspect
+ * AspectJ支持的Pointcut表达式可用的标识符基本可以表示所有的Joinpoint,但是Spring AOP只支持方法级别的Joinpoint
+ */
 @Aspect
 public class Modify1Aspect {
     /**
      * pointcut切点 用 @Pointcut 声明自定义的注解类(@Interface) KthLog 为切面
+     * 使用@annotation的Pointcutbi表达式将会检查系统中所有对象的方法级别的Joinpoint
      */
     @Pointcut("@annotation(com.metis.annotation.business.Modify1)")
     private void pointcut() {

@@ -1,7 +1,5 @@
 package com.metis.service.impl;
 
-import com.metis.config.business.BusinessErrorException;
-import com.metis.config.business.BusinessMsgEnum;
 import com.metis.dao.user.UserDAO;
 import com.metis.dto.ContextDTO;
 import com.metis.entity.User;
@@ -81,7 +79,7 @@ public class UserServiceImpl implements UserService {
         UserDAO.updateUser("Snail", 22, 2000.0, 3);
         // 模拟转账过程中可能遇到的意外状况
         int error = 1 / 0;
-//        throw new BusinessErrorException(BusinessMsgEnum.PARAM_EXCEPTION);
+        //        throw new NonBusinessRuntimeException(ExceptionMsgEnum.PARAM_EXCEPTION);
         UserDAO.updateUser("Daisy", 19, 4000.0, 4);
     }
 

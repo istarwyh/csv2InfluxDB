@@ -1,10 +1,9 @@
 package com.metis.controller;
 
 import com.metis.config.JsonResult;
-import com.metis.config.business.BusinessErrorException;
-import com.metis.config.business.BusinessMsgEnum;
+import com.metis.config.exception.NonBusinessRuntimeException;
+import com.metis.config.exception.ExceptionMsgEnum;
 import com.metis.entity.User;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +37,8 @@ public class OperatorController {
     }
 
     /**
-     * 模拟抛出 BusinessMsgEnum.UNEXPECTED_EXCEPTION 业务异常
+     * 模拟抛出 ExceptionMsgEnum.UNEXPECTED_EXCEPTION 业务异常
+     * 
      * @return
      */
     @GetMapping("/business")
@@ -47,7 +47,7 @@ public class OperatorController {
             int i = 1 / 0;
         } catch (Exception e) {
             throw new
-                    BusinessErrorException(BusinessMsgEnum.UNEXPECTED_EXCEPTION);
+            NonBusinessRuntimeException(ExceptionMsgEnum.UNEXPECTED_EXCEPTION);
         }
         return new JsonResult<>();
     }
