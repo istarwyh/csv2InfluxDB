@@ -5,6 +5,7 @@ import com.metis.config.exception.ExceptionMsgEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 泛型使所有的返回值类型都可以使用该统一结构，在具体的场景将泛型替换成具体的数据类型即可 对状态码和提示信息可以定义一个枚举类型
@@ -56,20 +57,44 @@ public class ResponseDTO<T> {
         this.msg = msg;
     }
 
+    public static <T> ResponseDTO<T> forSuccess() {
+        return new ResponseDTO<>(BusinessStatusEnum.SUCCESS.getCode(), BusinessStatusEnum.SUCCESS.getDesc());
+    }
+
     public static <T> ResponseDTO<T> forLackParam() {
         return new ResponseDTO<>(BusinessStatusEnum.LACK_PARAM.getCode(), BusinessStatusEnum.LACK_PARAM.getDesc());
     }
 
-    public boolean isOk() {
-        return BusinessStatusEnum.SUCCESS.getCode().equals(code);
+    public static <T> ResponseDTO<T> forLackParam(T data) {
+        return new ResponseDTO<T>(BusinessStatusEnum.LACK_PARAM.getCode(), BusinessStatusEnum.LACK_PARAM.getDesc())
+                .setData(data);
     }
+
+    //    todo:这个反序列化之后会给json多加一个"ok"属性!
+    //    public boolean isOk() {
+    //        return BusinessStatusEnum.SUCCESS.getCode().equals(code);
+    //    }
 
     public static <T> ResponseDTO<T> forNullValue() {
         return new ResponseDTO<>(ExceptionMsgEnum.NULL_VALUE.getCode(), ExceptionMsgEnum.NULL_VALUE.getMsg());
     }
 
+    public static <T> ResponseDTO<T> forParamEx() {
+        return new ResponseDTO<>(ExceptionMsgEnum.PARAM_EXCEPTION.getCode(), ExceptionMsgEnum.PARAM_EXCEPTION.getMsg());
+    }
+
+    public static <T> ResponseDTO<T> forParamEx(T data) {
+        return new ResponseDTO<T>(ExceptionMsgEnum.PARAM_EXCEPTION.getCode(), ExceptionMsgEnum.PARAM_EXCEPTION.getMsg())
+                .setData(data);
+    }
+
     public static <T> ResponseDTO<T> ofOriginal(Integer code, String message) {
         return new ResponseDTO<>(code, message);
+    }
+
+    public ResponseDTO<T> setData(T data) {
+        this.data = data;
+        return this;
     }
 
     @Override

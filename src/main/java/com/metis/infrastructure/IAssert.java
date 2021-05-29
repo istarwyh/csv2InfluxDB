@@ -43,6 +43,17 @@ public interface IAssert {
      * 对象为空则抛出异常
      *
      * @param object
+     */
+    default void assertNotNull(Object object, Object o2) {
+        if (ObjectUtils.isEmpty(object) || ObjectUtils.isEmpty(o2)) {
+            throw newException();
+        }
+    }
+
+    /**
+     * 对象为空则抛出异常
+     *
+     * @param object
      * @param t
      */
     default void assertNotNull(Object object, Throwable t) {

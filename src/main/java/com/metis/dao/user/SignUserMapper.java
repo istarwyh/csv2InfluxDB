@@ -17,9 +17,10 @@ public interface SignUserMapper {
      * 判断是否有(Name)的唯一用户
      * 
      * @param name 唯一真名
+     * @param passwd
      * @return SignUser集合
      */
-    SignUser readUserByName(String name);
+    SignUser readUserByNameAndPasswd(String name, String passwd);
 
     @Select("select id,name,nickname,passwd from user where ${column} = #{value}")
     SignUser findByColumn(@Param("column") String column, @Param("value") String value);

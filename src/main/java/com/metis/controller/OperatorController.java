@@ -63,8 +63,8 @@ public class OperatorController {
     @GetMapping("/greeting")// @RequestMapping(method=GET)的简写
     @ResponseBody
     public ResponseDTO<?> greeting(@RequestParam(value = "name", required = false, defaultValue = " World") String name) {
-        // 当被转成int后又会被boxing成Integer,这时候对于JsonResult中定义的方法 方法签名才唯一
-        return new ResponseDTO<>((int) counter.incrementAndGet(), String.format(TEMPLATE, name));
+        // 当被转成int后又会被boxing成Integer,这时候对于ResponseDTO中定义的方法 方法签名才唯一
+        return ResponseDTO.ofOriginal((int) counter.incrementAndGet(), String.format(TEMPLATE, name));
     }
 
     /**

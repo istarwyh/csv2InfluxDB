@@ -3,23 +3,22 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>我曾惊讶于世界之大...</title>
 </head>
 <body>
-<!--@{}这样的语法允许存在多个相同路径或路径包含的情况进行映射-->
-<form method="POST" th:action="@{/}">
-    <label>
-        <input name="content" type="text"/>
-    </label>
-    <input type="submit"/>
-</form>
-
-<p>Welcome Back Home: 我曾惊讶于世界之大...</p>
-
-<!--  Thymeleaf的原理便是服务器端处理之后把新的html页面发给客户端渲染  -->
-<p th:each="m : ${message}">
-    <span th:text="${m}">hello world!</span>
-</p>
+<div>
+    <!--@{}这样的语法允许存在多个相同路径或路径包含的情况进行映射-->
+    <form method="POST" th:action="@{/}">
+        <label>
+            <input name="content" type="text"/>
+        </label>
+        <input type="submit"/>
+        <!--  Thymeleaf的原理便是服务器端处理之后把新的html页面发给客户端渲染  -->
+        <p th:each="m : ${message}">
+            <span th:text="${m}">hello world!</span>
+        </p>
+    </form>
+</div>
 
 </body>
 </html>

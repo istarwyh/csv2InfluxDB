@@ -28,4 +28,10 @@ public class SignUser {
         this.nickname = nickname;
         this.passwd = passwd;
     }
+
+    @Override
+    public String toString() {
+        return "SignUser{" + "baseUser=" + baseUser + ", nickname='" + nickname + '\'' + ", passwd='" + passwd + '\''
+                + '}';
+    }
 }

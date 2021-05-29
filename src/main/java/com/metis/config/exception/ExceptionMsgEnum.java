@@ -13,11 +13,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ExceptionMsgEnum implements IAssert {
     /** 参数异常 */
-    PARAM_EXCEPTION(102, "参数异常!"),
+    PARAM_EXCEPTION(501, "参数异常!"),
     /** 等待超时 */
-    SERVICE_TIME_OUT(103, "服务调用超时！"),
+    SERVICE_TIME_OUT(502, "服务调用超时！"),
     /** 空指针异常 */
-    NULL_VALUE(501, "出现了不正常的null值"),
+    NULL_VALUE(503, "出现了不正常的null值"),
     /** 500 : 一劳永逸的提示也可以在这定义 */
     UNEXPECTED_EXCEPTION(500, "未知错误,请联系管理员！");
 
