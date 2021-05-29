@@ -5,7 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * 与UserDAO能实现一样的效果，只是这里在UserMapper.xml中映射
+ * 与UserDAO能实现一样的效果，只是这里在UserMapper.xml中映射 MyBatis 会根据接口和对应的 xml 文件创建接口的实现类
+ * 
  * @author MBin_王艺辉istarwyh
  */
 @Mapper
@@ -16,10 +17,4 @@ public interface UserMapper {
      */
     List<User> queryUserList();
 
-    /**
-     * findUserByName
-     * @param name name of User
-     * @return 所有符合条件的User
-     */
-    List<User> findUserByName(String name);
 }

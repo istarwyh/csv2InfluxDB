@@ -3,16 +3,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--通过namespace就实现了对对应接口的映射。这样就分离出了接口以及接口的实现-sql代码-->
 <mapper namespace="com.metis.dao.user.UserMapper">
-    <!--这一行数据绑定了一个实体类UserDO-->
+    <!--这一行数据绑定了一个实体类User,但并不是含有全部属性的DO-->
+    <!--    User并不是全限定名,因此不能跳转.但是因为配置了mybatis.type-aliases-package所以可以省略前缀名-->
     <select id="queryUserList" resultType="User">
         select *
         from user
-    </select>
-    <!--;    如果入参使用#传值，会使用PreparedStatement 机制防止sql注入;-->
-    <!--如果是$,则使用statement机制,效率低同时${ }占位符中的数据是原模原样的,不会区分数据类型-->
-    <select id="findUserByName" parameterType="String" resultType="User">
-        SELECT *
-        FROM user
-        WHERE name = #{name}
     </select>
 </mapper>

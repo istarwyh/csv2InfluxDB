@@ -23,36 +23,11 @@ import com.metis.service.IMonitorService;
  */
 @Controller
 @RequestMapping("/monitor")
-public class MonitorController implements BaseController<Monitor> {
-
-    @Resource
-    private IMonitorService monitorService;
-
-//    @RequiresPermissions("metis:monitor:view")
+public class MonitorController {
+    //    @RequiresPermissions("metis:monitor:view")
     @GetMapping()
-    public String monitor()
-    {
+    public String monitor() {
         return "monitor/monitor";
-    }
-
-    /**
-     * 新增保存info of monitor
-     */
-    @RequiresPermissions("metis:monitor:add")
-    @KthLog(title = "info of monitor", businessType = BusinessType.INSERT)
-    @PostMapping("/insert")
-    @ResponseBody
-    @Override
-    public ResponseDTO<?> insert(Monitor monitor) {
-        int data = monitorService.insertMonitor(monitor);
-        return new ResponseDTO<>(data);
-    }
-
-    @Override
-    @KthLog(title = "info of monitor", businessType = BusinessType.DELETE)
-    @PostMapping("/delete")
-    public String deleteById(Long id) {
-        return new ResponseDTO<>(monitorService.deleteMonitorById(id)).toString();
     }
 
     @GetMapping("/404") // @RequestMapping(method=GET)的简写
@@ -60,35 +35,5 @@ public class MonitorController implements BaseController<Monitor> {
     public String notFound() {
         return new ResponseDTO<>(404, "来到了没有信息的荒原").toString();
     }
-    /**
-     *
-     * @param ids
-     * @return
-     */
-    @Override
-    @RequiresPermissions("metis:monitor:remove")
-    @KthLog(title = "info of monitor", businessType = BusinessType.REMOVE)
-    @PostMapping( "/remove")
-    public ResponseDTO<?> deleteByIds(@RequestBody String[] ids) {
-        return new ResponseDTO<>(monitorService.deleteMonitorByIds(ids));
-    }
 
-    /**
-     * 修改info of monitor
-     */
-    @GetMapping("/select/{traceId}")
-    @ResponseBody
-    @KthLog(title = "info of monitor", businessType = BusinessType.SELECT)
-    public Monitor selectById(@PathVariable("traceId") String traceId){
-        return monitorService.selectMonitorById(Long.parseLong(traceId));
-    }
-
-    @Override public List<Monitor> queryAll(){
-        return null;
-    }
-
-    @Override
-    public ResponseDTO<Monitor> update(Monitor monitor) {
-        return null;
-    }
 }

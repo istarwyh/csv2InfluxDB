@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.metis.dao.user.SignUserMapper">
+    <!--使用 #{} 参数语法时,MyBatis 会创建 PreparedStatement 参数占位符,并通过占位符安全地设置参数（就像使用 ? 一样）-->
+    <!--如果是$,则使用statement机制,效率低同时${ }占位符中的数据是原模原样的,不会区分数据类型(不转义).所以这有可能被sql注入-->
+    <select id="readUserByName" parameterType="String" resultMap="SignUserMap"
+            statementType="PREPARED"
+            useCache="true">
+        SELECT id,
+               name,
+               nick_name,
+               passwd
+        FROM user
+        WHERE name = #{name}
+    </select>
+    <resultMap id="SignUserMap" type="com.metis.entity.SignUser">
+        <constructor>
+            <idArg column="id" javaType="long" name="id"/>
+            <idArg column="name" javaType="String" name="name"/>
+            <arg column="nick_name" javaType="String" name="nickname"/>
+            <arg column="passwd" javaType="String" name="passwd"/>
+        </constructor>
+    </resultMap>
+</mapper>
