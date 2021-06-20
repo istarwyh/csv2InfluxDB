@@ -23,7 +23,7 @@ public class SignUser {
      */
     public SignUser(Long id, String name, String nickname, String passwd) {
         //        Warn:这里如果写this.baseUser.setId(id),那么因为baseUser不是基础类型没有被分配内存(如new),所以理论上会NPE;
-        //         但是NPE始终反射过程中抛出的,所以最后会抛出 java.lang.reflect.InvocationTargetException
+        //         但是NPE是在Mybatis调用反射过程中抛出的,所以最后会抛出 java.lang.reflect.InvocationTargetException
         this.baseUser = new BaseUser(id, name);
         this.nickname = nickname;
         this.passwd = passwd;

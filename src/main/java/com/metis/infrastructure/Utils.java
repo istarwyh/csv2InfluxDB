@@ -15,7 +15,7 @@ public class Utils {
     /**
      *     暂时没有配日志结构,只能向控制台打印
      */
-    public static void copyToLocal(String folderPath,List<LineProtocolDTO> lineprotocolList){
+    public static void copyToLocal(String folderPath, List<LineProtocolDTO> lineprotocolList) {
         String localFileName = "test.protocol";
         File targetFile = new File(folderPath+localFileName);
         if (!targetFile.exists()) {
@@ -28,7 +28,8 @@ public class Utils {
         out(targetFile,lineprotocolList);
 
     }
-    public static void out(File targetFile,List<LineProtocolDTO> lineprotocolList){
+
+    static void out(File targetFile, List<LineProtocolDTO> lineprotocolList) {
         try{
             PrintWriter out = new PrintWriter(targetFile);
             for (Object lineprotocol : lineprotocolList) {
@@ -113,7 +114,7 @@ public class Utils {
      * @param line csv文件的每一行
      * @return String
      */
-    public static String designFiledSet(List<String> line){
+    static String designFiledSet(List<String> line) {
         StringBuilder sb = new StringBuilder();
         for(int j = 1 ; j<line.size() ; j++) {
 //                    对于最后一位filedValue后面不应该有","
@@ -130,7 +131,7 @@ public class Utils {
      * 使用引入的org.apache.commons.csv中的CSVParser类包装csv文件构造csv解析器对象
      * 返回null代表发生了未知错误
      */
-    public static CSVParser CSVParser(String filePath) {
+    static CSVParser CSVParser(String filePath) {
         BufferedReader br = null;
         try {
 //            从FileInputStream开始,屏蔽底层细节以及提高效率：节点流->字符流->缓冲字符流
@@ -149,7 +150,7 @@ public class Utils {
     /**
      * 返回null代表发生了未知错误
      */
-    public static List<CSVRecord> getCSVRecord(String filePath){
+    static List<CSVRecord> getCSVRecord(String filePath) {
         List<CSVRecord> records = null;
         try {
             records = Objects.requireNonNull(CSVParser(filePath),"CSVParser意外为空,可能因为路径无效").getRecords();
@@ -164,7 +165,7 @@ public class Utils {
     /**
      * 返回null代表发生了未知错误
      */
-    public static Date transferDate(String Date) {
+    static Date transferDate(String Date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             return format.parse(Date);

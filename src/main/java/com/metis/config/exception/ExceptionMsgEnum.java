@@ -30,6 +30,7 @@ public enum ExceptionMsgEnum implements IAssert {
      */
     private final String  msg;
 
+
     public NonBusinessRuntimeException getException() {
         return new NonBusinessRuntimeException(this);
     }
@@ -54,4 +55,5 @@ public enum ExceptionMsgEnum implements IAssert {
     public NonBusinessRuntimeException newException(Throwable t) {
         return new NonBusinessRuntimeException(this, t);
     }
+
 }

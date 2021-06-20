@@ -3,6 +3,8 @@ package com.metis.config.business;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * to define the corresponding enum of functional status beyond http status code
  * 
@@ -43,13 +45,9 @@ public enum BusinessStatusEnum {
 
     public static String getDescByCode(Integer code) {
         if (code == null) {
-            return "无";
+            return "null";
         }
-        for (BusinessStatusEnum status : BusinessStatusEnum.values()) {
-            if (status.getCode().equals(code)) {
-                return status.getDesc();
-            }
-        }
-        return BusinessStatusEnum.UNKNOWN_ERROR.getDesc();
+        return Arrays.stream(BusinessStatusEnum.values()).filter(status -> status.getCode().equals(code)).findFirst()
+                .orElse(BusinessStatusEnum.UNKNOWN_ERROR).getDesc();
     }
 }
