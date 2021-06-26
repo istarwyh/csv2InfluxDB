@@ -1,4 +1,4 @@
-package com.metis.infrastructure.thread;
+package com.metis.common.thread;
 
 /**
  * @Description: OddEvenPrinter

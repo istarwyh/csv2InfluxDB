@@ -1,4 +1,4 @@
-package com.metis.infrastructure;
+package com.metis.common;
 
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 
 import com.github.istarwyh.UserRejectHandler;
 import com.github.istarwyh.UserThreadFactory;
-import com.metis.infrastructure.thread.OddEvenPrinter;
-import com.metis.infrastructure.thread.PrintABCUsingLock;
-import com.metis.infrastructure.thread.PrintABCUsingWaitNotify;
+import com.metis.common.thread.OddEvenPrinter;
+import com.metis.common.thread.PrintABCUsingLock;
+import com.metis.common.thread.PrintABCUsingWaitNotify;
 
 /**
  * @Description: ThreadTest

@@ -1,9 +1,9 @@
-package com.metis.infrastructure.impl;
+package com.metis.common.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.metis.config.exception.ExceptionMsgEnum;
 import com.metis.dto.sign.SignUserDTO;
-import com.metis.infrastructure.ICheck;
+import com.metis.common.ICheck;
 
 /**
  * @Description: CheckUtils

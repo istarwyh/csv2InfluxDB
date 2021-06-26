@@ -1,4 +1,4 @@
-package com.metis.infrastructure;
+package com.metis.common;
 
 import java.util.ArrayList;
 import java.util.Arrays;

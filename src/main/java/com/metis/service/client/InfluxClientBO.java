@@ -1,7 +1,7 @@
 package com.metis.service.client;
 
 import com.influxdb.client.InfluxDBClientFactory;
-import com.metis.infrastructure.PropertyUtil;
+import com.metis.common.PropertyUtil;
 import com.metis.dto.LineProtocolDTO;
 import com.influxdb.client.WriteApi;
 import com.influxdb.client.domain.WritePrecision;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.util.List;
 
-import static com.metis.infrastructure.Utils.CSVToList;
+import static com.metis.common.Utils.CSVToList;
 
 
 @Service

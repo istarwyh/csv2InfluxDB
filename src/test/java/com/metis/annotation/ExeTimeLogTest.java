@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 
 import com.github.istarwyh.Array;
 import com.github.istarwyh.ListNode;
-import com.metis.infrastructure.SolutionTest;
+import com.metis.common.SolutionTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

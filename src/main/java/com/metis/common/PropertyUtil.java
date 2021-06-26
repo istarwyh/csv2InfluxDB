@@ -1,4 +1,4 @@
-package com.metis.infrastructure;
+package com.metis.common;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
