@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * @Version: ing
  */
 @Service
-public class SignService implements SignUserService {
+public class SignServiceImpl implements SignUserService {
     @Resource
     SignUserMapper signUserMapper;
 
