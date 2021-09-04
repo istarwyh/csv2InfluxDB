@@ -5,7 +5,6 @@ import com.metis.config.exception.ExceptionMsgEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 泛型使所有的返回值类型都可以使用该统一结构，在具体的场景将泛型替换成具体的数据类型即可 对状态码和提示信息可以定义一个枚举类型
