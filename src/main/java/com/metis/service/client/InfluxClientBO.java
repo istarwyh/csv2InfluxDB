@@ -23,6 +23,12 @@ public class InfluxClientBO {
 //    @Value(value = "${spring.influx.versionBound}")
 //    private String versionBound;
 
+    /**
+     * @Autowired不能用于静态属性的注入。
+     * 1. 概念上，所谓的依赖注入其实是IoC容器中产生了一个对象然后允许项目全局使用这个对象。
+     * 2. 技术上，对于类属性初始化在IoC实例化之前，所以不能直接初始化类属性。
+     * 当然可以通过构造器上加@@Autowired 或结合使用@PostConstruct(被注解的方法，在对象加载完依赖注入后执行)的方法给类属性赋值
+     */
     private static final Float VERSION = Float.parseFloat( PropertyUtil.getProperty("spring.influx.version") );
     private static final Float VERSION_BOUND = Float.parseFloat(PropertyUtil.getProperty("spring.influx" +
             ".versionBound"));
@@ -56,7 +62,6 @@ public class InfluxClientBO {
     }
 
     /**
-     *  * TODO:为什么@Autowired不能用于静态域与方法
      *  这里不应该因为参数多就选择用一个类把参数包起来。
      *  因为通过工厂方法生产InfluxDBClient,区别只是V1,V2. InfluxDBClient本身已经是工厂类的对象
      *      而两个版本的客户端并没有共性，不能抽象出类，即参数再多也成为不了某个新公共的类成员或对象属性
