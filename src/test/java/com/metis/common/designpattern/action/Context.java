@@ -10,9 +10,7 @@ import java.util.Objects;
  */
 public class Context {
     private Strategy strategy;
-    /**
-     * 选择策略和策略本身到底应该怎样组合呢？
-     */
+
     private StrategyNode strategyChainHead;
 
     {
@@ -22,7 +20,9 @@ public class Context {
     public void setStrategy(Strategy strategy){
         this.strategy = strategy;
     }
-
+    // 放入的是策略接口,不涉及判断从而一路往下执行的就是组合模式
+    // 加入了判断就可以为责任链模式
+    // 这里只是链表,但可以做成复杂的二叉树乃至多叉树
     public void setStrategyChainHead(Strategy... strategies){
         if(Objects.isNull(strategies)){
             return;
