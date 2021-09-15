@@ -1,5 +1,6 @@
 package com.metis.common.designpattern.action;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 import lombok.NoArgsConstructor;
@@ -24,10 +25,17 @@ public class StrategyTest {
         Handler1 handlerHead = new Handler1();
         Handler2 handler2 = new Handler2();
         Handler3 handler3 = new Handler3();
-        handlerHead.next = handler2;
-        handler2.next = handler3;
+        constructHanlderChain(handlerHead, handler2, handler3);
         // 责任链模式,当一个判断成功时放弃后续无效判断
         handlerHead.execute(para1);
+        
+        // todo:不知道怎么迭代使用访问者模式啊
+        Handler iter = handlerHead;
+
+        VisitorImpl visitor = new VisitorImpl();
+        handlerHead.accept(visitor);
+
+
         // 策略模式,将 控制逻辑 放在外面,以Context中的属性做基本 数据结构 做 业务逻辑 的容器
         // 符合开闭原则,有新的策略时添加新的策略与策略的判断逻辑即可
         context.executeStrategy(para1, para2);
@@ -39,6 +47,11 @@ public class StrategyTest {
 
         in.close();
         ;
+    }
+
+    private static void constructHanlderChain(Handler1 handlerHead, Handler2 handler2, Handler3 handler3) {
+        handlerHead.next = handler2;
+        handler2.next = handler3;
     }
 
     private static Strategy add() {
@@ -59,16 +72,23 @@ public class StrategyTest {
         /**
          * "门"中可以封装很复杂的业务逻辑，以判断输入的参数是否足以开门
          */
-        boolean door(int flag);
+        boolean door();
+
+        /**
+         * 访问者模式根据不同的 visitor 选择对应的Handler实现者做事
+         */
+        void accept(Visitor visitor);
     }
 
     @NoArgsConstructor
     private static class Handler1 implements Handler {
         Handler next;
+        int flag;
 
         @Override
         public void execute(int flag) {
-            if (door(flag)) {
+            this.flag = flag;
+            if (this.door()) {
                 context.setStrategy(add());
             } else {
                 this.next.execute(flag);
@@ -76,18 +96,24 @@ public class StrategyTest {
         }
 
         @Override
-        public boolean door(int flag) {
+        public boolean door() {
             return flag > 1;
+        }
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visit(this, flag);
         }
     }
 
     @NoArgsConstructor
     private static class Handler2 implements Handler {
         Handler next;
+        int flag;
 
         @Override
         public void execute(int flag) {
-            if (door(flag)) {
+            if (door()) {
                 context.setStrategy(cut());
             } else {
                 this.next.execute(flag);
@@ -95,27 +121,63 @@ public class StrategyTest {
         }
 
         @Override
-        public boolean door(int flag) {
+        public boolean door() {
             return flag < 1;
+        }
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visit(this, flag);
         }
     }
 
     @NoArgsConstructor
     private static class Handler3 implements Handler {
         Handler next;
-
-        @Override
-        public boolean door(int flag) {
-            return flag == 1;
-        }
+        int flag;
 
         @Override
         public void execute(int flag) {
-            if (door(flag)) {
+            this.flag = flag;
+            if (door()) {
                 context.setStrategy(multiply());
             } else {
                 throw new RuntimeException("not judge Condition: " + flag);
             }
+        }
+
+        @Override
+        public boolean door() {
+            return flag == 1;
+        }
+
+
+        @Override
+        public void accept(Visitor visitor) {
+            visitor.visit(this, flag);
+        
+        }
+    }
+
+    private interface Visitor{
+        void visit(Handler1 handler1,int flag);
+        void visit(Handler2 handler2,int flag);
+        void visit(Handler3 handler3,int flag);
+
+    }
+    private static class VisitorImpl implements Visitor{
+
+        public void visit(Handler1 handler1,int flag){
+            handler1.execute(flag);
+        }
+
+        public void visit(Handler2 handler2,int flag){
+            handler2.execute(flag);
+        }
+
+        @Override
+        public void visit(Handler3 handler3, int flag) {
+            handler3.execute(flag);
         }
     }
 }
