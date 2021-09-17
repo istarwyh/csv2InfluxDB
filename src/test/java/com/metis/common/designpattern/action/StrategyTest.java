@@ -1,6 +1,5 @@
 package com.metis.common.designpattern.action;
 
-import java.util.Objects;
 import java.util.Scanner;
 
 import lombok.NoArgsConstructor;
