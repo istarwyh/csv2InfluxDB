@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Properties;
 
-import com.alibaba.fastjson.JSON;
-
 /**
  * 1. 告诉Spring递归地搜索metis包和其子包中直接或间接标记为@Component的类 2.
  * 将上述被特定注解的类通过反射实例化(Class->Object),以Map形式保存.Map的key为类名,value为类对象. 3.
@@ -40,33 +38,38 @@ import com.alibaba.fastjson.JSON;
 @SpringBootConfiguration
 public class MetisApplication {
     static {
-        System.setProperty("spring.profiles.active", "testing");
-    }
-    public static void main(String[] args) {
         // 也可以在application.properties中配置
         // application.properties文件会取antx.properties(自动配置取值的文件)去对应的配置值。
         // System.setProperty("spring.devtools.restart.enabled", "false");
-        System.out.println("This will be printed twice");
-        // 打印传入进来的程序参数。程序参数需要配置。
-        for (Map.Entry<String, String> entry : getArguments(args).entrySet()) {
+        System.setProperty("spring.profiles.active", "testing");
+        
+        Properties properties = System.getProperties();
+        String propertiesString = properties.toString().replace("{","").replace("}", "");
+        String[] propertiesArray = propertiesString.split(",");
+        for (Map.Entry<String, String> entry : arguments2Map(propertiesArray).entrySet()) {
+            if("java.class.path".equals(entry.getKey())){
+                continue;
+            }
             System.out.println(entry.getKey() + ":" + entry.getValue());
         }
-        // 获取java相关的环境变量
-        Properties properties = System.getProperties();
-        Map<String, Object> map = JSON.parseObject(properties.toString());
 
-        System.out.println("System.getProperties():\n" + map.get("java.vm.version"));
-        System.out.println("System.getProperties():\n" + map.get("spring.profiles.active"));
+        Map<String, String> envMap = System.getenv();
+        printArguments(envMap);
+    }
+    public static void main(String[] args) {
 
-
-        // 获取运行jvm的平台相关环境变量
-        // Map<String, String> getenv = System.getenv();
-        // System.out.println("System.getenv():----->" + JSON.toJSONString(getenv));
-
+        System.out.println("-----------------------This will be printed twice-----------------------");
+        // 打印传入进来的程序参数。程序参数需要配置。
+        printArguments(arguments2Map(args));
         SpringApplication.run(MetisApplication.class, args);
     }
 
-    private static Map<String, String> getArguments(String[] args) {
+    private static void printArguments(Map<String, String> map){
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + ":" + entry.getValue());
+        }
+    }
+    private static Map<String, String> arguments2Map(String[] args) {
         Map<String, String> arguments = new HashMap<String, String>();
 
         if (args == null || args.length == 0) {
@@ -80,8 +83,8 @@ public class MetisApplication {
                 throw new RuntimeException("param must be key value pair");
             }
 
-            String key = arg.substring(0, index);
-            String value = arg.substring(index + 1);
+            String key = arg.substring(0, index).trim();
+            String value = arg.substring(index + 1).trim();
             arguments.put(key, value);
         }
 
