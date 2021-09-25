@@ -2,16 +2,19 @@ package com.metis.common.designpattern.action;
 
 import java.util.Scanner;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import lombok.NoArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
 /**
  * @author xiaohui.wyh
  * @version ExampleApplication v0.1
  * @Date 2021/9/9 8:18 下午
  */
-@Log4j2
+
 public class StrategyTest {
+    private static Logger log = LoggerFactory.getLogger(StrategyTest.class);
+
     static Context context = new Context(); 
 
     public static void main(String[] args) {
@@ -34,8 +37,10 @@ public class StrategyTest {
         VisitorImpl visitor = new VisitorImpl();
         handlerHead.accept(visitor);
 
-
-        // 策略模式,将 控制逻辑 放在外面,以Context中的属性做基本 数据结构 做 业务逻辑 的容器
+        // 或者放入cut()/multiply()
+        context.setStrategy(add());
+        // 策略模式,将 控制逻辑 放在外面,以Context中的 属性 作基本 数据结构 做 业务逻辑 的容器
+        // 属性可以换成复杂数据结构并且事先做缓存，比如HashMap<StrategyFlag,Strategy>,加入对应的StrategyFlag与Strategy即可
         // 符合开闭原则,有新的策略时添加新的策略与策略的判断逻辑即可
         context.executeStrategy(para1, para2);
 
@@ -45,7 +50,6 @@ public class StrategyTest {
         // context.executeStrategyChain(3,2);
 
         in.close();
-        ;
     }
 
     private static void constructHanlderChain(Handler1 handlerHead, Handler2 handler2, Handler3 handler3) {

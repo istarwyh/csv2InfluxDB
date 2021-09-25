@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * 与UserDAO能实现一样的效果，只是这里在UserMapper.xml中映射 MyBatis 会根据接口和对应的 xml 文件创建接口的实现类
+ * @implnote 可能有些会用DAO再封装一层Mapper来统一用DAO
  * 
  * @author MBin_王艺辉istarwyh
  */
