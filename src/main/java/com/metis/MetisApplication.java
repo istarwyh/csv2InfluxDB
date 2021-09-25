@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import java.util.Map;
+import java.util.Objects;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -40,35 +41,46 @@ public class MetisApplication {
     static {
         // 也可以在application.properties中配置
         // application.properties文件会取antx.properties(自动配置取值的文件)去对应的配置值。
-        // System.setProperty("spring.devtools.restart.enabled", "false");
         System.setProperty("spring.profiles.active", "testing");
+        // 热部署开关
+        System.setProperty("spring.devtools.restart.enabled", "false");
         
-        Properties properties = System.getProperties();
-        String propertiesString = properties.toString().replace("{","").replace("}", "");
-        String[] propertiesArray = propertiesString.split(",");
-        for (Map.Entry<String, String> entry : arguments2Map(propertiesArray).entrySet()) {
-            if("java.class.path".equals(entry.getKey())){
-                continue;
-            }
-            System.out.println(entry.getKey() + ":" + entry.getValue());
-        }
-
         Map<String, String> envMap = System.getenv();
+        String[] propertiesArray = getPropertiesArray();
         printArguments(envMap);
+        printArgumentsWithoutExcludedKey(arguments2Map(propertiesArray),"java.class.path");
     }
+
+    /**
+     * TODO:有时候会报loadContext Failure,主要是某些类不能被初始化，但是后面又好了，那是为什么呢？
+     * @param args 随着命令行指定可以被传进来的程序参数
+     */
     public static void main(String[] args) {
 
         System.out.println("-----------------------This will be printed twice-----------------------");
-        // 打印传入进来的程序参数。程序参数需要配置。
+        // 打印传入进来的程序参数。
         printArguments(arguments2Map(args));
         SpringApplication.run(MetisApplication.class, args);
     }
 
-    private static void printArguments(Map<String, String> map){
+    private static String[] getPropertiesArray() {
+        Properties properties = System.getProperties();
+        String propertiesString = properties.toString().replace("{","").replace("}", "");
+        String[] propertiesArray = propertiesString.split(",");
+        return propertiesArray;
+    }
+
+    private static void printArgumentsWithoutExcludedKey(Map<String, String> map,String excludedKey){
         for (Map.Entry<String, String> entry : map.entrySet()) {
+            if(!Objects.isNull(excludedKey) && excludedKey.equals(entry.getKey())){continue;}
             System.out.println(entry.getKey() + ":" + entry.getValue());
         }
     }
+
+    private static void printArguments(Map<String, String> map){
+        printArgumentsWithoutExcludedKey(map, null);
+    }
+
     private static Map<String, String> arguments2Map(String[] args) {
         Map<String, String> arguments = new HashMap<String, String>();
 
