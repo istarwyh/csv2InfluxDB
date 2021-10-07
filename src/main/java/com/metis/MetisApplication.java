@@ -3,8 +3,6 @@ package com.metis;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import java.util.Map;
 import java.util.Objects;
@@ -27,8 +25,6 @@ import java.util.Properties;
  * application.yml 或者 properties 文件里的 spring.datasource.* 相关属性并自动配置单数据源
  */
 @EnableAutoConfiguration
-// (exclude =
-// {DataSourceAutoConfiguration.class,DataSourceTransactionManagerAutoConfiguration.class})
 /**
  * 声明这是一个注解，@SpringBootConfiguration 封装了一些定义注解的注解(元注解)，如注解适用类型与生命周期等 -->
  * 用一个@SpringBootApplication也就可以了,因为 @SpringBootApplication =
