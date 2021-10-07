@@ -8,11 +8,14 @@ package com.metis.entity;
  */
 import lombok.Getter;
 import lombok.Setter;
+
+import java.io.Serializable;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 @Getter
 @Setter
-public class Monitor{
+public class Monitor implements Serializable{
     private static final long serialVersionUID = 1L;
 
     /** 进程ID */

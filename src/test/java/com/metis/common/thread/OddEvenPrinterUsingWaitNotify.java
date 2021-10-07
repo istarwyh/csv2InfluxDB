@@ -6,12 +6,12 @@ package com.metis.common.thread;
  * @Date: 2020-11-24 15:13
  * @Version: ing
  */
-public class OddEvenPrinter {
+public class OddEvenPrinterUsingWaitNotify{
     private final int    limit;
     private final Object monitor = new Object();
     private volatile int count;
 
-    public OddEvenPrinter(int initCount, int limit) {
+    public OddEvenPrinterUsingWaitNotify (int initCount, int limit) {
         this.count = initCount;
         this.limit = limit;
     }

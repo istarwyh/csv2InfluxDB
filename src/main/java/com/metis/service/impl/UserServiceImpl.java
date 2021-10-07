@@ -1,17 +1,18 @@
 package com.metis.service.impl;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import com.metis.config.exception.ExceptionMsgEnum;
 import com.metis.dao.user.UserDAO;
-import com.metis.dto.ContextDTO;
 import com.metis.entity.User;
 import com.metis.service.UserService;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * 1.就当前的项目来说, 换成@Component,@Configuration其实对于将UserService作为一个类放到IOC容器中被其管理都是可行的

@@ -1,19 +1,11 @@
 package com.metis.controller;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
 import com.metis.dto.ResponseDTO;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 
-import com.metis.annotation.log.KthLog;
-import com.metis.config.business.BusinessType;
-import com.metis.controller.api.BaseController;
-import com.metis.entity.Monitor;
-import com.metis.service.IMonitorService;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @Description: MonitorController

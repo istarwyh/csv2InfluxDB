@@ -1,7 +1,13 @@
 package com.metis.annotation;
 
-import com.metis.annotation.TraceAdvice;
+import java.lang.instrument.Instrumentation;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+
 import com.metis.controller.Greeting;
+
+import org.junit.jupiter.api.Test;
+
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.agent.ByteBuddyAgent;
 import net.bytebuddy.agent.builder.AgentBuilder;
@@ -11,11 +17,6 @@ import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.implementation.FixedValue;
 import net.bytebuddy.matcher.ElementMatchers;
 import net.bytebuddy.utility.JavaModule;
-import org.junit.jupiter.api.Test;
-
-import java.lang.instrument.Instrumentation;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 
 /**
  * @Description: com.metis.annotation.ByteBuddyTest
@@ -24,9 +25,13 @@ import java.lang.reflect.Modifier;
  * @Version: https://my.oschina.net/u/4657223/blog/4863547
  */
 public class ByteBuddyTest {
+    /**
+     * 使用Instrumentation的实例去修改已有方法
+     * @param inst
+     * @param allClassName 需要匹配的目标类的全类名
+     * @param methodName   需要匹配目标类中的方法名
+     */
     public static void premain( Instrumentation inst,String allClassName,String methodName) {
-
-        // 用ByteBuddy 的 API 来修改已有程序
         AgentBuilder agentBuilder = new AgentBuilder.Default()
                 .with(AgentBuilder.PoolStrategy.Default.EXTENDED)
                 .with(AgentBuilder.InitializationStrategy.NoOp.INSTANCE)
@@ -34,7 +39,6 @@ public class ByteBuddyTest {
                 .disableClassFormatChanges();
 
         agentBuilder = agentBuilder
-                // 匹配目标类的全类名
                 .type(ElementMatchers.named(allClassName))
                 .transform(new AgentBuilder.Transformer() {
                     @Override
@@ -44,10 +48,9 @@ public class ByteBuddyTest {
                                                             JavaModule module) {
 
                         return builder.visit(
-                                // 织入切面
+                                // 将自己的TraceAdvice织入method所在的切面
                                 Advice.to(TraceAdvice.class)
-                                        // 匹配目标类的方法
-                                        .on(ElementMatchers.named(methodName))
+                                      .on(ElementMatchers.named(methodName))
                         );
                     }
                 });
@@ -59,7 +62,7 @@ public class ByteBuddyTest {
      * @throws Exception
      */
     @Test
-    public void test1() throws Exception {
+    public void test_bytebuddy_define_method() throws Exception {
         Object helloWorld = new ByteBuddy()
                 .subclass(Object.class)
                 .name("com.metis.HelloWorld")
@@ -70,7 +73,7 @@ public class ByteBuddyTest {
                 .getLoaded()
                 .newInstance();
 
-        Method method = helloWorld.getClass().getMethod("greeting");
+        Method method = helloWorld.getClass().getMethod("greeting");  
         System.out.println(method.invoke(helloWorld));
     }
 
@@ -79,16 +82,23 @@ public class ByteBuddyTest {
      * @throws Exception
      */
     @Test
-    public void test2() throws Exception {
+    public void test_premain() throws Exception {
         ByteBuddyAgent.install();
         Instrumentation inst = ByteBuddyAgent.getInstrumentation();
-
-        // 增强
-        premain(inst,"com.metis.controller.Greeting","sayHello");
-        // after enable --> 调用
-        Class<?> greetingType = Greeting.class.
-                getClassLoader().loadClass(Greeting.class.getName());
-        Method sayHello = greetingType.getDeclaredMethod("sayHello", String.class);
+        // Greeting的元数据
+        Class<Greeting> classOfGreeting = Greeting.class;
+        // 方法所在类的全限定名
+        String allClassName = classOfGreeting.getName();
+        // 类中所拥有的第一个方法名。如果是空的类，那就找Object的第一个方法名--“wait”
+        String methodName = classOfGreeting.getMethods()[0].getName();
+        // ”增强“allClassName下的method
+        premain(inst,allClassName,methodName);
+        // 在增强后调用
+        Method sayHello  = classOfGreeting
+                .getClassLoader()
+                .loadClass(allClassName)
+                .getDeclaredMethod(methodName, String.class);
+        // "WangYiHui" === args[1],是需要传入的参数
         sayHello.invoke(new Greeting(), "WangYiHui");
     }
 }

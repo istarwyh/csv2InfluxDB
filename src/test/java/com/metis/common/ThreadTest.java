@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import com.github.istarwyh.UserRejectHandler;
 import com.github.istarwyh.UserThreadFactory;
-import com.metis.common.thread.OddEvenPrinter;
+import com.metis.common.thread.OddEvenPrinterUsingWaitNotify;
 import com.metis.common.thread.PrintABCUsingLock;
 import com.metis.common.thread.PrintABCUsingWaitNotify;
 
@@ -28,17 +28,17 @@ public class ThreadTest {
         var p1 = new PrintABCUsingLock(12, "A", 0);
         var p2 = new PrintABCUsingLock(12, "B", 1);
         var p3 = new PrintABCUsingLock(12, "C", 2);
-        //        这个可行,因为是由同一个实例对象持有的同一个代码块
-        //        每个线程自己从获取锁到执行一次函数的过程中都不会被抢占
-        //        结合 state % 3 == targetNum 与 state++保证了总会轮到某个线程执行代码块
-        //        i++在里面保证了每一次如果线程不执行,它就一直尝试获取锁
+        // 这个可行,因为是由同一个实例对象持有的同一个代码块
+        // 每个线程自己从获取锁到执行一次函数的过程中都不会被抢占
+        // 结合 state % 3 == targetNum 与 state++保证了总会轮到某个线程执行代码块
+        // i++在里面保证了每一次如果线程不执行,它就一直尝试获取锁
         threadPool.execute(() -> p1.printLetter("A", 0));
         threadPool.execute(() -> p1.printLetter("B", 1));
         threadPool.execute(() -> p1.printLetter("C", 2));
-        //      这个不可行,因为不同的实例对象不共享AQS的state,无法预料线程执行顺序
-        //        threadPool.execute(p1.task);
-        //        threadPool.execute(p2.task);
-        //        threadPool.execute(p3.task);
+        // 这个不可行,因为不同的实例对象不共享AQS的state,无法预料线程执行顺序
+        // threadPool.execute(p1.task);
+        // threadPool.execute(p2.task);
+        // threadPool.execute(p3.task);
     }
 
     /**
@@ -46,7 +46,7 @@ public class ThreadTest {
      */
     @Test
     void testWaitNotify1() {
-        OddEvenPrinter printer = new OddEvenPrinter(0, 200);
+        OddEvenPrinterUsingWaitNotify printer = new OddEvenPrinterUsingWaitNotify(0, 200);
         threadPool.execute(printer::print);
         threadPool.execute(printer::print);
     }
@@ -60,45 +60,47 @@ public class ThreadTest {
     }
 
     /**
-     * 消费者: AQS::addConditionalWaiter()操作等待队列里的结点,结点中存放着thread-3/2/1
-     * 生产者: ThreadPoolExecutor::execute中workQueue.offer()将task放入队列中,并通过signalNotEmpty()->doSignal->transFerSignal
-     * ->LockSupport.unpark(node.thread)唤醒线程
-     * 线程被唤醒的顺序就是等待队列中结点的顺序,所以最后task会被轮询执行
+     * 消费者: AQS::addConditionalWaiter()操作等待队列里的结点,结点中存放着thread-3/2/1 生产者:
+     * ThreadPoolExecutor::execute中workQueue.offer()将task放入队列中,并通过signalNotEmpty()->doSignal->transFerSignal
+     * ->LockSupport.unpark(node.thread)唤醒线程 线程被唤醒的顺序就是等待队列中结点的顺序,所以最后task会被轮询执行
      */
     @Test
     public void testKeepAlive() throws InterruptedException {
         var threadPool2 = new ThreadPoolExecutor(2, 3, 30, TimeUnit.SECONDS, new LinkedBlockingQueue<>(2),
                 new UserThreadFactory("MBinPC"), new UserRejectHandler());
 
-//        //每隔两秒打印线程池的信息
-//        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-//        scheduledExecutorService.scheduleAtFixedRate(() -> {
-//            System.out.println("=====================================thread-pool-info:" + new Date()
-//                    + "=====================================");
-//            System.out.println("CorePoolSize:" + threadPool2.getCorePoolSize());
-//            System.out.println("PoolSize:" + threadPool2.getPoolSize());
-//            System.out.println("ActiveCount:" + threadPool2.getActiveCount());
-//            System.out.println("KeepAliveTime:" + threadPool2.getKeepAliveTime(TimeUnit.SECONDS));
-//            System.out.println("QueueSize:" + threadPool2.getQueue().size());
-//        }, 0, 2, TimeUnit.SECONDS);
+        // //每隔两秒打印线程池的信息
+        // ScheduledExecutorService scheduledExecutorService =
+        // Executors.newScheduledThreadPool(1);
+        // scheduledExecutorService.scheduleAtFixedRate(() -> {
+        // System.out.println("=====================================thread-pool-info:" +
+        // new Date()
+        // + "=====================================");
+        // System.out.println("CorePoolSize:" + threadPool2.getCorePoolSize());
+        // System.out.println("PoolSize:" + threadPool2.getPoolSize());
+        // System.out.println("ActiveCount:" + threadPool2.getActiveCount());
+        // System.out.println("KeepAliveTime:" +
+        // threadPool2.getKeepAliveTime(TimeUnit.SECONDS));
+        // System.out.println("QueueSize:" + threadPool2.getQueue().size());
+        // }, 0, 2, TimeUnit.SECONDS);
 
         try {
-            //1. 同时提交5个任务,模拟达到最大线程数
+            // 1. 同时提交5个任务,模拟达到最大线程数
             for (int i = 0; i < 6; i++) {
                 threadPool2.execute(new Task());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //休眠10秒，打印日志，观察线程池状态
+        // 休眠10秒，打印日志，观察线程池状态
         Thread.sleep(10000);
 
-        //2. 每隔3秒提交一个任务
+        // 2. 每隔3秒提交一个任务
         while (true) {
             Thread.sleep(3000);
             threadPool2.submit(new Task());
         }
-//        threadPool2.awaitTermination(60,TimeUnit.SECONDS);
+        // threadPool2.awaitTermination(60,TimeUnit.SECONDS);
     }
 
     static class Task implements Runnable {

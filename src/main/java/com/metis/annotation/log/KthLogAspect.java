@@ -1,6 +1,5 @@
 package com.metis.annotation.log;
 
-import com.metis.annotation.log.KthLog;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
