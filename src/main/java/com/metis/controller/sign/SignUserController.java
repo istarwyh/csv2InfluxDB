@@ -5,7 +5,7 @@ import com.metis.dto.sign.SignUserDTO;
 import com.metis.entity.BaseUser;
 import com.metis.entity.SignUser;
 import com.metis.common.impl.CheckUtils;
-import com.metis.service.impl.SignService;
+import com.metis.service.impl.SignServiceImpl;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +24,7 @@ import javax.annotation.Resource;
 public class SignUserController {
 
     @Resource
-    SignService signService;
+    SignServiceImpl signServiceImpl;
 
     @PostMapping(value = "login")
     public ResponseDTO<?> login(@RequestBody(required = true) SignUserDTO suDTO) {
@@ -33,7 +33,7 @@ public class SignUserController {
         }
         SignUser signUser = SignUser.builder().baseUser(BaseUser.builder().name(suDTO.getUsername()).build())
                 .passwd(suDTO.getPassword()).build();
-        if (signService.existMatchedUser(signUser)) {
+        if (signServiceImpl.existMatchedUser(signUser)) {
             return ResponseDTO.forSuccess();
         } else {
             return ResponseDTO.forParamEx(signUser);
