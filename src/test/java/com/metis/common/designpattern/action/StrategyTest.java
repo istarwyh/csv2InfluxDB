@@ -1,5 +1,6 @@
 package com.metis.common.designpattern.action;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 import org.slf4j.LoggerFactory;
@@ -24,26 +25,37 @@ public class StrategyTest {
         int para2 = Integer.parseInt(in.next());
 
 
-        Handler1 handlerHead = new Handler1();
-        Handler2 handler2 = new Handler2();
-        Handler3 handler3 = new Handler3();
-        constructHanlderChain(handlerHead, handler2, handler3);
-        // 责任链模式,当一个判断成功时放弃后续无效判断
-        handlerHead.execute(para1);
-        
-        // todo:不知道怎么迭代使用访问者模式啊
-        Handler iter = handlerHead;
-
-        VisitorImpl visitor = new VisitorImpl();
-        handlerHead.accept(visitor);
 
         // 或者放入cut()/multiply()
         context.setStrategy(add());
-        // 策略模式,将 控制逻辑 放在外面,以Context中的 属性 作基本 数据结构 做 业务逻辑 的容器
+        // 策略模式
+        // 将 控制逻辑 放在外面,以Context中的 属性 作基本 数据结构 做 业务逻辑 的容器
         // 属性可以换成复杂数据结构并且事先做缓存，比如HashMap<StrategyFlag,Strategy>,加入对应的StrategyFlag与Strategy即可
         // 符合开闭原则,有新的策略时添加新的策略与策略的判断逻辑即可
         context.executeStrategy(para1, para2);
 
+        Handler1 handlerHead = new Handler1();
+        Handler2 handler2 = new Handler2();
+        Handler3 handler3 = new Handler3();
+        constructHandlerChain(handlerHead, handler2, handler3);
+        logHandlerChain(handlerHead);
+        // 责任链模式
+        // 当一个判断成功时放弃后续无效判断
+        int flag = para1;
+        handlerHead.execute(flag);
+        context.executeStrategy(para1, para2);
+
+        
+        // 访问者模式
+        Visitor visitorAll = new ConcreteVisitors();
+        AbstractHandler iter = handlerHead;
+        while(Objects.nonNull(iter)){
+            iter.accept(visitorAll);
+            context.executeStrategy(para1, para2); 
+
+            iter = iter.next;
+        }
+    
         // context.setStrategyChainHead(add(),cut(),multiply());
         // context.executeStrategyChain(1,2);
         // context.executeStrategyChain(2,2);
@@ -52,9 +64,28 @@ public class StrategyTest {
         in.close();
     }
 
-    private static void constructHanlderChain(Handler1 handlerHead, Handler2 handler2, Handler3 handler3) {
-        handlerHead.next = handler2;
-        handler2.next = handler3;
+    private static void constructHandlerChain(AbstractHandler... handlers) {
+        int len = handlers.length;
+        for (int i = 0; i < len; i++) {
+            if (i + 1 >= len) {
+                break;
+            }
+            handlers[i].next = handlers[i + 1];
+        }
+    }
+
+    private static void logHandlerChain(AbstractHandler head){
+        if(Objects.isNull(head)){
+            return;
+        }
+        AbstractHandler iter = head;
+        while(Objects.nonNull(iter)){
+            log.info(iter.toString());
+            iter = iter.next;
+        }
+        if(Objects.isNull(iter)){
+            log.info("null");
+        }
     }
 
     private static Strategy add() {
@@ -78,15 +109,26 @@ public class StrategyTest {
         boolean door();
 
         /**
-         * 访问者模式根据不同的 visitor 选择对应的Handler实现者做事
+         * 访问者模式根据不同的 visitor 选择对应的Handler处理逻辑
          */
         void accept(Visitor visitor);
     }
 
-    @NoArgsConstructor
-    private static class Handler1 implements Handler {
-        Handler next;
+    /**
+     * 用于构造责任链的公共抽象节点
+     */
+    private abstract static class AbstractHandler implements Handler {
+        AbstractHandler next;
         int flag;
+
+        @Override
+        public String toString(){
+            return String.format("%s ->", getClass().getSimpleName());
+        }
+    }
+
+    @NoArgsConstructor
+    private static class Handler1 extends AbstractHandler {
 
         @Override
         public void execute(int flag) {
@@ -105,14 +147,12 @@ public class StrategyTest {
 
         @Override
         public void accept(Visitor visitor) {
-            visitor.visit(this, flag);
+            visitor.visit(this);
         }
     }
 
     @NoArgsConstructor
-    private static class Handler2 implements Handler {
-        Handler next;
-        int flag;
+    private static class Handler2 extends AbstractHandler {
 
         @Override
         public void execute(int flag) {
@@ -130,14 +170,12 @@ public class StrategyTest {
 
         @Override
         public void accept(Visitor visitor) {
-            visitor.visit(this, flag);
+            visitor.visit(this);
         }
     }
 
     @NoArgsConstructor
-    private static class Handler3 implements Handler {
-        Handler next;
-        int flag;
+    private static class Handler3 extends AbstractHandler {
 
         @Override
         public void execute(int flag) {
@@ -157,30 +195,39 @@ public class StrategyTest {
 
         @Override
         public void accept(Visitor visitor) {
-            visitor.visit(this, flag);
+            visitor.visit(this);
         
         }
     }
 
+    /**
+     * 访问者模式诞生于这样一个困境：
+     * Handler1、2、3相关的代码都是老代码，最好不要动，但是又要给它们加上新功能；
+     * 所以给它们在统一的Visitor中加上新功能，并且当handler遇到visitor时都知道怎样“接待”这个visitor
+     * -- 也就是执行它们各自的新功能
+     */
     private interface Visitor{
-        void visit(Handler1 handler1,int flag);
-        void visit(Handler2 handler2,int flag);
-        void visit(Handler3 handler3,int flag);
 
+        void visit(Handler1 handler1);
+        void visit(Handler2 handler2);
+        void visit(Handler3 handler3);
     }
-    private static class VisitorImpl implements Visitor{
+    private static class ConcreteVisitors implements Visitor{
 
-        public void visit(Handler1 handler1,int flag){
-            handler1.execute(flag);
+        /**
+         * 写死的数字代表具体想要执行的逻辑
+         */
+        public void visit(Handler1 handler1){
+            handler1.execute(2);
         }
 
-        public void visit(Handler2 handler2,int flag){
-            handler2.execute(flag);
+        public void visit(Handler2 handler2){
+            handler2.execute(0);
         }
 
         @Override
-        public void visit(Handler3 handler3, int flag) {
-            handler3.execute(flag);
+        public void visit(Handler3 handler3) {
+            handler3.execute(1);
         }
     }
 }

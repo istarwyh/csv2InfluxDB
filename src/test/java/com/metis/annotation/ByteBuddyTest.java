@@ -93,11 +93,15 @@ public class ByteBuddyTest {
         String methodName = classOfGreeting.getMethods()[0].getName();
         // ”增强“allClassName下的method
         premain(inst,allClassName,methodName);
-        // 在增强后调用
-        Method sayHello  = classOfGreeting
-                .getClassLoader()
-                .loadClass(allClassName)
+        // 在增强后调用,下面第一行即classOfGreeting.getClassLoader().loadClass(allClassName)
+        Method sayHello  = Class.forName(allClassName)
+                // declare包括private方法
                 .getDeclaredMethod(methodName, String.class);
+        
+	    //将此对象的 accessible 标志设置为指示的布尔值。
+		//值为 true 则指示反射的对象在使用时应该取消 Java 语言访问检查。
+		//值为 false 则指示反射的对象应该实施 Java 语言访问检查。
+        sayHello.setAccessible(true);
         // "WangYiHui" === args[1],是需要传入的参数
         sayHello.invoke(new Greeting(), "WangYiHui");
     }
