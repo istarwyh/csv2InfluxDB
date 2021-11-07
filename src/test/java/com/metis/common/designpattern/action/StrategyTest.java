@@ -24,29 +24,29 @@ public class StrategyTest {
         int para1 = Integer.parseInt(in.next());
         int para2 = Integer.parseInt(in.next());
 
-
-
+        log.info("--------------------------------------策略模式--------------------------------------");
         // 或者放入cut()/multiply()
         context.setStrategy(add());
-        // 策略模式
         // 将 控制逻辑 放在外面,以Context中的 属性 作基本 数据结构 做 业务逻辑 的容器
         // 属性可以换成复杂数据结构并且事先做缓存，比如HashMap<StrategyFlag,Strategy>,加入对应的StrategyFlag与Strategy即可
         // 符合开闭原则,有新的策略时添加新的策略与策略的判断逻辑即可
         context.executeStrategy(para1, para2);
+        
 
-        Handler1 handlerHead = new Handler1();
-        Handler2 handler2 = new Handler2();
-        Handler3 handler3 = new Handler3();
-        constructHandlerChain(handlerHead, handler2, handler3);
+        log.info("--------------------------------------责任链模式--------------------------------------");
+        // 当一个判断成功时放弃后续无效判断;或者链上每一个节点都执行,但是执行逻辑不一样。
+        // 第二种场景更适合用,因为本来那样的需求相对复杂。
+        AbstractHandler handlerHead = new AbstractHandler.Builder()
+        .addHandler(new Handler1())
+        .addHandler(new Handler2())
+        .addHandler(new Handler3())
+        .build();
         logHandlerChain(handlerHead);
-        // 责任链模式
-        // 当一个判断成功时放弃后续无效判断
         int flag = para1;
         handlerHead.execute(flag);
         context.executeStrategy(para1, para2);
 
-        
-        // 访问者模式
+        log.info("--------------------------------------访问者模式--------------------------------------");
         Visitor visitorAll = new ConcreteVisitors();
         AbstractHandler iter = handlerHead;
         while(Objects.nonNull(iter)){
@@ -62,16 +62,6 @@ public class StrategyTest {
         // context.executeStrategyChain(3,2);
 
         in.close();
-    }
-
-    private static void constructHandlerChain(AbstractHandler... handlers) {
-        int len = handlers.length;
-        for (int i = 0; i < len; i++) {
-            if (i + 1 >= len) {
-                break;
-            }
-            handlers[i].next = handlers[i + 1];
-        }
     }
 
     private static void logHandlerChain(AbstractHandler head){
@@ -121,6 +111,36 @@ public class StrategyTest {
         AbstractHandler next;
         int flag;
 
+        public static void constructHandlerChain(AbstractHandler... handlers) {
+            int len = handlers.length;
+            for (int i = 0; i < len; i++) {
+                if (i + 1 >= len) {
+                    break;
+                }
+                handlers[i].next = handlers[i + 1];
+            }
+        }
+
+        public static class Builder{
+            private AbstractHandler head;
+            private AbstractHandler tail;
+
+            public Builder addHandler(AbstractHandler node){
+                if(this.head == null){
+                    this.head = this.tail = node;
+                    return this;
+                }
+                // 链表指向下一个结点
+                this.tail.next = node;
+                // 把引用指向最后一个结点
+                this.tail = node;
+                return this;
+            }
+            public AbstractHandler build(){
+                return this.head;
+            }
+        }
+
         @Override
         public String toString(){
             return String.format("%s ->", getClass().getSimpleName());
@@ -134,6 +154,7 @@ public class StrategyTest {
         public void execute(int flag) {
             this.flag = flag;
             if (this.door()) {
+                log.info("I am "+ getClass().getSimpleName()+ " add()");
                 context.setStrategy(add());
             } else {
                 this.next.execute(flag);
@@ -157,6 +178,7 @@ public class StrategyTest {
         @Override
         public void execute(int flag) {
             if (door()) {
+                log.info("I am "+ getClass().getSimpleName()+ " cut()");
                 context.setStrategy(cut());
             } else {
                 this.next.execute(flag);
@@ -181,6 +203,7 @@ public class StrategyTest {
         public void execute(int flag) {
             this.flag = flag;
             if (door()) {
+                log.info("I am "+ getClass().getSimpleName()+ " multiply()");
                 context.setStrategy(multiply());
             } else {
                 throw new RuntimeException("not judge Condition: " + flag);
