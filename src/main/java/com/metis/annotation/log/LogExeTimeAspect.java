@@ -23,7 +23,12 @@ import java.util.List;
 public class LogExeTimeAspect {
     private final List<String> messages = new ArrayList<>();
     private final List<Throwable> exceptions = new ArrayList<>();
-
+    /**
+     * 环绕通知=前置+目标方法执行+后置通知，proceed方法就是用于启动目标方法执行的,只有proceed才能支持 aop:around 这种切面
+     * @param joinPoint
+     * @return
+     * @throws Throwable
+     */
     @Around("@annotation(com.metis.annotation.log.LogExecutionTime)")
     public Object handleLogging(ProceedingJoinPoint joinPoint) throws Throwable {
 

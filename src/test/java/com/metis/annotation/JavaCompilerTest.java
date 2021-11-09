@@ -1,10 +1,12 @@
 package com.metis.annotation;
 
+import com.metis.BaseTest;
+
 /**
  * @Description: JavaCompilerTest
  * @Author: https://blog.csdn.net/sinat_42483341/article/details/98473119
  * @Date: 2021-03-05 23:13
  * @Version: ing
  */
-public class JavaCompilerTest {
+public class JavaCompilerTest extends BaseTest{
 }

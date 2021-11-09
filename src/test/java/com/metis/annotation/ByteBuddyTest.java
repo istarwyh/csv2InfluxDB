@@ -71,6 +71,7 @@ public class ByteBuddyTest {
                 .make()
                 .load(ClassLoader.getSystemClassLoader())
                 .getLoaded()
+                .getDeclaredConstructor()
                 .newInstance();
 
         Method method = helloWorld.getClass().getMethod("greeting");  

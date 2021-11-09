@@ -17,6 +17,7 @@ public class KthLogAspect {
     /**
      *  pointcut切点
      * 用 @Pointcut 声明自定义的注解类(@Interface) KthLog 为切面
+     * 也可以用 execution(* com.java.lang..*.*(..))的形式以包名或将*号换成具体类名、方法名去拦截
      */
     @Pointcut("@annotation(com.metis.annotation.log.KthLog)")
     private void pointcut() {
@@ -24,7 +25,7 @@ public class KthLogAspect {
 
     /**
      * 在声明KthLog为切面后，通过使用 @KthLog() 就可以对请求进行拦截,并通过将这个切面映射到一个 对象 上来调用 切面类 中的方法(这里是 value() 返回值)
-     * @param joinPoint 连接点,某个程序执行的某个特定未知,如某个方法的调用前/调用后/方法抛出异常后的位置
+     * @param joinPoint 连接点,某个程序执行的某个特定位置,如某个方法的调用前/调用后/方法抛出异常后的位置。可以调用其getKind()方法查看切入的类型与切入的方法Signature(修饰符+ 包名+组件名(类名) +方法名)等
      * @param kthLogger 通过再使用 @annotation()，将com.metis.annotation.log.KthLog映射为kthLogger
      */
     @Before("pointcut() && @annotation(kthLogger)")

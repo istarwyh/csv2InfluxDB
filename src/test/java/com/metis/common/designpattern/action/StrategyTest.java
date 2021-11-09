@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
  * @version ExampleApplication v0.1
  * @Date 2021/9/9 8:18 下午
  */
-
 public class StrategyTest {
     private static Logger log = LoggerFactory.getLogger(StrategyTest.class);
 

@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.metis.BaseTest;
 import com.metis.annotation.log.LogExeTimeAspect;
 
 /**
@@ -18,9 +19,10 @@ import com.metis.annotation.log.LogExeTimeAspect;
  * @Date: 2021-02-04 19:25
  * @Version: ing
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class ExeTimeLogTest {
+// @RunWith(SpringRunner.class)
+// @SpringBootTest
+public class ExeTimeLogTest extends BaseTest{
+    
     @Resource
     private FooService service;
     @Resource
