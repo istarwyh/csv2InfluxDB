@@ -62,8 +62,7 @@ public class MetisApplication {
     private static String[] getPropertiesArray() {
         Properties properties = System.getProperties();
         String propertiesString = properties.toString().replace("{","").replace("}", "");
-        String[] propertiesArray = propertiesString.split(",");
-        return propertiesArray;
+        return propertiesString.split(",");
     }
 
     private static void printArgumentsWithoutExcludedKey(Map<String, String> map,String excludedKey){
