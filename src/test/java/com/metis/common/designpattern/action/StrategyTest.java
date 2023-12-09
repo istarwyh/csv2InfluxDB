@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
  * @Date 2021/9/9 8:18 下午
  */
 public class StrategyTest {
-    private static Logger log = LoggerFactory.getLogger(StrategyTest.class);
+    private static final Logger log = LoggerFactory.getLogger(StrategyTest.class);
 
     static Context context = new Context(); 
 
@@ -41,16 +41,15 @@ public class StrategyTest {
         .addHandler(new Handler3())
         .build();
         logHandlerChain(handlerHead);
-        int flag = para1;
-        handlerHead.execute(flag);
-        context.executeStrategy(para1, para2);
+        handlerHead.execute(para1);
+//        context.executeStrategy(para1, para2);
 
         log.info("--------------------------------------访问者模式--------------------------------------");
         Visitor visitorAll = new ConcreteVisitors();
         AbstractHandler iter = handlerHead;
         while(Objects.nonNull(iter)){
             iter.accept(visitorAll);
-            context.executeStrategy(para1, para2); 
+//            context.executeStrategy(para1, para2);
 
             iter = iter.next;
         }
@@ -72,9 +71,7 @@ public class StrategyTest {
             log.info(iter.toString());
             iter = iter.next;
         }
-        if(Objects.isNull(iter)){
-            log.info("null");
-        }
+        log.info("null");
     }
 
     private static Strategy add() {

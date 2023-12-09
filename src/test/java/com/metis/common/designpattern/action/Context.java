@@ -17,6 +17,9 @@ public class Context {
         this.strategyChainHead = new StrategyNode(new DefaultStrategy());
     }
 
+    /**
+     * todo 只用一个Strategy 演示不足以说明策略模式和责任链模式的区别
+     */
     public void setStrategy(Strategy strategy){
         this.strategy = strategy;
     }
@@ -51,7 +54,7 @@ public class Context {
     }
 
     public Strategy defaultStrategy(){
-        return new DefaultStrategy()::execute;
+        return new DefaultStrategy();
     }
 
     public static class DefaultStrategy implements Strategy{

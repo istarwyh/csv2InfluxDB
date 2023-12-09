@@ -9,7 +9,7 @@ public class People implements Callback{
      * 同步回调
      */
     public void goToPrintSyn() {
-        printer.print(this::printFinished);
+        printer.print(this);
     }
 
     /*

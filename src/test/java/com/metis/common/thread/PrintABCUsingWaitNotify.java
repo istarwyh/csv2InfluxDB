@@ -9,7 +9,7 @@ package com.metis.common.thread;
 public class PrintABCUsingWaitNotify {
     private final Object monitor = new Object();
     private int                 state;
-    private int                 times;
+    private final int                 times;
 
     public PrintABCUsingWaitNotify(int times) {
         this.times = times;

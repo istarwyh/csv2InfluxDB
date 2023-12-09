@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @Version: ing
  */
 public class PrintABCUsingLock {
-    protected final Task task;
+
     /**
      * 控制打印次数
      */
@@ -20,7 +20,12 @@ public class PrintABCUsingLock {
      * 当前状态值,保证三个线程交替打印
      */
     private  int        state = 0;
-    private int        count = 0;
+    private final int        count = 0;
+    public Task task;
+
+    public PrintABCUsingLock(int times) {
+        this.times = times;
+    }
 
     public PrintABCUsingLock(int times, String printObject, int targetId) {
         this.times = times;
@@ -34,7 +39,7 @@ public class PrintABCUsingLock {
                 if (state % 3 == targetNum) {
                     state++;
                     i++;
-                    System.out.print(name + " ");
+                    System.out.println(name + " ");
                 }
 //                i++;
 //            System.out.println("count: " + count++);
@@ -60,7 +65,7 @@ public class PrintABCUsingLock {
 //        }
     }
 
-    class Task implements Runnable {
+    private class Task implements Runnable {
         private final String printObject;
         private final int    targetId;
 

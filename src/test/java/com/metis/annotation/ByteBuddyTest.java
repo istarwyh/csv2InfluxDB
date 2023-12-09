@@ -3,9 +3,11 @@ package com.metis.annotation;
 import java.lang.instrument.Instrumentation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.security.ProtectionDomain;
 
 import com.metis.controller.Greeting;
 
+import net.bytebuddy.utility.nullability.MaybeNull;
 import org.junit.jupiter.api.Test;
 
 import net.bytebuddy.ByteBuddy;
@@ -40,20 +42,11 @@ public class ByteBuddyTest {
 
         agentBuilder = agentBuilder
                 .type(ElementMatchers.named(allClassName))
-                .transform(new AgentBuilder.Transformer() {
-                    @Override
-                    public DynamicType.Builder<?> transform(DynamicType.Builder<?> builder,
-                                                            TypeDescription typeDescription,
-                                                            ClassLoader classLoader,
-                                                            JavaModule module) {
-
-                        return builder.visit(
-                                // 将自己的TraceAdvice织入method所在的切面
-                                Advice.to(TraceAdvice.class)
-                                      .on(ElementMatchers.named(methodName))
-                        );
-                    }
-                });
+                .transform((builder, typeDescription, classLoader, module, protectionDomain) -> builder.visit(
+                        // 将自己的TraceAdvice织入method所在的切面
+                        Advice.to(TraceAdvice.class)
+                              .on(ElementMatchers.named(methodName))
+                ));
         agentBuilder.installOn(inst);
     }
 
